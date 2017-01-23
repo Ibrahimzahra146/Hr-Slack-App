@@ -153,7 +153,7 @@ slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
 slapp.action('manager_confirm_reject', 'reject', (msg, value) => {
   pg.connect(process.env.Db_URL, function (err, client) {
     if (err) throw err;
-    console.log('Connected to postgres! Getting schemas...');
+    console.log('Connected to postgres! Getting schemas.. .');
 
     client
       .query("select * from UsersDetails where useremail=" + "'" + value + "'" + ";")
