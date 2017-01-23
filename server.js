@@ -120,34 +120,34 @@ slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
       .on('row', function (row) {
         employeeChannel = row.channelid;
         userId = row.userid
+        msg.say("You accepted the request")
+        var message = {
+          'type': 'message',
+          'channel': employeeChannel,
+          user: userId,
+          text: 'what is my name',
+          ts: '1482920918.000057',
+          team: "T3FN29ZSL",
+          event: 'direct_message'
+        };
+        bot.startConversation(message, function (err, convo) {
 
+
+          if (!err) {
+            var text12 = {
+              "text": "Manager @name has accepted your time off request.Enjoy it.",
+            }
+            var stringfy = JSON.stringify(text12);
+            var obj1 = JSON.parse(stringfy);
+            bot.reply(message, obj1);
+
+          }
+        });
 
       });
   });
 
-  msg.say("You accepted the request")
-  var message = {
-    'type': 'message',
-    'channel': employeeChannel,
-    user: userId,
-    text: 'what is my name',
-    ts: '1482920918.000057',
-    team: "T3FN29ZSL",
-    event: 'direct_message'
-  };
-  bot.startConversation(message, function (err, convo) {
 
-
-    if (!err) {
-      var text12 = {
-        "text": "Manager @name has accepted your time off request.Enjoy it.",
-      }
-      var stringfy = JSON.stringify(text12);
-      var obj1 = JSON.parse(stringfy);
-      bot.reply(message, obj1);
-
-    }
-  });
 
 })
 slapp.action('manager_confirm_reject', 'reject', (msg, value) => {
