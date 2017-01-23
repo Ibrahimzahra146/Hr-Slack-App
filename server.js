@@ -111,6 +111,8 @@ slapp.message('(.*)', ['direct_message'], (msg, text, match1) => {
   }
 })
 slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
+  msg.say("you hava rejected the vacation request")
+
   pg.connect(process.env.Db_URL, function (err, client) {
     if (err) throw err;
     console.log('Connected to postgres! Getting schemas...');
