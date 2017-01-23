@@ -161,31 +161,31 @@ slapp.action('manager_confirm_reject', 'reject', (msg, value) => {
         employeeChannel = row.channelid;
         userId = row.userid
 
+        var message = {
+          'type': 'message',
+          'channel': employeeChannel,
+          user: userId,
+          text: 'what is my name',
+          ts: '1482920918.000057',
+          team: "T3FN29ZSL",
+          event: 'direct_message'
+        };
+        bot.startConversation(message, function (err, convo) {
 
+
+          if (!err) {
+            var text12 = {
+              "text": "Manager @name has rejected your time off request.Sorry! ",
+            }
+            var stringfy = JSON.stringify(text12);
+            var obj1 = JSON.parse(stringfy);
+            bot.reply(message, obj1);
+
+          }
+        });
       });
   });
-  var message = {
-    'type': 'message',
-    'channel': employeeChannel,
-    user: userId,
-    text: 'what is my name',
-    ts: '1482920918.000057',
-    team: "T3FN29ZSL",
-    event: 'direct_message'
-  };
-  bot.startConversation(message, function (err, convo) {
 
-
-    if (!err) {
-      var text12 = {
-        "text": "Manager @name has rejected your time off request.Sorry! ",
-      }
-      var stringfy = JSON.stringify(text12);
-      var obj1 = JSON.parse(stringfy);
-      bot.reply(message, obj1);
-
-    }
-  });
 })
 app.get('/', function (req, res) {
   res.send('Hello')
