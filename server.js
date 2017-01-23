@@ -107,6 +107,7 @@ slapp.message('(.*)', ['direct_message'], (msg, text, match1) => {
     var stringfy = JSON.stringify(msg);
     console.log("the message is ");
     console.log(stringfy);
+    msg.say("Arriveee")
     getMembersList(msg.body.event.user, msg)
   }
 })
