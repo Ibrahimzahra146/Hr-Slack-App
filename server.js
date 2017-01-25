@@ -43,7 +43,7 @@ var bot = controller.spawn({
 function sendRequestToApiAi(emailValue, msg) {
   userdb.findOne({ email: emailValue }).then(function (u) {
     if (u == undefined)
-      console.log("the not database is defined every where")
+      console.log("the not database  is defined every where")
     else console.log("defined every where ")
   });
 
