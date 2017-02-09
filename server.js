@@ -62,7 +62,7 @@ function sendRequestToApiAi(emailValue, msg) {
   apiaiRequest.on('error', (error) => console.error(error));
   apiaiRequest.end();
 }
-//get all information about team users like email ,name ,user id ...etc
+//get all information about team users like emasssil ,name ,user id ...ssetc
 function getMembersList(Id, msg) {
   var emailValue = "";
   request({
@@ -167,8 +167,8 @@ slapp.action('manager_confirm_reject', 'reject', (msg, value) => {
 
         var message = {
           'type': 'message',
-          'channel': employeeChannel,
-          user: userId,
+          'channel': "D3YLP36RE",
+          user: "U402Y24TH",
           text: 'what is my name',
           ts: '1482920918.000057',
           team: "T3FN29ZSL",
