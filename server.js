@@ -80,7 +80,7 @@ function storeHrSlackInformation(email, msg) {
         console.log("=====>arrive6")
 
         var userChId = JSON.parse(body).userChannelId;
-        var  managerChId=JSON.parse(body).managerChannelId;
+        var managerChId = JSON.parse(body).managerChannelId;
         request({
           url: "http://5fafa105.ngrok.io/api/v1/toffy/" + JSON.parse(body).id, //URL to hitDs
           method: 'DELETE',
@@ -167,6 +167,10 @@ function getMembersList(Id, msg) {
     }
   });
 }
+/*--------------___________________________________________________----------------------
+    listen for hr messages 
+     -------------____________________________________________________---------------------
+     */
 
 var app = slapp.attachToExpress(express())
 slapp.message('(.*)', ['direct_message'], (msg, text, match1) => {
@@ -181,6 +185,11 @@ slapp.message('(.*)', ['direct_message'], (msg, text, match1) => {
     getMembersList(msg.body.event.user, msg)
   }
 })
+/*--------------___________________________________________________----------------------
+space
+-------------____________________________________________________---------------------
+*/
+
 slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
   msg.say("you have confirmed the vacation request")
 
