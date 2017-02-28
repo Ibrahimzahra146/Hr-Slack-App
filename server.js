@@ -24,6 +24,7 @@ var userId = ""
 var employeeChannel = "";
 var managerChannel = "D3RR2RE68"
 var Constants = require('./Constants.js');
+const requestify = require('requestify');
 pg.defaults.ssl = true;
 if (!process.env.PORT) throw Error('PORT missing but required')
 var slapp = Slapp({
@@ -39,13 +40,82 @@ var bot = controller.spawn({
   token: SLACK_BOT_TOKEN
 
 }).startRTM();
-//send the text to api ai 
-function sendRequestToApiAi(emailValue, msg) {
-  userdb.findOne({ email: emailValue }).then(function (u) {
-    if (u == undefined)
-      console.log("the not database  is defined every where")
-    else console.log("defined every where ")
+function storeHrSlackInformation(email, msg) {
+  request({
+    url: 'http://5fafa105.ngrok.io/api/v1/toffy/get-record', //URL to hitDs
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Cookie': 'JSESSIONID=24D8D542209A0B2FF91AB2A333C8FA70'
+    },
+    body: email
+    //Set the body as a stringcc
+  }, function (error, response, body) {
+    console.log("=========> arrive2")
+
+    console.log(body)
+    if (response.statusCode == 404) {
+      console.log("=========> arrive1")
+
+      console.log("the employee not found ")
+      requestify.post('http://5fafa105.ngrok.io/api/v1/toffy', {
+        "email": email,
+        "hrChannelId": msg.body.event.channel,
+        "managerChannelId": "",
+        "slackUserId": msg.body.event.user,
+        "teamId": msg.body.team_id,
+        "userChannelId": ""
+      })
+        .then(function (response) {
+          // Get the response body
+          response.getBody();
+        });
+
+    }
+    else if (response.statusCode == 200) {
+      console.log("=====>arrive5")
+      console.log((JSON.parse(body)).hrChannelId)
+      console.log(msg.body.event.channel)
+      if (((JSON.parse(body)).hrChannelId) != (msg.body.event.channel)) {
+        console.log("=====>arrive6")
+
+        var userChId = JSON.parse(body).userChannelId;
+        request({
+          url: "http://5fafa105.ngrok.io/api/v1/toffy/" + JSON.parse(body).id, //URL to hitDs
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Cookie': 'JSESSIONID=24D8D542209A0B2FF91AB2A333C8FA70'
+          },
+          body: email
+          //Set the body as a stringcc
+        }, function (error, response, body) {
+          console.log("The record has been deleted");
+
+        });
+        console.log("=====>arrive3")
+        requestify.post('http://5fafa105.ngrok.io/api/v1/toffy', {
+          "email": email,
+          "hrChannelId": msg.body.event.channel,
+          "managerChannelId": "",
+          "slackUserId": msg.body.event.user,
+          "teamId": msg.body.team_id,
+          "userChannelId": userChId
+        })
+          .then(function (response) {
+            console.log("=====>arrive4")
+
+            // Get the response body
+            response.getBody();
+          });
+      }
+    }
   });
+}
+//send the text to api ai 
+
+function sendRequestToApiAi(emailValue, msg) {
+  storeHrSlackInformation(emailValue, msg);
 
   var text = msg.body.event.text;
   let apiaiRequest = apiAiService.textRequest(text,
