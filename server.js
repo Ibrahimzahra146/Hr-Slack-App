@@ -42,7 +42,7 @@ var bot = controller.spawn({
 }).startRTM();
 function storeHrSlackInformation(email, msg) {
   request({
-    url: 'http://5fafa105.ngrok.io/api/v1/toffy/get-record', //URL to hitDs
+    url: 'http://4436e503.ngrok.io/api/v1/toffy/get-record', //URL to hitDs
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ function storeHrSlackInformation(email, msg) {
       console.log("=========> arrive1")
 
       console.log("the employee not found ")
-      requestify.post('http://5fafa105.ngrok.io/api/v1/toffy', {
+      requestify.post('http://4436e503.ngrok.io/api/v1/toffy', {
         "email": email,
         "hrChannelId": msg.body.event.channel,
         "managerChannelId": "",
@@ -82,7 +82,7 @@ function storeHrSlackInformation(email, msg) {
         var userChId = JSON.parse(body).userChannelId;
         var managerChId = JSON.parse(body).managerChannelId;
         request({
-          url: "http://5fafa105.ngrok.io/api/v1/toffy/" + JSON.parse(body).id, //URL to hitDs
+          url: "http://4436e503.ngrok.io/api/v1/toffy/" + JSON.parse(body).id, //URL to hitDs
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
@@ -95,7 +95,7 @@ function storeHrSlackInformation(email, msg) {
 
         });
         console.log("=====>arrive3")
-        requestify.post('http://5fafa105.ngrok.io/api/v1/toffy', {
+        requestify.post('http://4436e503.ngrok.io/api/v1/toffy', {
           "email": email,
           "hrChannelId": msg.body.event.channel,
           "managerChannelId": managerChId,
