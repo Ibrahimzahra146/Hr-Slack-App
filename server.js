@@ -192,45 +192,40 @@ space
 
 slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
   msg.say("you have confirmed the vacation request")
+  request({
+    url: 'http://4436e503.ngrok.io/api/v1/toffy/get-record', //URL to hitDs
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Cookie': 'JSESSIONID=24D8D542209A0B2FF91AB2A333C8FA70'
+    },
+    body: value
+    //Set the body as a stringcc
+  }, function (error, response, body) {
+    var responseBody = JSON.parse(body);
+    var message = {
+      'type': 'message',
+      'channel': responseBody.userChannelId,
+      user: responseBody.slackUserId,
+      text: 'what is my name',
+      ts: '1482920918.000057',
+      team: responseBody.teamId,
+      event: 'direct_message'
+    };
+    bot.startConversation(message, function (err, convo) {
 
-  pg.connect(process.env.Db_URL, function (err, client) {
-    if (err) throw err;
-    console.log('Connected to postgres! Getting schemas...');
 
-    client
-      .query("select * from UsersDetails where useremail=" + "'" + value + "'" + ";")
-      .on('row', function (row) {
-        employeeChannel = row.channelid;
-        userId = row.userid
-        msg.say("You accepted the request")
-        var message = {
-          'type': 'message',
-          'channel': employeeChannel,
-          user: userId,
-          text: 'what is my name',
-          ts: '1482920918.000057',
-          team: "T3FN29ZSL",
-          event: 'direct_message'
-        };
-        bot.startConversation(message, function (err, convo) {
+      if (!err) {
+        var text12 = {
+          "text": "HR Rep. @Sun has accepted your sick time off request.",
+        }
+        var stringfy = JSON.stringify(text12);
+        var obj1 = JSON.parse(stringfy);
+        bot.reply(message, obj1);
 
-
-          if (!err) {
-            var text12 = {
-              "text": "HR Rep. @Sun has accepted your sick time off request.",
-            }
-            var stringfy = JSON.stringify(text12);
-            var obj1 = JSON.parse(stringfy);
-            bot.reply(message, obj1);
-
-          }
-        });
-
-      });
+      }
+    });
   });
-
-
-
 })
 slapp.action('manager_confirm_reject', 'reject', (msg, value) => {
   msg.say("you have rejected the vacation request")
