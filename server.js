@@ -281,7 +281,9 @@ app.get('/', function (req, res) {
   console.log("stringreq"+stringreq)
   console.log("the data");
 
-  consoleo.log("the original data")
+  var data = JSONbig.parse(req.body);
+  console.log("the original data")
+  console.log(data);
   var clientIp = requestIp.getClientIp(req);
   console.log("new request from manager ");
   console.log(clientIp)
