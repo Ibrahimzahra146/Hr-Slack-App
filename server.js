@@ -1,5 +1,7 @@
 'use strict'
 var APIAI_ACCESS_TOKEN = process.env.APIAI_ACCESS_KEY
+var requestIp = require('request-ip');
+
 const express = require('express')
 const Slapp = require('slapp')
 const BeepBoopConvoStore = require('slapp-convo-beepboop')
@@ -274,7 +276,10 @@ slapp.action('manager_confirm_reject', 'reject', (msg, value) => {
 
 })
 app.get('/', function (req, res) {
-  res.send('Hello')
+  var clientIp = requestIp.getClientIp(req);
+  console.log("new request from manager ");
+  console.log(clientIp)
+  res.send('Hello1')
 })
 
 console.log('Listening on :' + process.env.PORT)
