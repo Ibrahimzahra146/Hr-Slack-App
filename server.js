@@ -178,11 +178,18 @@ slapp.message('(.*)', ['direct_message'], (msg, text, match1) => {
     console.log("message from bot ")
 
   } else {
+    request({
+      url: "https://beepboophq.com/proxy/95a50edd64954d47b53b8c626b8aca74/",
+      json: true
+    }, function (error, response, body) {
+      console.log("ok i sent the request")
+      console.log(body);
+    });
 
-    var stringfy = JSON.stringify(msg);
-    console.log("the message is ");
-    console.log(stringfy);
-    getMembersList(msg.body.event.user, msg)
+    /* var stringfy = JSON.stringify(msg);
+     console.log("the message is ");
+     console.log(stringfy);
+     getMembersList(msg.body.event.user, msg)*/
   }
 })
 /*--------------___________________________________________________----------------------
