@@ -282,7 +282,7 @@ app.get('/', function (req, res) {
   console.log("the data");
 
   var data = JSONbig.parse(req.body);
-  console.log(JSON.stringify(data));
+  console.log(data);
   consoleo.log("the original data")
   console.log(data);
   var clientIp = requestIp.getClientIp(req);
