@@ -180,13 +180,13 @@ slapp.message('(.*)', ['direct_message'], (msg, text, match1) => {
     console.log("message from bot ")
 
   } else {
-    request({
-      url: "https://beepboophq.com/proxy/95a50edd64954d47b53b8c626b8aca74/",
-      json: true
-    }, function (error, response, body) {
-      console.log("ok i sent the request")
-      console.log(body);
-    });
+      request({
+        url: "https://beepboophq.com/proxy/95a50edd64954d47b53b8c626b8aca74/",
+        json: true
+      }, function (error, response, body) {
+        console.log("ok i sent the request")
+        console.log(body);
+      });
 
     /* var stringfy = JSON.stringify(msg);
      console.log("the message is ");
@@ -276,6 +276,9 @@ slapp.action('manager_confirm_reject', 'reject', (msg, value) => {
 
 })
 app.get('/', function (req, res) {
+  console.log("the req=+"+req);
+  var data=JSON.stringify(req);
+  console.log(data);
   var clientIp = requestIp.getClientIp(req);
   console.log("new request from manager ");
   console.log(clientIp)
