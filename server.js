@@ -278,7 +278,9 @@ slapp.action('manager_confirm_reject', 'reject', (msg, value) => {
 app.get('/', function (req, res) {
   console.log("the req=+" + req);
   var data = JSONbig.parse(req.body);
+  console.log("the data");
   console.log(JSON.stringify(data));
+  consoleo.log("the original data")
   console.log(data);
   var clientIp = requestIp.getClientIp(req);
   console.log("new request from manager ");
