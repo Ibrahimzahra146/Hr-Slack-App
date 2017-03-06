@@ -276,9 +276,12 @@ slapp.action('manager_confirm_reject', 'reject', (msg, value) => {
 
 })
 app.get('/', function (req, res) {
-  console.log("the req=+" + req);
-  var data = JSONbig.parse(req.body);
+  console.log("the req=+"+req.body);
+  var stringreq=JSON.stringify(req.body)
+  console.log("stringreq"+stringreq)
   console.log("the data");
+
+  var data = JSONbig.parse(req.body);
   console.log(JSON.stringify(data));
   consoleo.log("the original data")
   console.log(data);
