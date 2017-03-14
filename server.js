@@ -44,6 +44,7 @@ var bot = controller.spawn({
 
 }).startRTM();
 function storeHrSlackInformation(email, msg) {
+  console.log("IP" + IP)
   request({
     url: 'http://' + IP + '/api/v1/toffy/get-record', //URL to hitDs
     method: 'POST',
