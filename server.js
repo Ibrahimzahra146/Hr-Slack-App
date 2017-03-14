@@ -27,7 +27,7 @@ var employeeChannel = "";
 var managerChannel = "D3RR2RE68"
 var Constants = require('./Constants.js');
 const requestify = require('requestify');
-var IP=process.env.SLACK_IP
+var IP = process.env.SLACK_IP
 pg.defaults.ssl = true;
 if (!process.env.PORT) throw Error('PORT missing but required')
 var slapp = Slapp({
@@ -56,7 +56,7 @@ function storeHrSlackInformation(email, msg) {
   }, function (error, response, body) {
     console.log("=========> arrive2")
 
-    console.log(body)
+    console.log(JSON.stringify(body))
     if (response.statusCode == 404) {
       console.log("=========> arrive1")
 
