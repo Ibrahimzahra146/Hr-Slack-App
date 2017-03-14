@@ -61,7 +61,7 @@ function storeHrSlackInformation(email, msg) {
     if (response.statusCode == 404) {
       console.log("=========> arrive1")
 
-      console.log("the employee not found ")
+      console.log("the employee  not found ")
       requestify.post('http://' + IP + '/api/v1/toffy', {
         "email": email,
         "hrChannelId": msg.body.event.channel,
