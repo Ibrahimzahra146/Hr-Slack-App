@@ -16,3 +16,8 @@ config:
   friendly_name: Url for the user details database
   type: secret
   global: true
+- name: SLACK_IP
+  friendly_name: IP for HR token
+  type: secret
+  global: true
+
