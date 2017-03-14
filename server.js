@@ -44,7 +44,7 @@ var bot = controller.spawn({
 }).startRTM();
 function storeHrSlackInformation(email, msg) {
   request({
-    url: 'http://4436e503.ngrok.io/api/v1/toffy/get-record', //URL to hitDs
+    url: 'http://' + IP + '/api/v1/toffy/get-record', //URL to hitDs
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ function storeHrSlackInformation(email, msg) {
       console.log("=========> arrive1")
 
       console.log("the employee not found ")
-      requestify.post('http://4436e503.ngrok.io/api/v1/toffy', {
+      requestify.post('http://' + IP + '/api/v1/toffy', {
         "email": email,
         "hrChannelId": msg.body.event.channel,
         "managerChannelId": "",
@@ -74,6 +74,7 @@ function storeHrSlackInformation(email, msg) {
         });
 
     }
+
     else if (response.statusCode == 200) {
       console.log("=====>arrive5")
       console.log((JSON.parse(body)).hrChannelId)
@@ -84,7 +85,7 @@ function storeHrSlackInformation(email, msg) {
         var userChId = JSON.parse(body).userChannelId;
         var managerChId = JSON.parse(body).managerChannelId;
         request({
-          url: "http://4436e503.ngrok.io/api/v1/toffy/" + JSON.parse(body).id, //URL to hitDs
+          url: "http://" + IP + "/api/v1/toffy/" + JSON.parse(body).id, //URL to hitDs
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
@@ -97,7 +98,7 @@ function storeHrSlackInformation(email, msg) {
 
         });
         console.log("=====>arrive3")
-        requestify.post('http://4436e503.ngrok.io/api/v1/toffy', {
+        requestify.post('http://' + IP + '/api/v1/toffy', {
           "email": email,
           "hrChannelId": msg.body.event.channel,
           "managerChannelId": managerChId,
@@ -202,7 +203,7 @@ space
 slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
   msg.say("you have confirmed the vacation request")
   request({
-    url: 'http://4436e503.ngrok.io/api/v1/toffy/get-record', //URL to hitDs
+    url: 'http://' + IP + '/api/v1/toffy/get-record', //URL to hitDs
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
