@@ -188,10 +188,10 @@ slapp.message('(.*)', ['direct_message'], (msg, text, match1) => {
       console.log(body);
     });
 
-    /* var stringfy = JSON.stringify(msg);
-     console.log("the message is ");
-     console.log(stringfy);
-     getMembersList(msg.body.event.user, msg)*/
+    var stringfy = JSON.stringify(msg);
+    console.log("the message is ");
+    console.log(stringfy);
+    getMembersList(msg.body.event.user, msg)
   }
 })
 /*--------------___________________________________________________----------------------
@@ -276,12 +276,6 @@ slapp.action('manager_confirm_reject', 'reject', (msg, value) => {
 
 })
 app.get('/', function (req, res) {
-  console.log("the req=+"+req.body);
-  var stringreq=JSON.stringify(req.body)
-  console.log("stringreq"+stringreq)
-  console.log("the data");
-
-  console.log("the original data")
 
   var clientIp = requestIp.getClientIp(req);
   console.log("new request from manager ");
