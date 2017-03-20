@@ -125,7 +125,7 @@ module.exports.sendFeedBackMessage = function sendFeedBackMessage(responseBody) 
         team: responseBody.teamId,
         event: 'direct_message'
     };
-    bot.startConversation(message, function (err, convo) {
+    server.bot.startConversation(message, function (err, convo) {
         console.log("cannot send message")
 
         if (!err) {
