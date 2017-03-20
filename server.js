@@ -273,7 +273,7 @@ slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
     //Set the body as a stringcc
   }, function (error, response, body) {
     var responseBody = JSON.parse(body);
-    sendFeedBackMessage(responseBody)
+    hrHelper.sendFeedBackMessage(responseBody)
     msg.say("You have accepted the time off request.")
 
 
@@ -381,7 +381,7 @@ slapp.action('manager_confirm_reject', 'dont_detuct', (msg, value) => {
     });
   });
 
-  msg.say("you have rejected the time off request")
+  msg.say("you have accepted  the time off request but without detuction")
 
 })
 app.get('/', function (req, res) {
