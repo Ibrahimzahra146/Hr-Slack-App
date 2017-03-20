@@ -2,6 +2,7 @@
 /*
 Send Put reques from HR to accept or reject a vacation
 */
+const request = require('request');
 var hrHelper = require('./HrHelper.js')
 var server = require('./server.js')
 var sessionFlag = 0;
