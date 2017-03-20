@@ -186,73 +186,7 @@ slapp.message('(.*)', ['direct_message'], (msg, text, match1) => {
 space
 -------------____________________________________________________---------------------
 */
-/*
-slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
-  msg.say("you have confirmed the vacation request")
-  request({
-    url: 'http://' + IP + '/api/v1/toffy/get-record', //URL to hitDs
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Cookie': 'JSESSIONID=24D8D542209A0B2FF91AB2A333C8FA70'
-    },
-    body: value
-    //Set the body as a stringcc
-  }, function (error, response, body) {
-    var responseBody = JSON.parse(body);
-    var message = {
-      'type': 'message',
-      'channel': responseBody.userChannelId,
-      user: responseBody.slackUserId,
-      text: 'what is my name',
-      ts: '1482920918.000057',
-      team: responseBody.teamId,
-      event: 'direct_message'
-    };
-    bot.startConversation(message, function (err, convo) {
 
-
-      if (!err) {
-        var text12 = {
-          "text": "HR Rep. @Sun has accepted your sick time off request.",
-        }
-        var stringfy = JSON.stringify(text12);
-        var obj1 = JSON.parse(stringfy);
-        bot.reply(message, obj1);
-
-      }
-    });
-  });
-})
-slapp.action('manager_confirm_reject', 'reject', (msg, value) => {
-  msg.say("you have rejected the vacation request")
-
-
-  var message = {
-    'type': 'message',
-    'channel': "D3YLP36RE",
-    user: "U402Y24TH",
-    text: 'what is my name',
-    ts: '1482920918.000057',
-    team: "T3FN29ZSL",
-    event: 'direct_message'
-  };
-  bot.startConversation(message, function (err, convo) {
-
-
-    if (!err) {
-      var text12 = {
-        "text": "HR Rep. @Sun has rejected your sick time off request.  ",
-      }
-      var stringfy = JSON.stringify(text12);
-      var obj1 = JSON.parse(stringfy);
-      bot.reply(message, obj1);
-
-    }
-
-  });
-});
-*/
 
 slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
   console.log("Manager @ahmad accepted the vacaction")
@@ -344,7 +278,7 @@ slapp.action('manager_confirm_reject', 'dont_detuct', (msg, value) => {
 
   console.log("Regected managerEmail " + managerEmail)
 
-  hrHelper.sendVacationPutRequest(vacationId, approvalId, managerEmail, "Rejected")
+  hrHelper.sendVacationPutRequest(vacationId, approvalId, managerEmail, "ApprovedWithoutDeduction")
   request({
     url: 'http://' + IP + '/api/v1/toffy/get-record', //URL to hitDs
     method: 'POST',
