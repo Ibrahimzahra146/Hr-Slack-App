@@ -7,6 +7,7 @@ var hrHelper = require('./HrHelper.js')
 var server = require('./server.js')
 var sessionFlag = 0;
 var generalCookies = "initial"
+var IP = process.env.SLACK_IP
 module.exports.sendVacationPutRequest = function sendVacationPutRequest(vacationId, approvalId, managerEmail, status) {
     console.log("sending vacation put request " + status)
     request({
