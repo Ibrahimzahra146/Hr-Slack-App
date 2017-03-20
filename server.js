@@ -1,7 +1,6 @@
 'use strict'
 var APIAI_ACCESS_TOKEN = process.env.APIAI_ACCESS_KEY
 var requestIp = require('request-ip');
-
 const express = require('express')
 const Slapp = require('slapp')
 const BeepBoopConvoStore = require('slapp-convo-beepboop')
@@ -13,11 +12,10 @@ const JSONbig = require('json-bigint');
 const async = require('async');
 const apiai = require('apiai');
 const APIAI_LANG = 'en';
+var hrHelper = require('./HrHelper.js');
 const apiAiService = apiai(APIAI_ACCESS_TOKEN);
 var pg = require('pg');
 var sessionId = uuid.v1();
-var db = require('node-localdb');
-var userdb = db('./userDetails1.json')
 var APIAI_ACCESS_TOKEN = process.env.APIAI_ACCESS_KEY;
 var SLACK_ACCESS_TOKEN = process.env.SLACK_APP_ACCESS_KEY;
 var SLACK_BOT_TOKEN = process.env.SLACK_BOT_ACCESS_KEY;
