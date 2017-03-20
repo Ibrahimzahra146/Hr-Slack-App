@@ -55,11 +55,9 @@ function storeHrSlackInformation(email, msg) {
     body: email
     //Set the body as a stringcc
   }, function (error, response, body) {
-    console.log("=========> arrive2")
 
     console.log(JSON.stringify(body))
     if (response.statusCode == 404) {
-      console.log("=========> arrive1")
 
       console.log("the employee  not found ")
       requestify.post('http://' + IP + '/api/v1/toffy', {
@@ -78,11 +76,9 @@ function storeHrSlackInformation(email, msg) {
     }
 
     else if (response.statusCode == 200) {
-      console.log("=====>arrive5")
       console.log((JSON.parse(body)).hrChannelId)
       console.log(msg.body.event.channel)
       if (((JSON.parse(body)).hrChannelId) != (msg.body.event.channel)) {
-        console.log("=====>arrive6")
 
         var userChId = JSON.parse(body).userChannelId;
         var managerChId = JSON.parse(body).managerChannelId;
@@ -99,7 +95,6 @@ function storeHrSlackInformation(email, msg) {
           console.log("The record has been deleted");
 
         });
-        console.log("=====>arrive3")
         requestify.post('http://' + IP + '/api/v1/toffy', {
           "email": email,
           "hrChannelId": msg.body.event.channel,
@@ -109,7 +104,6 @@ function storeHrSlackInformation(email, msg) {
           "userChannelId": userChId
         })
           .then(function (response) {
-            console.log("=====>arrive4")
 
             // Get the response body
             response.getBody();
@@ -138,7 +132,7 @@ function sendRequestToApiAi(emailValue, msg) {
   apiaiRequest.on('error', (error) => console.error(error));
   apiaiRequest.end();
 }
-//get all information about team users like emasssil ,name ,user id ...ssetc
+//get the email of the sender by request slack Api and compare Ids to get the email of mapped ID
 function getMembersList(Id, msg) {
   var emailValue = "";
   request({
@@ -149,22 +143,13 @@ function getMembersList(Id, msg) {
     if (!error && response.statusCode === 200) {
       var i = 0;
       while ((body.members[i] != null) && (body.members[i] != undefined)) {
-
+        //compare IDs to get email of matched email
         if (body.members[i]["id"] == Id) {
           console.log(body.members[i]["profile"].email);
           emailValue = body.members[i]["profile"].email;
-          userdb.findOne({ email: emailValue }).then(function (u) {
-            if (u == undefined) {
-              console.log("New user request the service");
-              userdb.insert({ email: emailValue, channel: msg.body.event.channel }).then(function (u) {
-              });
-            }
-            else console.log("the user already exist")
-          });
           sendRequestToApiAi(emailValue, msg);
           break;
         }
-        console.log("the email:");
         console.log(body.members[i]["profile"].email);
 
         i++;
@@ -201,7 +186,7 @@ slapp.message('(.*)', ['direct_message'], (msg, text, match1) => {
 space
 -------------____________________________________________________---------------------
 */
-
+/*
 slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
   msg.say("you have confirmed the vacation request")
   request({
@@ -242,47 +227,165 @@ slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
 slapp.action('manager_confirm_reject', 'reject', (msg, value) => {
   msg.say("you have rejected the vacation request")
 
-  pg.connect(process.env.Db_URL, function (err, client) {
-    if (err) throw err;
-    console.log('Connected to postgres! Getting schemas.. .');
 
-    client
-      .query("select * from UsersDetails where useremail=" + "'" + value + "'" + ";")
-      .on('row', function (row) {
-        employeeChannel = row.channelid;
-        userId = row.userid
-
-        var message = {
-          'type': 'message',
-          'channel': "D3YLP36RE",
-          user: "U402Y24TH",
-          text: 'what is my name',
-          ts: '1482920918.000057',
-          team: "T3FN29ZSL",
-          event: 'direct_message'
-        };
-        bot.startConversation(message, function (err, convo) {
+  var message = {
+    'type': 'message',
+    'channel': "D3YLP36RE",
+    user: "U402Y24TH",
+    text: 'what is my name',
+    ts: '1482920918.000057',
+    team: "T3FN29ZSL",
+    event: 'direct_message'
+  };
+  bot.startConversation(message, function (err, convo) {
 
 
-          if (!err) {
-            var text12 = {
-              "text": "HR Rep. @Sun has rejected your sick time off request.  ",
-            }
-            var stringfy = JSON.stringify(text12);
-            var obj1 = JSON.parse(stringfy);
-            bot.reply(message, obj1);
+    if (!err) {
+      var text12 = {
+        "text": "HR Rep. @Sun has rejected your sick time off request.  ",
+      }
+      var stringfy = JSON.stringify(text12);
+      var obj1 = JSON.parse(stringfy);
+      bot.reply(message, obj1);
 
-          }
-        });
-      });
+    }
+
   });
+});
+*/
+
+slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
+  console.log("Manager @ahmad accepted the vacaction")
+  var arr = value.toString().split(";")
+  var userEmail = arr[0];
+  var vacationId = arr[1];
+  var approvalId = arr[2]
+  var managerEmail = arr[3]
+  sendVacationPutRequest(vacationId, approvalId, managerEmail, "Approved")
+  request({
+    url: 'http://' + IP + '/api/v1/toffy/get-record', //URL to hitDs
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Cookie': 'JSESSIONID=24D8D542209A0B2FF91AB2A333C8FA70'
+    },
+    body: "brhoom200904@hotmail.com"
+    //Set the body as a stringcc
+  }, function (error, response, body) {
+    var responseBody = JSON.parse(body);
+    sendFeedBackMessage(responseBody)
+    msg.say("You have accepted the time off request.")
+
+
+  });
+})
+
+
+
+slapp.action('manager_confirm_reject', 'reject', (msg, value) => {
+  var arr = value.toString().split(";")
+  var userEmail = arr[0];
+  var vacationId = arr[1];
+  var approvalId = arr[2]
+  var managerEmail = arr[3]
+  console.log("Regected userEmail " + userEmail)
+  console.log("Regected vacationId " + vacationId)
+  console.log("Regected approvalId " + approvalId)
+
+  console.log("Regected managerEmail " + managerEmail)
+
+  sendVacationPutRequest(vacationId, approvalId, managerEmail, "Rejected")
+  request({
+    url: 'http://' + IP + '/api/v1/toffy/get-record', //URL to hitDs
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Cookie': 'JSESSIONID=24D8D542209A0B2FF91AB2A333C8FA70'
+    },
+    body: "brhoom200904@hotmail.com"
+    //Set the body as a stringcc
+  }, function (error, response, body) {
+    var responseBody = JSON.parse(body);
+
+    var message = {
+      'type': 'message',
+      'channel': responseBody.userChannelId,
+      user: responseBody.slackUserId,
+      text: 'what is my name',
+      ts: '1482920918.000057',
+      team: responseBody.teamId,
+      event: 'direct_message'
+    };
+    bot.startConversation(message, function (err, convo) {
+      if (!err) {
+        var text12 = {
+          "text": "Manager @ahmad has rejected your time off request.Sorry! ",
+        }
+        var stringfy = JSON.stringify(text12);
+        var obj1 = JSON.parse(stringfy);
+        bot.reply(message, obj1);
+      }
+    });
+  });
+
+  msg.say("you have rejected the time off request")
+})
+
+
+slapp.action('manager_confirm_reject', 'dont_detuct', (msg, value) => {
+  var arr = value.toString().split(";")
+  var userEmail = arr[0];
+  var vacationId = arr[1];
+  var approvalId = arr[2]
+  var managerEmail = arr[3]
+  console.log("Regected userEmail " + userEmail)
+  console.log("Regected vacationId " + vacationId)
+  console.log("Regected approvalId " + approvalId)
+
+  console.log("Regected managerEmail " + managerEmail)
+
+  sendVacationPutRequest(vacationId, approvalId, managerEmail, "Rejected")
+  request({
+    url: 'http://' + IP + '/api/v1/toffy/get-record', //URL to hitDs
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Cookie': 'JSESSIONID=24D8D542209A0B2FF91AB2A333C8FA70'
+    },
+    body: "brhoom200904@hotmail.com"
+    //Set the body as a stringcc
+  }, function (error, response, body) {
+    var responseBody = JSON.parse(body);
+
+    var message = {
+      'type': 'message',
+      'channel': responseBody.userChannelId,
+      user: responseBody.slackUserId,
+      text: 'what is my name',
+      ts: '1482920918.000057',
+      team: responseBody.teamId,
+      event: 'direct_message'
+    };
+    bot.startConversation(message, function (err, convo) {
+
+
+      if (!err) {
+        var text12 = {
+          "text": "Manager @ahmad has accepted your time off request without detuction. Enjoy! ",
+        }
+        var stringfy = JSON.stringify(text12);
+        var obj1 = JSON.parse(stringfy);
+        bot.reply(message, obj1);
+
+      }
+    });
+  });
+
+  msg.say("you have rejected the time off request")
 
 })
 app.get('/', function (req, res) {
 
-  var clientIp = requestIp.getClientIp(req);
-  console.log("new request from manager ");
-  console.log(clientIp)
   res.send('Hello1')
 })
 
