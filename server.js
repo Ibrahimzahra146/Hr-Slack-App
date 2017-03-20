@@ -290,7 +290,7 @@ slapp.action('manager_confirm_reject', 'reject', (msg, value) => {
   var managerEmail = arr[3]
   console.log("Regected userEmail " + userEmail)
   console.log("Regected vacationId " + vacationId)
-  console.log("Regected approvalId " + approvalId)
+  console.log("Regected approvalId  " + approvalId)
 
   console.log("Regected managerEmail " + managerEmail)
 
