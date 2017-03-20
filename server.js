@@ -41,6 +41,8 @@ var bot = controller.spawn({
   token: SLACK_BOT_TOKEN
 
 }).startRTM();
+exports.bot = bot;
+
 function storeHrSlackInformation(email, msg) {
   console.log("IP" + IP)
   request({
@@ -259,7 +261,7 @@ slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
   var vacationId = arr[1];
   var approvalId = arr[2]
   var managerEmail = arr[3]
-  sendVacationPutRequest(vacationId, approvalId, managerEmail, "Approved")
+  hrHelper.sendVacationPutRequest(vacationId, approvalId, managerEmail, "Approved")
   request({
     url: 'http://' + IP + '/api/v1/toffy/get-record', //URL to hitDs
     method: 'POST',
@@ -292,7 +294,7 @@ slapp.action('manager_confirm_reject', 'reject', (msg, value) => {
 
   console.log("Regected managerEmail " + managerEmail)
 
-  sendVacationPutRequest(vacationId, approvalId, managerEmail, "Rejected")
+  hrHelper.sendVacationPutRequest(vacationId, approvalId, managerEmail, "Rejected")
   request({
     url: 'http://' + IP + '/api/v1/toffy/get-record', //URL to hitDs
     method: 'POST',
@@ -342,7 +344,7 @@ slapp.action('manager_confirm_reject', 'dont_detuct', (msg, value) => {
 
   console.log("Regected managerEmail " + managerEmail)
 
-  sendVacationPutRequest(vacationId, approvalId, managerEmail, "Rejected")
+  hrHelper.sendVacationPutRequest(vacationId, approvalId, managerEmail, "Rejected")
   request({
     url: 'http://' + IP + '/api/v1/toffy/get-record', //URL to hitDs
     method: 'POST',
