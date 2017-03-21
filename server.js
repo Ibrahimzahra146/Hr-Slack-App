@@ -194,8 +194,8 @@ slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
   var userEmail = arr[0];
   var vacationId = arr[1];
   var approvalId = arr[2]
-  var managerEmail = arr[3]
-  hrHelper.sendVacationPutRequest(vacationId, approvalId, managerEmail, "Approved")
+  var hrEmail = arr[3]
+  hrHelper.sendVacationPutRequest(vacationId, approvalId, hrEmail, "Approved")
   request({
     url: 'http://' + IP + '/api/v1/toffy/get-record', //URL to hitDs
     method: 'POST',
@@ -203,7 +203,7 @@ slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
       'Content-Type': 'application/json',
       'Cookie': 'JSESSIONID=24D8D542209A0B2FF91AB2A333C8FA70'
     },
-    body: "brhoom200904@hotmail.com"
+    body: hrEmail
     //Set the body as a stringcc
   }, function (error, response, body) {
     var responseBody = JSON.parse(body);
@@ -221,14 +221,14 @@ slapp.action('manager_confirm_reject', 'reject', (msg, value) => {
   var userEmail = arr[0];
   var vacationId = arr[1];
   var approvalId = arr[2]
-  var managerEmail = arr[3]
+  var hrEmail = arr[3]
   console.log("Regected userEmail " + userEmail)
   console.log("Regected vacationId " + vacationId)
   console.log("Regected approvalId  " + approvalId)
 
-  console.log("Regected managerEmail " + managerEmail)
+  console.log("Regected hrEmail " + hrEmail)
 
-  hrHelper.sendVacationPutRequest(vacationId, approvalId, managerEmail, "Rejected")
+  hrHelper.sendVacationPutRequest(vacationId, approvalId, hrEmail, "Rejected")
   request({
     url: 'http://' + IP + '/api/v1/toffy/get-record', //URL to hitDs
     method: 'POST',
@@ -236,7 +236,7 @@ slapp.action('manager_confirm_reject', 'reject', (msg, value) => {
       'Content-Type': 'application/json',
       'Cookie': 'JSESSIONID=24D8D542209A0B2FF91AB2A333C8FA70'
     },
-    body: "brhoom200904@hotmail.com"
+    body: hrEmail
     //Set the body as a stringcc
   }, function (error, response, body) {
     var responseBody = JSON.parse(body);
@@ -253,7 +253,7 @@ slapp.action('manager_confirm_reject', 'reject', (msg, value) => {
     bot.startConversation(message, function (err, convo) {
       if (!err) {
         var text12 = {
-          "text": "Manager @ahmad has rejected your time off request.Sorry! ",
+          "text": "Hr @ahmad has rejected your time off request.Sorry! ",
         }
         var stringfy = JSON.stringify(text12);
         var obj1 = JSON.parse(stringfy);
@@ -271,14 +271,14 @@ slapp.action('manager_confirm_reject', 'dont_detuct', (msg, value) => {
   var userEmail = arr[0];
   var vacationId = arr[1];
   var approvalId = arr[2]
-  var managerEmail = arr[3]
+  var hrEmail = arr[3]
   console.log("Regected userEmail " + userEmail)
   console.log("Regected vacationId " + vacationId)
   console.log("Regected approvalId " + approvalId)
 
-  console.log("Regected managerEmail " + managerEmail)
+  console.log("Regected hrEmail " + hrEmail)
 
-  hrHelper.sendVacationPutRequest(vacationId, approvalId, managerEmail, "ApprovedWithoutDeduction")
+  hrHelper.sendVacationPutRequest(vacationId, approvalId, hrEmail, "ApprovedWithoutDeduction")
   request({
     url: 'http://' + IP + '/api/v1/toffy/get-record', //URL to hitDs
     method: 'POST',
@@ -286,34 +286,34 @@ slapp.action('manager_confirm_reject', 'dont_detuct', (msg, value) => {
       'Content-Type': 'application/json',
       'Cookie': 'JSESSIONID=24D8D542209A0B2FF91AB2A333C8FA70'
     },
-    body: "brhoom200904@hotmail.com"
+    body:hrEmail
     //Set the body as a stringcc
   }, function (error, response, body) {
-    var responseBody = JSON.parse(body);
+      var responseBody = JSON.parse(body);
 
-    var message = {
-      'type': 'message',
-      'channel': responseBody.userChannelId,
-      user: responseBody.slackUserId,
-      text: 'what is my name',
-      ts: '1482920918.000057',
-      team: responseBody.teamId,
-      event: 'direct_message'
-    };
-    bot.startConversation(message, function (err, convo) {
+      var message = {
+        'type': 'message',
+        'channel': responseBody.userChannelId,
+        user: responseBody.slackUserId,
+        text: 'what is my name',
+        ts: '1482920918.000057',
+        team: responseBody.teamId,
+        event: 'direct_message'
+      };
+      bot.startConversation(message, function (err, convo) {
 
 
-      if (!err) {
-        var text12 = {
-          "text": "Manager @ahmad has accepted your time off request without detuction. Enjoy! ",
+        if (!err) {
+          var text12 = {
+            "text": "Hr has accepted your time off request without detuction. Enjoy! F0 9F 8C 8A",
+          }
+          var stringfy = JSON.stringify(text12);
+          var obj1 = JSON.parse(stringfy);
+          bot.reply(message, obj1);
+
         }
-        var stringfy = JSON.stringify(text12);
-        var obj1 = JSON.parse(stringfy);
-        bot.reply(message, obj1);
-
-      }
+      });
     });
-  });
 
   msg.say("you have accepted  the time off request but without detuction")
 
