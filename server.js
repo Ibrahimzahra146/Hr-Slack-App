@@ -115,22 +115,27 @@ function storeHrSlackInformation(email, msg) {
 //send the text to api ai 
 
 function sendRequestToApiAi(emailValue, msg) {
-  storeHrSlackInformation(emailValue, msg);
+  hrHelper.getRoleByEmail(emailValue, "HR", function (role) {
+    if (role == true) {
+      storeHrSlackInformation(emailValue, msg);
 
-  var text = msg.body.event.text;
-  let apiaiRequest = apiAiService.textRequest(text,
-    {
-      sessionId: sessionId
-    });
+      var text = msg.body.event.text;
+      let apiaiRequest = apiAiService.textRequest(text,
+        {
+          sessionId: sessionId
+        });
 
-  apiaiRequest.on('response', (response) => {
-    let responseText = response.result.fulfillment.speech;
-    msg.say(responseText);
+      apiaiRequest.on('response', (response) => {
+        let responseText = response.result.fulfillment.speech;
+        msg.say(responseText);
 
 
-  });
-  apiaiRequest.on('error', (error) => console.error(error));
-  apiaiRequest.end();
+      });
+      apiaiRequest.on('error', (error) => console.error(error));
+      apiaiRequest.end();
+    } else msg.say("Sorry!.You dont have the permession to use this bot.")
+  })
+
 }
 //get the email of the sender by request slack Api and compare Ids to get the email of mapped ID
 function getMembersList(Id, msg) {
@@ -168,13 +173,7 @@ slapp.message('(.*)', ['direct_message'], (msg, text, match1) => {
     console.log("message from bot ")
 
   } else {
-    request({
-      url: "https://beepboophq.com/proxy/95a50edd64954d47b53b8c626b8aca74/",
-      json: true
-    }, function (error, response, body) {
-      console.log("ok i sent the request")
-      console.log(body);
-    });
+
 
     var stringfy = JSON.stringify(msg);
     console.log("the message is ");
@@ -286,34 +285,34 @@ slapp.action('manager_confirm_reject', 'dont_detuct', (msg, value) => {
       'Content-Type': 'application/json',
       'Cookie': 'JSESSIONID=24D8D542209A0B2FF91AB2A333C8FA70'
     },
-    body:hrEmail
+    body: hrEmail
     //Set the body as a stringcc
   }, function (error, response, body) {
-      var responseBody = JSON.parse(body);
+    var responseBody = JSON.parse(body);
 
-      var message = {
-        'type': 'message',
-        'channel': responseBody.userChannelId,
-        user: responseBody.slackUserId,
-        text: 'what is my name',
-        ts: '1482920918.000057',
-        team: responseBody.teamId,
-        event: 'direct_message'
-      };
-      bot.startConversation(message, function (err, convo) {
+    var message = {
+      'type': 'message',
+      'channel': responseBody.userChannelId,
+      user: responseBody.slackUserId,
+      text: 'what is my name',
+      ts: '1482920918.000057',
+      team: responseBody.teamId,
+      event: 'direct_message'
+    };
+    bot.startConversation(message, function (err, convo) {
 
 
-        if (!err) {
-          var text12 = {
-            "text": "Hr has accepted your time off request without detuction. Enjoy! F0 9F 8C 8A",
-          }
-          var stringfy = JSON.stringify(text12);
-          var obj1 = JSON.parse(stringfy);
-          bot.reply(message, obj1);
-
+      if (!err) {
+        var text12 = {
+          "text": "Hr has accepted your time off request without detuction. Enjoy! F0 9F 8C 8A",
         }
-      });
+        var stringfy = JSON.stringify(text12);
+        var obj1 = JSON.parse(stringfy);
+        bot.reply(message, obj1);
+
+      }
     });
+  });
 
   msg.say("you have accepted  the time off request but without detuction")
 

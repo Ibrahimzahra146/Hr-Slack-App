@@ -139,3 +139,51 @@ module.exports.sendFeedBackMessage = function sendFeedBackMessage(responseBody) 
         }
     });
 }
+
+module.exports.getRoleByEmail = function getRoleByEmail(email, role, callback) {
+    printLogs("getting Roles ");
+    request({
+        url: 'http://' + IP + '/api/v1/employee/roles', //URL to hitDs
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Cookie': generalCookies
+
+        },
+        body: email
+        //Set the body as a stringcc
+    }, function (error, response, body) {
+        if (response.statusCode == 403) {
+            sessionFlag = 0;
+        }
+        managerToffyHelper.getNewSession(email, function (cookies) {
+            generalCookies = cookies;
+            request({
+                url: 'http://' + IP + '/api/v1/employee/roles', //URL to hitDs
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Cookie': generalCookies
+
+                },
+                body: email
+                //Set the body as a stringcc
+            }, function (error, response, body) {
+                var roles = (JSON.parse(body));
+                var i = 0
+                while (roles[i]) {
+                    printLogs("roles[i].name" + roles[i].name)
+                    if (roles[i].name == role) {
+                        callback(true)
+                        break;
+                    }
+                    i++;
+
+                }
+                callback(false)
+
+            })
+        })
+
+    })
+}
