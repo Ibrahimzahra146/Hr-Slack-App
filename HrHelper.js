@@ -157,7 +157,7 @@ module.exports.getRoleByEmail = function getRoleByEmail(email, role, callback) {
         if (response.statusCode == 403) {
             sessionFlag = 0;
         }
-        managerToffyHelper.getNewSession(email, function (cookies) {
+        hrHelper.getNewSession(email, function (cookies) {
             generalCookies = cookies;
             request({
                 url: 'http://' + IP + '/api/v1/employee/roles', //URL to hitDs
