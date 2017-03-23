@@ -202,7 +202,7 @@ slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
       'Content-Type': 'application/json',
       'Cookie': 'JSESSIONID=24D8D542209A0B2FF91AB2A333C8FA70'
     },
-    body: hrEmail
+    body: userEmail
     //Set the body as a stringcc
   }, function (error, response, body) {
     var responseBody = JSON.parse(body);
@@ -235,7 +235,7 @@ slapp.action('manager_confirm_reject', 'reject', (msg, value) => {
       'Content-Type': 'application/json',
       'Cookie': 'JSESSIONID=24D8D542209A0B2FF91AB2A333C8FA70'
     },
-    body: hrEmail
+    body: userEmail
     //Set the body as a stringcc
   }, function (error, response, body) {
     var responseBody = JSON.parse(body);
@@ -252,7 +252,7 @@ slapp.action('manager_confirm_reject', 'reject', (msg, value) => {
     bot.startConversation(message, function (err, convo) {
       if (!err) {
         var text12 = {
-          "text": "Hr @ahmad has rejected your time off request.Sorry! ",
+          "text": "HR has rejected your time off request.Sorry! ",
         }
         var stringfy = JSON.stringify(text12);
         var obj1 = JSON.parse(stringfy);
@@ -285,7 +285,7 @@ slapp.action('manager_confirm_reject', 'dont_detuct', (msg, value) => {
       'Content-Type': 'application/json',
       'Cookie': 'JSESSIONID=24D8D542209A0B2FF91AB2A333C8FA70'
     },
-    body: hrEmail
+    body: userEmail
     //Set the body as a stringcc
   }, function (error, response, body) {
     var responseBody = JSON.parse(body);
@@ -304,7 +304,7 @@ slapp.action('manager_confirm_reject', 'dont_detuct', (msg, value) => {
 
       if (!err) {
         var text12 = {
-          "text": "Hr has accepted your time off request without detuction. Enjoy! F0 9F 8C 8A",
+          "text": "HR has accepted your time off request without detuction. Enjoy!",
         }
         var stringfy = JSON.stringify(text12);
         var obj1 = JSON.parse(stringfy);
@@ -314,7 +314,7 @@ slapp.action('manager_confirm_reject', 'dont_detuct', (msg, value) => {
     });
   });
 
-  msg.say("you have accepted  the time off request but without detuction")
+  msg.say("you have accepted  the time off request but without detuction.")
 
 })
 app.get('/', function (req, res) {
