@@ -11,7 +11,7 @@ var IP = process.env.SLACK_IP
 module.exports.sendVacationPutRequest = function sendVacationPutRequest(vacationId, approvalId, managerEmail, status) {
     console.log("sending vacation put request " + status)
     request({
-        url: "http://" + IP + "/api/v1/employee/8/balance",
+        url: "http://" + IP + "/api/v1/employee",
         json: true,
         method: 'GET',
         headers: {
