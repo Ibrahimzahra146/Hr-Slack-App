@@ -188,7 +188,6 @@ space
 
 
 slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
-  console.log("Manager @ahmad accepted the vacaction")
   var arr = value.toString().split(";")
   var userEmail = arr[0];
   var vacationId = arr[1];
