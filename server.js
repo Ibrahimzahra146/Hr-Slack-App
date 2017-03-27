@@ -263,7 +263,7 @@ slapp.action('confirm_reject_compensation', 'confirm', (msg, value) => {
       team: responseBody.teamId,
       event: 'direct_message'
     };
-    server.bot.startConversation(message, function (err, convo) {
+    bot.startConversation(message, function (err, convo) {
       console.log("cannot send message")
 
       if (!err) {
