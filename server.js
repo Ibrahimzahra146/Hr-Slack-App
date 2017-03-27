@@ -131,7 +131,13 @@ function sendRequestToApiAi(emailValue, msg) {
         if (responseText == "showEmployeeProfile") {
           var employeeEmail = response.result.parameters.email
           employee.showEmployeeProfile(emailValue, employeeEmail, msg);
-        } else
+        }
+        if (responseText == "showEmployeeStats") {
+          var employeeEmail = response.result.parameters.email
+          employee.showEmployeeStats(emailValue, employeeEmail, msg);
+        }
+
+        else
           msg.say(responseText);
 
 

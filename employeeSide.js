@@ -93,7 +93,68 @@ function printLogs(msg) {
 }
 
 
-/**
- * 
- */
+/***** 
+Show Employee stats like annual vacation and etc.. from Hr side
+*****/
+module.exports.showEmployeeStats = function showEmployeeStats(email, employeeEmail, msg) {
+    printLogs("showEmployeeStats")
+    hrHelper.getIdFromEmail(email, employeeEmail, function (Id) {
+        request({
+            url: "http://" + IP + "/api/v1/employee/" + Id + "/balance",
+            json: true,
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': hrHelper.general_remember_me + ";" + hrHelper.general_session_id
+            }
+        }, function (error, response, body) {
+            var messageBody = {
+                "text": "Your stats and anuual time off details",
+                "attachments": [
+                    {
+                        "attachment_type": "default",
+                        "text": " ",
+                        "fallback": "ReferenceError",
+                        "fields": [
+                            {
+                                "title": "Rolled over",
+                                "value": parseFloat((body).left_over).toFixed(2) + " weeks ",
+                                "short": true
+                            },
+                            {
+                                "title": "Used time off  ",
+                                "value": parseFloat(body.vacation_balance).toFixed(2) + " weeks ",
+                                "short": true
+                            },
+                            {
+                                "title": "Annual time off ",
+                                "value": parseFloat(body.static_balance).toFixed(2) + " weeks ",
+                                "short": false
+                            },
+                            {
+                                "title": "Extra time off  ",
+                                "value": parseFloat(body.compensation_balance).toFixed(2) + " weeks ",
+                                "short": true
+                            },
+                            {
+                                "title": "Balance",
+                                "value": parseFloat(body.left_over + body.compensation_balance + body.balance).toFixed(2) + " weeks ",
+                                "short": false
+                            },
+                            {
+                                "title": "Used Sick time off  ",
+                                "value": parseFloat(body.sick_vacation_balance).toFixed(2) + " weeks ",
+                                "short": true
+                            }
+                        ],
+                        "color": "#F35A00"
+                    }
+                ]
+            }
+            var stringfy = JSON.stringify(messageBody);
+            var obj1 = JSON.parse(stringfy);
+            msg.say(obj1);
+        });
+    })
+}
 
