@@ -87,7 +87,7 @@ module.exports.sendFeedBackMessage = function sendFeedBackMessage(responseBody) 
             }
             var stringfy = JSON.stringify(text12);
             var obj1 = JSON.parse(stringfy);
-            bot.reply(message, obj1);
+            server.bot.reply(message, obj1);
 
         }
     });

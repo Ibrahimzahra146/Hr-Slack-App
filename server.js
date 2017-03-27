@@ -272,7 +272,7 @@ slapp.action('confirm_reject_compensation', 'confirm', (msg, value) => {
         }
         var stringfy = JSON.stringify(text12);
         var obj1 = JSON.parse(stringfy);
-        server.bot.reply(message, obj1);
+        bot.reply(message, obj1);
 
       }
     });
