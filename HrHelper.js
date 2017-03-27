@@ -98,13 +98,12 @@ module.exports.getRoleByEmail = function getRoleByEmail(email, role, callback) {
     printLogs("getting Roles ");
 
     hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, session_Id) {
-        generalCookies = cookies;
         request({
             url: 'http://' + IP + '/api/v1/employee/roles', //URL to hitDs
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Cookie': remember_me_cookie, session_Id
+                'Cookie': remember_me_cookie + ";" + session_Id
 
             },
             body: email
