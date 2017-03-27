@@ -158,3 +158,36 @@ module.exports.showEmployeeStats = function showEmployeeStats(email, employeeEma
     })
 }
 
+module.exports.sendCompensationConfirmationToHr = function sendCompensationConfirmationToHr(email, employeeEmail, numberOfExtraTime, type, msg) {
+    var text12 = {
+        "text": "",
+        "attachments": [
+            {
+                "text": "Okay, you asked to add " + numberOfExtraTime + " " + type + " extra time off for " + "" + employeeEmail + ". Should I go ahead ?",
+                "callback_id": 'confirm_reject_compensation',
+                "color": "#3AA3E3",
+                "attachment_type": "default",
+                "actions": [
+                    {
+                        "name": 'confirm',
+                        "text": "Yes",
+                        "style": "primary",
+                        "type": "button",
+                        "value": email + "," + employeeEmail + "," + numberOfExtraTime + "," + numberOfExtraTimeInWeeks
+                    },
+                    {
+                        "name": 'reject',
+                        "text": "No",
+                        "style": "danger",
+                        "type": "button",
+                        "value": email + "," + employeeEmail + "," + numberOfExtraTime + "," + numberOfExtraTimeInWeeks
+                    }
+                ]
+            }
+        ]
+    }
+    msg.say(text12)
+}
+
+
+

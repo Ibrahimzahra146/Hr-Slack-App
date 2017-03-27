@@ -132,9 +132,22 @@ function sendRequestToApiAi(emailValue, msg) {
           var employeeEmail = response.result.parameters.email
           employee.showEmployeeProfile(emailValue, employeeEmail, msg);
         }
-        if (responseText == "showEmployeeStats") {
+        else if (responseText == "showEmployeeStats") {
           var employeeEmail = response.result.parameters.email
           employee.showEmployeeStats(emailValue, employeeEmail, msg);
+        }
+        else if (responseText == "AddCompensationTimeOff") {
+          var employeeEmail = response.result.parameters.email
+          var type = response.result.parameters.period_types
+          if (type == "weeks" || type == "week") {
+            type = "week"
+          } else if (type == "days" || type == "days") {
+            type = "days"
+          } else if (type == "hour" || type == "hours") {
+            type = "hours"
+          }
+          var numberOfTimeOff = response.result.parameters.number
+          employee.sendCompensationConfirmationToHr(emailValue, employeeEmail, numberOfTimeOff, type, msg);
         }
 
         else
