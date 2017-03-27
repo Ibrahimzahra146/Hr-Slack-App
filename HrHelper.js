@@ -12,7 +12,6 @@ module.exports.sendVacationPutRequest = function sendVacationPutRequest(vacation
     console.log("sending vacation put request " + status)
 
     hrHelper.getNewSessionwithCookie(managerEmail, function (remember_me_cookie, session_Id) {
-        generalCookies = cookie;
         printLogs("vacationId" + vacationId)
         printLogs("approvalId" + approvalId)
         printLogs("managerEmail" + managerEmail)
