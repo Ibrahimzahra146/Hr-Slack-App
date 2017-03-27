@@ -173,14 +173,14 @@ module.exports.sendCompensationConfirmationToHr = function sendCompensationConfi
                         "text": "Yes",
                         "style": "primary",
                         "type": "button",
-                        "value": email + "," + employeeEmail + "," + numberOfExtraTime + "," + numberOfExtraTimeInWeeks
+                        "value": email + "," + employeeEmail + "," + numberOfExtraTime + "," + type
                     },
                     {
                         "name": 'reject',
                         "text": "No",
                         "style": "danger",
                         "type": "button",
-                        "value": email + "," + employeeEmail + "," + numberOfExtraTime + "," + numberOfExtraTimeInWeeks
+                        "value": email + "," + employeeEmail + "," + numberOfExtraTime + "," + type
                     }
                 ]
             }
