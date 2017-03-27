@@ -263,6 +263,7 @@ slapp.action('confirm_reject_compensation', 'confirm', (msg, value) => {
       team: responseBody.teamId,
       event: 'direct_message'
     };
+    console.log("userEmail" + userEmail)
     console.log("responseBody.userChannelId" + responseBody.userChannelId)
     console.log("responseBody.slackUserId" + responseBody.slackUserId)
     bot.startConversation(message, function (err, convo) {
