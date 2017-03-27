@@ -237,7 +237,7 @@ slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
 })
 
 slapp.action('confirm_reject_compensation', 'confirm', (msg, value) => {
-  var arr = value.toString().split(";")
+  var arr = value.toString().split(",")
   var hrEmail = arr[0];
   var userEmail = arr[1];
   var numberOfExtraTimeOff = arr[2];
