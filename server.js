@@ -147,6 +147,7 @@ function sendRequestToApiAi(emailValue, msg) {
             type = "hours"
           }
           var numberOfTimeOff = response.result.parameters.number
+          console.log("employeeEmail" + employeeEmail)
           employee.sendCompensationConfirmationToHr(emailValue, employeeEmail, numberOfTimeOff, type, msg);
         }
 
@@ -240,6 +241,7 @@ slapp.action('confirm_reject_compensation', 'confirm', (msg, value) => {
   var arr = value.toString().split(",")
   var hrEmail = arr[0];
   var userEmail = arr[1];
+  console.log("userEmail" + userEmail)
   var numberOfExtraTimeOff = arr[2];
   var type = arr[3]
   //hrHelper.sendVacationPutRequest(vacationId, approvalId, hrEmail, "Approved")

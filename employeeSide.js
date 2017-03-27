@@ -159,6 +159,8 @@ module.exports.showEmployeeStats = function showEmployeeStats(email, employeeEma
 }
 
 module.exports.sendCompensationConfirmationToHr = function sendCompensationConfirmationToHr(email, employeeEmail, numberOfExtraTime, type, msg) {
+    console.log("employeeEmail" + employeeEmail)
+    console.log()
     if (numberOfExtraTime > 1) {
         type = type + "s";
     }
