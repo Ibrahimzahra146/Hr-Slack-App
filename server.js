@@ -138,6 +138,7 @@ function sendRequestToApiAi(emailValue, msg) {
         }
         else if (responseText == "AddCompensationTimeOff") {
           var employeeEmail = response.result.parameters.email
+          console.log("response.result.parameters.email" + response.result.parameters.email)
           var type = response.result.parameters.period_types
           if (type == "weeks" || type == "week") {
             type = "week"
