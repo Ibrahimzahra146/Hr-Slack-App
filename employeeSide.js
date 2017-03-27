@@ -159,6 +159,9 @@ module.exports.showEmployeeStats = function showEmployeeStats(email, employeeEma
 }
 
 module.exports.sendCompensationConfirmationToHr = function sendCompensationConfirmationToHr(email, employeeEmail, numberOfExtraTime, type, msg) {
+    if (numberOfExtraTime > 1) {
+        type = type + "s";
+    }
     var text12 = {
         "text": "",
         "attachments": [
