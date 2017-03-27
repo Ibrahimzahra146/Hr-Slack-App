@@ -13,6 +13,7 @@ const async = require('async');
 const apiai = require('apiai');
 const APIAI_LANG = 'en';
 var hrHelper = require('./HrHelper.js');
+var employee = require('./employeeSide.js')
 const apiAiService = apiai(APIAI_ACCESS_TOKEN);
 var pg = require('pg');
 var sessionId = uuid.v1();
@@ -117,7 +118,7 @@ function storeHrSlackInformation(email, msg) {
 function sendRequestToApiAi(emailValue, msg) {
   hrHelper.getRoleByEmail(emailValue, "HR", function (role) {
     if (role == true) {
-      storeHrSlackInformation(emailValue, msg);
+      //storeHrSlackInformation(emailValue, msg);
 
       var text = msg.body.event.text;
       let apiaiRequest = apiAiService.textRequest(text,
@@ -127,7 +128,11 @@ function sendRequestToApiAi(emailValue, msg) {
 
       apiaiRequest.on('response', (response) => {
         let responseText = response.result.fulfillment.speech;
-        msg.say(responseText);
+        if (responseText == "showEmployeeProfile") {
+          var employeeEmail = response.result.parameters.email
+          employee.showEmployeeProfile(emailValue, employeeEmail, mag);
+        } else
+          msg.say(responseText);
 
 
       });

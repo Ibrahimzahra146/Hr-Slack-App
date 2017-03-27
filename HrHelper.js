@@ -8,6 +8,8 @@ var server = require('./server.js')
 var sessionFlag = 0;
 var generalCookies = "initial"
 var IP = process.env.SLACK_IP
+var general_remember_me = ""
+var general_session_id = ""
 module.exports.sendVacationPutRequest = function sendVacationPutRequest(vacationId, approvalId, managerEmail, status) {
     console.log("sending vacation put request " + status)
 
@@ -152,3 +154,35 @@ module.exports.getNewSessionwithCookie = function getNewSessionwithCookie(email,
 
 
 }
+module.exports.getIdFromEmail = function getIdFromEmail(email, callback) {
+
+    hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, sessionId) {
+        hrHelper.general_remember_me = remember_me_cookie
+        hrHelper.general_session_id = sessionId
+
+        console.log("1-hrHelper.general_remember_me+ " + hrHelper.general_remember_me)
+        printLogs("hrHelper.generalCookies=======> " + hrHelper.generalCookies)
+        printLogs("==========>Getting user id from Hr")
+        request({
+            url: "http://" + IP + "/api/v1/employee/get-id", //URL to hitDs
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': hrHelper.general_remember_me
+            },
+            body: email
+            //Set the body as a stringcc
+        }, function (error, response, body) {
+            printLogs("=======>body: " + body)
+            userIdInHr = JSON.parse(body);
+            printLogs("====>user id:" + userIdInHr)
+            printLogs(JSON.stringify(body))
+            callback(body)
+
+        })
+    });
+
+
+
+}
+
