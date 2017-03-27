@@ -130,7 +130,7 @@ function sendRequestToApiAi(emailValue, msg) {
         let responseText = response.result.fulfillment.speech;
         if (responseText == "showEmployeeProfile") {
           var employeeEmail = response.result.parameters.email
-          employee.showEmployeeProfile(emailValue, employeeEmail, mag);
+          employee.showEmployeeProfile(emailValue, employeeEmail, msg);
         } else
           msg.say(responseText);
 
