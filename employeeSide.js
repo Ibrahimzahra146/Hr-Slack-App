@@ -88,6 +88,10 @@ module.exports.showEmployeeProfile = function showEmployeeProfile(email, employe
 
 }
 
+function printLogs(msg) {
+    console.log("msg:========>:" + msg)
+}
+
 
 /**
  * 

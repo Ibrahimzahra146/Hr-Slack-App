@@ -185,3 +185,6 @@ module.exports.getIdFromEmail = function getIdFromEmail(email, employeeEmail, ca
 
 }
 
+function printLogs(msg) {
+    console.log("msg:========>:" + msg)
+}
