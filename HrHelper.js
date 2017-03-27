@@ -153,6 +153,7 @@ module.exports.getNewSessionwithCookie = function getNewSessionwithCookie(email,
 
 
 }
+
 module.exports.getIdFromEmail = function getIdFromEmail(email, employeeEmail, callback) {
 
     hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, sessionId) {
@@ -181,6 +182,13 @@ module.exports.getIdFromEmail = function getIdFromEmail(email, employeeEmail, ca
         })
     });
 
+
+
+}
+/**
+ * 
+ */
+module.exports.addExtraTimeOffrequest = function addExtraTimeOffrequest(email, employeeEmail, numberOfExtraWeeks, type) {
 
 
 }

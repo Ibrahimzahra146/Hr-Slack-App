@@ -236,6 +236,51 @@ slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
   });
 })
 
+slapp.action('confirm_reject_compensation', 'confirm', (msg, value) => {
+  var arr = value.toString().split(";")
+  var hrEmail = arr[0];
+  var userEmail = arr[1];
+  var numberOfExtraTimeOff = arr[2];
+  var type = arr[3]
+  //hrHelper.sendVacationPutRequest(vacationId, approvalId, hrEmail, "Approved")
+  request({
+    url: 'http://' + IP + '/api/v1/toffy/get-record', //URL to hitDs
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Cookie': 'JSESSIONID=24D8D542209A0B2FF91AB2A333C8FA70'
+    },
+    body: userEmail
+    //Set the body as a stringcc
+  }, function (error, response, body) {
+    var responseBody = JSON.parse(body);
+    var message = {
+      'type': 'message',
+      'channel': responseBody.userChannelId,
+      user: responseBody.slackUserId,
+      text: 'what is my name',
+      ts: '1482920918.000057',
+      team: responseBody.teamId,
+      event: 'direct_message'
+    };
+    server.bot.startConversation(message, function (err, convo) {
+      console.log("cannot send message")
+
+      if (!err) {
+        var text12 = {
+          "text": "Hi,You granted " + numberOfExtraTimeOff + " extra" + type + " days from the HR Admin.",
+        }
+        var stringfy = JSON.stringify(text12);
+        var obj1 = JSON.parse(stringfy);
+        server.bot.reply(message, obj1);
+
+      }
+    });
+    msg.say("You have accepted the time off request.")
+
+
+  });
+})
 
 
 slapp.action('manager_confirm_reject', 'reject', (msg, value) => {
