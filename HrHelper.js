@@ -154,7 +154,7 @@ module.exports.getNewSessionwithCookie = function getNewSessionwithCookie(email,
 
 
 }
-module.exports.getIdFromEmail = function getIdFromEmail(email, callback) {
+module.exports.getIdFromEmail = function getIdFromEmail(email, employeeEmail, callback) {
 
     hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, sessionId) {
         hrHelper.general_remember_me = remember_me_cookie
@@ -170,7 +170,7 @@ module.exports.getIdFromEmail = function getIdFromEmail(email, callback) {
                 'Content-Type': 'application/json',
                 'Cookie': hrHelper.general_remember_me
             },
-            body: email
+            body: employeeEmail
             //Set the body as a stringcc
         }, function (error, response, body) {
             printLogs("=======>body: " + body)
