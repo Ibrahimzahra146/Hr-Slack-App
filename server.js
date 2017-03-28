@@ -274,7 +274,7 @@ slapp.action('confirm_reject_compensation', 'confirm', (msg, value) => {
 
       if (!err) {
         var text12 = {
-          "text": "Hi, You granted " + numberOfExtraTimeOff + " extra " + type + " days from the HR Admin.",
+          "text": "Hi, You granted " + numberOfExtraTimeOff + " extra " + type + " from the HR Admin.",
         }
         var stringfy = JSON.stringify(text12);
         var obj1 = JSON.parse(stringfy);
