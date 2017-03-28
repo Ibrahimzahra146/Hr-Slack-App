@@ -149,8 +149,7 @@ function sendRequestToApiAi(emailValue, msg) {
           }
           var numberOfTimeOff = response.result.parameters.number
           console.log("employeeEmail" + employeeEmail)
-          var employeeEmail = employeeEmail.toString().split(":")
-          employee.sendCompensationConfirmationToHr(emailValue, employeeEmail[1], numberOfTimeOff, type, msg);
+          employee.sendCompensationConfirmationToHr(emailValue, employeeEmail, numberOfTimeOff, type, msg);
         }
 
         else
