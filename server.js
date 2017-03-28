@@ -143,9 +143,9 @@ function sendRequestToApiAi(emailValue, msg) {
           if (type == "weeks" || type == "week") {
             type = "week"
           } else if (type == "days" || type == "days") {
-            type = "days"
+            type = "day"
           } else if (type == "hour" || type == "hours") {
-            type = "hours"
+            type = "hour"
           }
           var numberOfTimeOff = response.result.parameters.number
           console.log("employeeEmail" + employeeEmail)
