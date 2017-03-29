@@ -129,11 +129,13 @@ function sendRequestToApiAi(emailValue, msg) {
       apiaiRequest.on('response', (response) => {
         let responseText = response.result.fulfillment.speech;
         if (responseText == "showEmployeeProfile") {
-          console.log("employeeEmail:::"+response.result.parameters.email)
+          console.log("employeeEmail:::" + response.result.parameters.email)
           var employeeEmail = "";
           if (response.result.parameters.any) {
             employeeEmail = response.result.parameters.any + "@exalt.ps"
           } else employeeEmail = response.result.parameters.email
+
+          console.log("employeeEmail:::" + employeeEmail)
           employee.showEmployeeProfile(emailValue, employeeEmail, msg);
         }
         else if (responseText == "showEmployeeStats") {
