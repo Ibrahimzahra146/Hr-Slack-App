@@ -144,8 +144,16 @@ function sendRequestToApiAi(emailValue, msg) {
           employee.showEmployeeProfile(emailValue, employeeEmail, msg);
         }
         else if (responseText == "showEmployeeStats") {
-          var employeeEmail = response.result.parameters.email
-          employee.showEmployeeStats(emailValue, employeeEmail, msg);
+          console.log("eresponse:::" + JSON.stringify(response))
+          console.log("employeeEmail:::" + response.result.parameters.email)
+          var employeeEmail = "";
+          if (response.result.parameters.any) {
+            employeeEmail = response.result.parameters.any + "@exalt.ps"
+            employeeEmail = employeeEmail.replace(/ /g, ".");
+          }
+          else {
+            employeeEmail = response.result.parameters.email
+          } employee.showEmployeeStats(emailValue, employeeEmail, msg);
         }
         else if (responseText == "AddCompensationTimeOff") {
           var employeeEmail = response.result.parameters.email
