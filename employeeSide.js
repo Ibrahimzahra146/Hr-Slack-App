@@ -6,6 +6,7 @@ var generalCookies = "initial"
 var IP = process.env.SLACK_IP
 module.exports.showEmployeeProfile = function showEmployeeProfile(email, employeeEmail, msg) {
     var Approver2 = "---";
+    printLogs("employeeEmail::" + employeeEmail)
     hrHelper.getIdFromEmail(email, employeeEmail, function (Id) {
 
 
