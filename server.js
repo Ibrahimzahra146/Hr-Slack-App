@@ -249,9 +249,7 @@ slapp.action('confirm_reject_compensation', 'confirm', (msg, value) => {
   console.log("userEmail111" + userEmail)
   var numberOfExtraTimeOff = arr[2];
   var type = arr[3]
-  addCompensationTimeOff(){
-    
-  }
+
   //hrHelper.sendVacationPutRequest(vacationId, approvalId, hrEmail, "Approved")
   request({
     url: 'http://' + IP + '/api/v1/toffy/get-record', //URL to hitDs
