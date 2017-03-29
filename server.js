@@ -129,7 +129,11 @@ function sendRequestToApiAi(emailValue, msg) {
       apiaiRequest.on('response', (response) => {
         let responseText = response.result.fulfillment.speech;
         if (responseText == "showEmployeeProfile") {
-          var employeeEmail = response.result.parameters.email
+
+          var employeeEmail = "";
+          if (response.result.parameters.any) {
+            employeeEmail = response.result.parameters.any + "@exalt.ps"
+          } else employeeEmail = response.result.parameters.email
           employee.showEmployeeProfile(emailValue, employeeEmail, msg);
         }
         else if (responseText == "showEmployeeStats") {
@@ -245,6 +249,9 @@ slapp.action('confirm_reject_compensation', 'confirm', (msg, value) => {
   console.log("userEmail111" + userEmail)
   var numberOfExtraTimeOff = arr[2];
   var type = arr[3]
+  addCompensationTimeOff(){
+    
+  }
   //hrHelper.sendVacationPutRequest(vacationId, approvalId, hrEmail, "Approved")
   request({
     url: 'http://' + IP + '/api/v1/toffy/get-record', //URL to hitDs
