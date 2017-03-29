@@ -134,6 +134,7 @@ function sendRequestToApiAi(emailValue, msg) {
           var employeeEmail = "";
           if (response.result.parameters.any) {
             employeeEmail = response.result.parameters.any + "@exalt.ps"
+            employeeEmail = employeeEmail.replace(/ /g, ".");
           }
           else {
             employeeEmail = response.result.parameters.email
