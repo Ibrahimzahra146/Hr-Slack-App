@@ -152,10 +152,14 @@ function sendRequestToApiAi(emailValue, msg) {
           if (response.result.parameters.any) {
             employeeEmail = response.result.parameters.any + "@exalt.ps"
             employeeEmail = employeeEmail.replace(/ /g, ".");
+            employee.showEmployeeStats(emailValue, employeeEmail, msg);
+
           }
-          else {
+          else if (response.result.parameters.email) {
             employeeEmail = response.result.parameters.email
-          } employee.showEmployeeStats(emailValue, employeeEmail, msg);
+            employee.showEmployeeStats(emailValue, employeeEmail, msg);
+
+          } else msg.say("There is an error in user ID ")
         }
         else if (responseText == "AddCompensationTimeOff") {
           var employeeEmail = response.result.parameters.email
