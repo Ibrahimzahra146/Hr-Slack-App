@@ -33,7 +33,7 @@ module.exports.showEmployeeProfile = function showEmployeeProfile(email, employe
             printLogs("show profile bod" + JSON.stringify(body))
             printLogs("show profile bod" + response.statusCode)
             var messageBody = {
-                "text": "Your profile details",
+                "text": employeeEmail + " profile details",
                 "attachments": [
                     {
                         "attachment_type": "default",
@@ -110,7 +110,7 @@ module.exports.showEmployeeStats = function showEmployeeStats(email, employeeEma
             }
         }, function (error, response, body) {
             var messageBody = {
-                "text": "Your stats and anuual time off details",
+                "text": employeeEmail + " stats and anuual time off details",
                 "attachments": [
                     {
                         "attachment_type": "default",
