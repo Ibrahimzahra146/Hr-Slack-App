@@ -302,8 +302,7 @@ slapp.action('confirm_reject_compensation', 'confirm', (msg, value) => {
 
       }
     });
-    msg.say("You have accepted the time off request.")
-
+      msg.say("Added")
 
   });
 })
