@@ -118,7 +118,7 @@ function storeHrSlackInformation(email, msg) {
 function sendRequestToApiAi(emailValue, msg) {
   hrHelper.getRoleByEmail(emailValue, "HR", function (role) {
     if (role == true) {
-      //storeHrSlackInformation(emailValue, msg);
+      storeHrSlackInformation(emailValue, msg);
 
       var text = msg.body.event.text;
       let apiaiRequest = apiAiService.textRequest(text,
@@ -302,7 +302,7 @@ slapp.action('confirm_reject_compensation', 'confirm', (msg, value) => {
 
       }
     });
-      msg.say("Added")
+    msg.say("Added")
 
   });
 })
