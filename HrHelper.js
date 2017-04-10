@@ -198,11 +198,11 @@ module.exports.showEmployeesBalance = function showEmployeesBalance(msg, email, 
     console.log("quantityType" + quantityType)
     var from_to_request = ""
     if (quantityType == "more than") {
-        from_to_request = "from-balance" + number;
+        from_to_request = "from-balance=" + number;
     } else if (quantityType == "less than") {
-        from_to_request = "to-balance" + number;
+        from_to_request = "to-balance=" + number;
     } else if (quantityType == "minus") {
-        from_to_request = "to-balance" + 0;
+        from_to_request = "to-balance=" + 0;
     }
     else from_to_request = "from-balance=" + number + "&" + "to-balance=" + number;
     ``
@@ -211,7 +211,7 @@ module.exports.showEmployeesBalance = function showEmployeesBalance(msg, email, 
         console.log(url)
         request({
             url: url,
-            json: true,
+            json: true,=
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
