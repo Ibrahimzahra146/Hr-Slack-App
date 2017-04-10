@@ -177,9 +177,11 @@ function sendRequestToApiAi(emailValue, msg) {
           employee.sendCompensationConfirmationToHr(emailValue, employeeEmail, numberOfTimeOff, type, msg);
 
         } else if (responseText == "remainingDaysLeft") {
-          var quantityType = response.result.parameters.quantityType;
+          var quantity_Type = response.result.parameters.quantityType;
           var period_types = response.result.parameters.period_types;
-          var number=response.result.parameters.number
+          var number = response.result.parameters.number;
+          hrHelper.showEmployeesBalance(msg, emailValue, number, quantity_Type, period_types)
+
         }
 
         else msg.say(responseText);
