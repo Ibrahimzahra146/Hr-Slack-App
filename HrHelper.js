@@ -252,7 +252,6 @@ module.exports.showEmployeesBalance = function showEmployeesBalance(msg, email, 
                         ]
                     }
                     printLogs("messageBody" + messageBody)
-                    var stringfy = JSON.stringify(messageBody);
 
                     printLogs("stringfy " + stringfy)
                     stringfy = stringfy.replace(/\\/g, "")
