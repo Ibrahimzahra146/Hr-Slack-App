@@ -223,7 +223,7 @@ module.exports.showEmployeesBalance = function showEmployeesBalance(msg, email, 
             var stringMessage = "["
             if (!error && response.statusCode === 200) {
                 if (!(body)[i]) {
-                    msg.say("There are no employees with that balnce.");
+                    msg.say("There are no employees with that balance.");
                 }
                 else {
                     //build message Json result to send it to slack
