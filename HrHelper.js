@@ -201,7 +201,10 @@ module.exports.showEmployeesBalance = function showEmployeesBalance(msg, email, 
         from_to_request = "from-balance" + number;
     } else if (quantityType == "less than") {
         from_to_request = "to-balance" + number;
-    } else from_to_request = "from-balance" + number + "&" + "to-balance" + number;;
+    } else if (quantityType == "minus") {
+        from_to_request = "to-balance" + 0;
+    }
+    else from_to_request = "from-balance" + number + "&" + "to-balance" + number;
     ``
     hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, session_Id) {
         var url = "http://" + IP + "/api/v1/employee/vacation-balance/2017?" + from_to_request;
