@@ -253,13 +253,9 @@ module.exports.showEmployeesBalance = function showEmployeesBalance(msg, email, 
                     }
                     printLogs("messageBody" + messageBody)
 
-                    printLogs("stringfy " + stringfy)
-                    stringfy = stringfy.replace(/\\/g, "")
-                    stringfy = stringfy.replace(/]\"/, "]")
-                    stringfy = stringfy.replace(/\"\[/, "[")
-                    stringfy = JSON.parse(stringfy)
+                    stringMessage = JSON.parse(messageBody)
 
-                    msg.say(stringfy)
+                    msg.say(stringMessage)
                 }
             }
 
