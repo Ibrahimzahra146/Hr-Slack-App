@@ -211,7 +211,7 @@ module.exports.showEmployeesBalance = function showEmployeesBalance(msg, email, 
         console.log(url)
         request({
             url: url,
-            json: true,=
+            json: true,
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
