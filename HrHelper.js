@@ -253,9 +253,8 @@ module.exports.showEmployeesBalance = function showEmployeesBalance(msg, email, 
                     }
                     printLogs("messageBody" + messageBody)
 
-                    stringMessage = JSON.parse(messageBody)
 
-                    msg.say(stringMessage)
+                    msg.say(messageBody)
                 }
             }
 
