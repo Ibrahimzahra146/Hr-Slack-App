@@ -215,6 +215,7 @@ module.exports.showEmployeesBalance = function showEmployeesBalance(msg, email, 
                 'Cookie': remember_me_cookie + ";" + session_Id
             }
         }, function (error, response, body) {
+            console.log(JSON.stringify(body))
             var i = 0;
             var stringMessage = "["
             if (!error && response.statusCode === 200) {
