@@ -230,7 +230,7 @@ module.exports.showEmployeesBalance = function showEmployeesBalance(msg, email, 
                         if (i > 0) {
                             stringMessage = stringMessage + ","
                         }
-                        stringMessage = stringMessage + "{" + "\"title\":" + "\"" + (body)[i].email + "\"" + ",\"value\":" + "\"" + body[i].deservedBalance + ",\"short\":true}"
+                        stringMessage = stringMessage + "{" + "\"title\":" + "\"" + (body)[i].email + "\"" + ",\"value\":" + "\"" + body[i].deservedBalance + "\"" + ",\"short\":true}"
                         i++;
 
 
@@ -252,9 +252,15 @@ module.exports.showEmployeesBalance = function showEmployeesBalance(msg, email, 
                         ]
                     }
                     printLogs("messageBody" + messageBody)
+                    var stringfy = JSON.stringify(messageBody);
 
+                    printLogs("stringfy " + stringfy)
+                    stringfy = stringfy.replace(/\\/g, "")
+                    stringfy = stringfy.replace(/]\"/, "]")
+                    stringfy = stringfy.replace(/\"\[/, "[")
+                    stringfy = JSON.parse(stringfy)
 
-                    msg.say(messageBody)
+                    msg.say(stringfy)
                 }
             }
 
