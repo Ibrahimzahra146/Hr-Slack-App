@@ -233,7 +233,7 @@ module.exports.showEmployeesBalance = function showEmployeesBalance(msg, email, 
                         if (i > 0) {
                             stringMessage = stringMessage + ","
                         }
-                        stringMessage = stringMessage + "{" + "\"title\":" + "\"" + (body)[i].email + "\"" + ",\"value\":" + "\"" + body[i].deservedBalance + "\"" + ",\"short\":true}"
+                        stringMessage = stringMessage + "{" + "\"title\":" + "\"" + (body)[i].email + "\"" + ",\"value\":" + "\"" + body[i].totalBalance + "\"" + ",\"short\":true}"
                         i++;
 
 
