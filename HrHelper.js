@@ -219,7 +219,6 @@ module.exports.showEmployeesBalance = function showEmployeesBalance(msg, email, 
             }
         }, function (error, response, body) {
             console.log(JSON.stringify(body))
-            console.log("email:" + body[0].email)
             var i = 0;
             var stringMessage = "["
             if (!error && response.statusCode === 200) {
