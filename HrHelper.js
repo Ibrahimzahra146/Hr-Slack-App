@@ -192,6 +192,37 @@ module.exports.addExtraTimeOffrequest = function addExtraTimeOffrequest(email, e
 
 
 }
+module.exports.showEmployeesBalance = function showEmployeesBalance(msg, email, number, quantityType, periodType) {
+    console.log("showEmployeesBalance")
+    console.log("number" + number);
+    console.log("quantityType" + quantityType)
+    var from_to_request = ""
+    if (quantityType == "more than") {
+        from_to_request = "from-balance" + number;
+    } else if (quantityType == "less than") {
+        from_to_request = "to-balance" + number;
+    } else from_to_request = "from-balance" + number + "&" + "to-balance" + number;;
+    ``
+    hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, session_Id) {
+        var url = "http://" + IP + "/api/v1/employee/vacation-balance/2017?" + from_to_request;
+        console.log(url)
+        request({
+            url: url,
+            json: true,
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': remember_me_cookie + ";" + session_Id
+            }
+        }, function (error, response, body) {
+            console.log(JSON.stringify(body))
+
+        });
+    })
+
+
+}
+
 
 function printLogs(msg) {
     console.log("msg:========>:" + msg)

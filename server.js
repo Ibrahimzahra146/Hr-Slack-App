@@ -175,10 +175,14 @@ function sendRequestToApiAi(emailValue, msg) {
           var numberOfTimeOff = response.result.parameters.number
           console.log("employeeEmail" + employeeEmail)
           employee.sendCompensationConfirmationToHr(emailValue, employeeEmail, numberOfTimeOff, type, msg);
+
+        } else if (responseText == "remainingDaysLeft") {
+          var quantityType = response.result.parameters.quantityType;
+          var period_types = response.result.parameters.period_types;
+          var number=response.result.parameters.number
         }
 
-        else
-          msg.say(responseText);
+        else msg.say(responseText);
 
 
       });
