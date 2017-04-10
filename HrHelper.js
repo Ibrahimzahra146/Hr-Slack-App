@@ -220,17 +220,17 @@ module.exports.showEmployeesBalance = function showEmployeesBalance(msg, email, 
             var i = 0;
             var stringMessage = "["
             if (!error && response.statusCode === 200) {
-                if (!(JSON.parse(body)[i])) {
+                if (!(body)[i]) {
                     msg.say("There are no employees with that balnce.");
                 }
                 else {
                     //build message Json result to send it to slack
-                    while ((JSON.parse(body)[i])) {
+                    while (body[i]) {
 
                         if (i > 0) {
                             stringMessage = stringMessage + ","
                         }
-                        stringMessage = stringMessage + "{" + "\"title\":" + "\"" + (JSON.parse(body))[i].email + "\"" + ",\"value\":" + "\"" + (JSON.parse(body))[i].deservedBalance + ",\"short\":true}"
+                        stringMessage = stringMessage + "{" + "\"title\":" + "\"" + (body)[i].email + "\"" + ",\"value\":" + "\"" + body[i].deservedBalance + ",\"short\":true}"
                         i++;
 
 
