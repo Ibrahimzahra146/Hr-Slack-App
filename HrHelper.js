@@ -231,8 +231,9 @@ module.exports.showEmployeesBalance = function showEmployeesBalance(msg, email, 
 
                         if (i > 0) {
                             stringMessage = stringMessage + ","
+                            parseFloat(body[i].totalBalance).toFixed(2)
                         }
-                        stringMessage = stringMessage + "{" + "\"title\":" + "\"" + (body)[i].email + "\"" + ",\"value\":" + "\"" + body[i].totalBalance + "\"" + ",\"short\":true}"
+                        stringMessage = stringMessage + "{" + "\"title\":" + "\"" + (body)[i].email + "\"" + ",\"value\":" + "\"" + parseFloat(body[i].totalBalance).toFixed(2) + " week\"" + ",\"short\":true}"
                         i++;
 
 
