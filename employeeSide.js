@@ -124,29 +124,35 @@ module.exports.showEmployeeStats = function showEmployeeStats(email, employeeEma
                             },
                             {
                                 "title": "Used time off  ",
-                                "value": parseFloat(body.vacation_balance).toFixed(2) + " weeks ",
+                                "value": parseFloat(body.consumed_vacation_balance).toFixed(2) + " weeks ",
                                 "short": true
                             },
                             {
                                 "title": "Annual time off ",
-                                "value": parseFloat(body.static_balance).toFixed(2) + " weeks ",
-                                "short": false
-                            },
-                            {
-                                "title": "Extra time off  ",
-                                "value": parseFloat(body.compensation_balance).toFixed(2) + " weeks ",
+                                "value": parseFloat(body.deserved_vacation).toFixed(2) + " weeks ",
                                 "short": true
-                            },
-                            {
-                                "title": "Balance",
-                                "value": parseFloat(body.left_over + body.compensation_balance + body.balance).toFixed(2) + " weeks ",
-                                "short": false
                             },
                             {
                                 "title": "Used Sick time off  ",
-                                "value": parseFloat(body.sick_vacation_balance).toFixed(2) + " weeks ",
+                                "value": parseFloat(body.consume_sick_vacation).toFixed(2) + " weeks ",
                                 "short": true
                             }
+                            ,
+                            {
+                                "title": "Extra time off  ",
+                                "value": parseFloat(body.compensation_balance).toFixed(2) + " weeks ",
+                                "short": false
+                            },
+
+
+
+
+                            {
+                                "title": "Balance",
+                                "value": parseFloat(body.left_over + body.compensation_balance + body.balance).toFixed(2) + " weeks ",
+                                "short": true
+                            }
+
                         ],
                         "color": "#F35A00"
                     }
