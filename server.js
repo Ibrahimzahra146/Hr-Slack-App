@@ -128,36 +128,39 @@ function sendRequestToApiAi(emailValue, msg) {
 
       apiaiRequest.on('response', (response) => {
         let responseText = response.result.fulfillment.speech;
-        if (responseText == "showEmployeeProfile") {
-          console.log("eresponse:::" + JSON.stringify(response))
-          console.log("employeeEmail:::" + response.result.parameters.email)
+        if (responseText == "showEmployeeInfo") {
           var employeeEmail = "";
           if (response.result.parameters.any) {
             employeeEmail = response.result.parameters.any + "@exalt.ps"
             employeeEmail = employeeEmail.replace(/ /g, ".");
-            employee.showEmployeeProfile(emailValue, employeeEmail, msg);
+
+            if (response.result.parameters.employee_info_types == "stats")
+              employee.showEmployeeStats(emailValue, employeeEmail, msg);
+            else if (response.result.parameters.employee_info_types == "profile")
+              employee.showEmployeeProfile(emailValue, employeeEmail, msg)
+            else employee.showEmployeeProfile(emailValue, employeeEmail, msg)
+
+
 
           }
           else if (response.result.parameters.email) {
-            employeeEmail = response.result.parameters.email
-            employee.showEmployeeProfile(emailValue, employeeEmail, msg);
+            if ((response.result.parameters.email).indexOf('mailto') > -1) {
+              employeeEmail = response.result.parameters.email
+              employeeEmail = employeeEmail.toString().split('|')
+              employeeEmail = employeeEmail[1];
+              employeeEmail = employeeEmail.replace(/>/g, "");
+              console.log("Email after split mail to ")
+            }
+            else employeeEmail = response.result.parameters.email
 
-          } else msg.say("There is an error in user ID ")
 
-        }
-        else if (responseText == "showEmployeeStats") {
-          console.log("eresponse:::" + JSON.stringify(response))
-          console.log("employeeEmail:::" + response.result.parameters.email)
-          var employeeEmail = "";
-          if (response.result.parameters.any) {
-            employeeEmail = response.result.parameters.any + "@exalt.ps"
-            employeeEmail = employeeEmail.replace(/ /g, ".");
-            employee.showEmployeeStats(emailValue, employeeEmail, msg);
 
-          }
-          else if (response.result.parameters.email) {
-            employeeEmail = response.result.parameters.email
-            employee.showEmployeeStats(emailValue, employeeEmail, msg);
+
+            if (response.result.parameters.employee_info_types == "stats")
+              employee.showEmployeeStats(emailValue, employeeEmail, msg);
+            else if (response.result.parameters.employee_info_types == "profile")
+              employee.showEmployeeProfile(emailValue, employeeEmail, msg)
+            else employee.showEmployeeProfile(emailValue, employeeEmail, msg)
 
           } else msg.say("There is an error in user ID ")
         }
