@@ -162,8 +162,27 @@ function sendRequestToApiAi(emailValue, msg) {
           } else msg.say("There is an error in user ID ")
         }
         else if (responseText == "AddCompensationTimeOff") {
-          var employeeEmail = response.result.parameters.email
-          console.log("response.result.parameters.email" + response.result.parameters.email)
+          var employeeEmail = ""
+          if (response.result.parameters.email) {
+            //<mailto:ibrahim.zahra@exalt.ps|ibrahim.zahra@exalt.ps>
+            if ((response.result.parameters.email).indexOf('mailto') > -1) {
+              employeeEmail = response.result.parameters.email
+              employeeEmail = employeeEmail.toString().split('|')
+              employeeEmail = employeeEmail[1];
+              employeeEmail = employeeEmail.replace(/>/g, "");
+              console.log("Email after split mail to ")
+            }
+            else {
+              employeeEmail = response.result.parameters.email
+           
+            }
+
+
+          } else if (response.result.parameters.any) {
+            employeeEmail = response.result.parameters.any
+            employeeEmail = response.result.parameters.any + "@exalt.ps"
+            employeeEmail = employeeEmail.replace(/ /g, ".");
+          }
           var type = response.result.parameters.period_types
           if (type == "weeks" || type == "week") {
             type = "week"
