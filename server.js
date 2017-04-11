@@ -333,7 +333,7 @@ slapp.action('confirm_reject_compensation', 'confirm', (msg, value) => {
 
       }
     });
-    msg.respond(msg.body.response_url, "You have added " + numberOfExtraTimeOff + " extra " + typefor + " for " + emailValue)
+    msg.respond(msg.body.response_url, "You have added " + numberOfExtraTimeOff + " extra " + type + " for " + emailValue)
   });
 })
 
