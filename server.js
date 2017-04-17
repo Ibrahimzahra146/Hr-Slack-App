@@ -133,8 +133,11 @@ function sendRequestToApiAi(emailValue, msg) {
           if (response.result.parameters.any) {
             employeeEmail = response.result.parameters.any + "@exalt.ps"
             employeeEmail = employeeEmail.replace(/ /g, ".");
-            if (response.result.parameters.edit_syonymes)
-              msg.say("The link should appear")
+            if (response.result.parameters.edit_syonymes) {
+              var url = "http://172.30.204.243:9090/employee/" + employeeEmail + "/edit"
+              msg.say(url)
+            }
+
             else if (response.result.parameters.employee_info_types == "stats")
               employee.showEmployeeStats(emailValue, employeeEmail, msg);
             else if (response.result.parameters.employee_info_types == "profile")
@@ -155,9 +158,10 @@ function sendRequestToApiAi(emailValue, msg) {
             else employeeEmail = response.result.parameters.email
 
 
-
-            if (response.result.parameters.edit_syonymes)
-              msg.say("The link should appear")
+            if (response.result.parameters.edit_syonymes) {
+              var url = "http://172.30.204.243:9090/employee/" + employeeEmail + "/edit"
+              msg.say(url)
+            }
             else if (response.result.parameters.employee_info_types == "stats")
               employee.showEmployeeStats(emailValue, employeeEmail, msg);
             else if (response.result.parameters.employee_info_types == "profile")
