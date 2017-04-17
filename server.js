@@ -278,6 +278,8 @@ slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
   var vacationId = arr[1];
   var approvalId = arr[2]
   var hrEmail = arr[3]
+  var fromtDate = arr[4]
+  var toDate = arr[5]
   hrHelper.sendVacationPutRequest(vacationId, approvalId, hrEmail, "Approved")
   request({
     url: 'http://' + IP + '/api/v1/toffy/get-record', //URL to hitDs
@@ -290,8 +292,8 @@ slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
     //Set the body as a stringcc
   }, function (error, response, body) {
     var responseBody = JSON.parse(body);
-    hrHelper.sendFeedBackMessage(responseBody, hrEmail)
-    msg.say("You have accepted the time off request for " + userEmail + ".")
+    hrHelper.sendFeedBackMessage(responseBody, hrEmail, fromtDate, toDate)
+    msg.say("You have accepted the time off request for " + userEmail + " ( " + fromtDate + "-" + toDate + ").")
 
 
   });
@@ -353,6 +355,8 @@ slapp.action('manager_confirm_reject', 'reject', (msg, value) => {
   var vacationId = arr[1];
   var approvalId = arr[2]
   var hrEmail = arr[3]
+  var fromtDate = arr[4]
+  var toDate = arr[5]
   hrHelper.sendVacationPutRequest(vacationId, approvalId, hrEmail, "Rejected")
   request({
     url: 'http://' + IP + '/api/v1/toffy/get-record', //URL to hitDs
@@ -378,7 +382,7 @@ slapp.action('manager_confirm_reject', 'reject', (msg, value) => {
     bot.startConversation(message, function (err, convo) {
       if (!err) {
         var text12 = {
-          "text": "HR " + hrEmail + " has rejected your time off request.Sorry! ",
+          "text": "HR " + hrEmail + " has rejected your time off request" + " ( " + fromtDate + "-" + toDate + " ).Sorry! ",
         }
         var stringfy = JSON.stringify(text12);
         var obj1 = JSON.parse(stringfy);
@@ -397,6 +401,8 @@ slapp.action('manager_confirm_reject', 'dont_detuct', (msg, value) => {
   var vacationId = arr[1];
   var approvalId = arr[2]
   var hrEmail = arr[3]
+  var fromtDate = arr[4]
+  var toDate = arr[5]
   console.log("Regected userEmail " + userEmail)
   console.log("Regected vacationId " + vacationId)
   console.log("Regected approvalId " + approvalId)
@@ -430,7 +436,7 @@ slapp.action('manager_confirm_reject', 'dont_detuct', (msg, value) => {
 
       if (!err) {
         var text12 = {
-          "text": "HR " + hrEmail + " has accepted your time off request without detuction. Enjoy!",
+          "text": "HR " + hrEmail + " has accepted your time off request without detuction" + " ( " + fromtDate + "-" + toDate + "). Enjoy!",
         }
         var stringfy = JSON.stringify(text12);
         var obj1 = JSON.parse(stringfy);
@@ -440,7 +446,7 @@ slapp.action('manager_confirm_reject', 'dont_detuct', (msg, value) => {
     });
   });
 
-  msg.say("you have accepted  the time off request but without detuction for " + userEmail + ".")
+  msg.say("you have accepted  the time off request but without detuction for " + userEmail + " ( " + fromtDate + "-" + toDate + ").")
 
 
 })
