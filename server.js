@@ -133,8 +133,9 @@ function sendRequestToApiAi(emailValue, msg) {
           if (response.result.parameters.any) {
             employeeEmail = response.result.parameters.any + "@exalt.ps"
             employeeEmail = employeeEmail.replace(/ /g, ".");
-
-            if (response.result.parameters.employee_info_types == "stats")
+            if (response.result.parameters.edit_syonymes)
+              msg.say("The link should appear")
+            else if (response.result.parameters.employee_info_types == "stats")
               employee.showEmployeeStats(emailValue, employeeEmail, msg);
             else if (response.result.parameters.employee_info_types == "profile")
               employee.showEmployeeProfile(emailValue, employeeEmail, msg)
@@ -155,8 +156,9 @@ function sendRequestToApiAi(emailValue, msg) {
 
 
 
-
-            if (response.result.parameters.employee_info_types == "stats")
+            if (response.result.parameters.edit_syonymes)
+              msg.say("The link should appear")
+            else if (response.result.parameters.employee_info_types == "stats")
               employee.showEmployeeStats(emailValue, employeeEmail, msg);
             else if (response.result.parameters.employee_info_types == "profile")
               employee.showEmployeeProfile(emailValue, employeeEmail, msg)
@@ -328,7 +330,7 @@ slapp.action('confirm_reject_compensation', 'confirm', (msg, value) => {
 
       if (!err) {
         var text12 = {
-          "text": "Hi, You granted " + numberOfExtraTimeOff + " extra " + type + " from the HR Admin.",
+          "text": "Hi, you have granted " + numberOfExtraTimeOff + " extra " + type + " from the HR Admin.",
         }
         var stringfy = JSON.stringify(text12);
         var obj1 = JSON.parse(stringfy);

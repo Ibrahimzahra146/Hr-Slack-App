@@ -175,7 +175,7 @@ module.exports.sendCompensationConfirmationToHr = function sendCompensationConfi
         "text": "",
         "attachments": [
             {
-                "text": "Okay, you asked to add " + numberOfExtraTime + " " + type + " extra time off for " + "" + employeeEmail + ". Should I go ahead ?",
+                "text": "Okay, you asked to add " + numberOfExtraTime + " extra " + type + " time off for " + "" + employeeEmail + ". Should I go ahead ?",
                 "callback_id": 'confirm_reject_compensation',
                 "color": "#3AA3E3",
                 "attachment_type": "default",
