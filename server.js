@@ -291,7 +291,7 @@ slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
   }, function (error, response, body) {
     var responseBody = JSON.parse(body);
     hrHelper.sendFeedBackMessage(responseBody, hrEmail)
-    msg.say("You have accepted the time off requestfor " + userEmail + ".")
+    msg.say("You have accepted the time off request for " + userEmail + ".")
 
 
   });
