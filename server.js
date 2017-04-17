@@ -278,8 +278,8 @@ slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
   var vacationId = arr[1];
   var approvalId = arr[2]
   var hrEmail = arr[3]
-  var fromtDate = arr[4]
-  var toDate = arr[5]
+  var fromtDate = arr[5]
+  var toDate = arr[6]
   hrHelper.sendVacationPutRequest(vacationId, approvalId, hrEmail, "Approved")
   request({
     url: 'http://' + IP + '/api/v1/toffy/get-record', //URL to hitDs
@@ -355,8 +355,8 @@ slapp.action('manager_confirm_reject', 'reject', (msg, value) => {
   var vacationId = arr[1];
   var approvalId = arr[2]
   var hrEmail = arr[3]
-  var fromtDate = arr[4]
-  var toDate = arr[5]
+  var fromtDate = arr[5]
+  var toDate = arr[6]
   hrHelper.sendVacationPutRequest(vacationId, approvalId, hrEmail, "Rejected")
   request({
     url: 'http://' + IP + '/api/v1/toffy/get-record', //URL to hitDs
@@ -401,8 +401,8 @@ slapp.action('manager_confirm_reject', 'dont_detuct', (msg, value) => {
   var vacationId = arr[1];
   var approvalId = arr[2]
   var hrEmail = arr[3]
-  var fromtDate = arr[4]
-  var toDate = arr[5]
+  var fromtDate = arr[5]
+  var toDate = arr[6]
   console.log("Regected userEmail " + userEmail)
   console.log("Regected vacationId " + vacationId)
   console.log("Regected approvalId " + approvalId)
