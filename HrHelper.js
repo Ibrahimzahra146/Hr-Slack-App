@@ -356,6 +356,57 @@ module.exports.convertTimeFormat = function convertTimeFormat(time, callback) {
     console.log("TimeforMilliseconds" + TimeforMilliseconds)
     callback(formattedTime, midday, TimeforMilliseconds)
 }
+//send Vacation Post request for force vacation 
+module.exports.sendVacationPostRequest = function sendVacationPostRequest(from, to, employee_id, email, type, callback) {
+    printLogs("Sending vacation post request")
+    printLogs("Email:" + email)
+    printLogs("arrive at va")
+    printLogs("from" + from);
+    printLogs("to======>" + to);
+    printLogs("type======>" + type);
+    hrHelper.getIdFromEmail(email, email, function (Id) {
+        console.log("::::" + "::" + email + "::" + Id)
+        var vacationType = "6"
+
+
+        var vacationBody = {
+            "employee_id": Id,
+            "from": from,
+            "to": to,
+            "type": vacationType,
+            "comments": "From ibrahim"
+
+        }
+        vacationBody = JSON.stringify(vacationBody)
+        var uri = 'http://' + IP + '/api/v1/vacation'
+        printLogs("Uri " + uri)
+        request({
+            url: uri, //URL to hitDs
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': hrHelper.general_remember_me + ";" + hrHelper.general_session_id
+            },
+
+            body: vacationBody
+            //Set the body as a stringcc
+        }, function (error, response, body) {
+            printLogs("the vacation have been posted " + response.statusCode)
+            printLogs(error)
+            printLogs(response.message)
+            var vacationId = (JSON.parse(body)).id;
+            var managerApproval = (JSON.parse(body)).managerApproval
+            printLogs("Vacaction ID---->" + (JSON.parse(body)).id)
+            printLogs("managerApproval --->" + managerApproval)
+            printLogs("managerApproval --->" + JSON.stringify(managerApproval))
+            callback(vacationId, managerApproval);
+
+        })
+    });
+
+
+
+}
 function printLogs(msg) {
     console.log("msg:========>:" + msg)
 }

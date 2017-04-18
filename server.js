@@ -654,6 +654,50 @@ slapp.action('manager_confirm_reject', 'dont_detuct', (msg, value) => {
 
 
 })
+//force vacation for employee
+slapp.action('leave_with_vacation_confirm_reject', 'confirm', (msg, value) => {
+  managerAction(msg, value, "Approved")
+})
+slapp.action('leave_with_vacation_confirm_reject', 'reject', (msg, value) => {
+  msg.say("Ok, operation aborted.")
+  fromDate = "";
+  toDate = "";
+})
+function managerAction(msg, value, typeOfaction) {
+  var arr = ""
+  var type = ""
+  var managerEmail = ""
+  var fromDateInMilliseconds = ""
+  var toDateInMilliseconds = ""
+  var workingDays = ""
+
+  var employeeEmail = ""
+  var managerId = ""
+  getTodayDate(function (todayDate) {
+    var fromDate = ""
+    var toDate = ""
+    arr = value.toString().split(",");
+    type = arr[5]
+    managerEmail = arr[2];
+    fromDateInMilliseconds = arr[3];
+    toDateInMilliseconds = arr[4]
+    workingDays = arr[6]
+    fromDate = arr[7]
+    toDate = arr[8]
+    employeeEmail = arr[9]
+    managerId = arr[10]
+    hrHelper.sendVacationPostRequest(/*from  */fromDateInMilliseconds, toDateInMilliseconds, managerToffyHelper.userIdInHr, employeeEmail, type, function (vacationId, managerApproval) {
+
+        console.log("sent VacationPostRequest");
+
+    });
+
+
+
+  });
+  fromDate = "";
+  toDate = "";
+}
 app.get('/', function (req, res) {
 
   res.send('Hello')
