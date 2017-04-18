@@ -273,7 +273,89 @@ module.exports.showEmployeesBalance = function showEmployeesBalance(msg, email, 
 
 }
 
+module.exports.getTodayDate = function getTodayDate(callback) {
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; //January is 0!
+    var yyyy = today.getFullYear();
 
+    if (dd < 10) {
+        dd = '0' + dd
+    }
+
+    if (mm < 10) {
+        mm = '0' + mm
+    }
+
+    today = yyyy + '/' + mm + '/' + dd;
+    callback(today)
+
+}
+module.exports.convertTimeFormat = function convertTimeFormat(time, callback) {
+    console.log("The Time is =" + time)
+    var arr = time.toString().split(":")
+    var formattedTime = ""
+    var midday = "pm";
+    var TimeforMilliseconds = ""
+    var n = arr[1].length;
+    if (n == 1) {
+        arr[1] = "0" + arr[1]
+    }
+
+    if (arr[0] == "13" || arr[0] == "01" || arr[0] == "1") {
+        formattedTime = "01:" + arr[1];
+        TimeforMilliseconds = "13:" + arr[1]
+    }
+    else if (arr[0] == "14" || arr[0] == "02" || arr[0] == "2") {
+        formattedTime = "02:" + arr[1];
+        TimeforMilliseconds = "14:" + arr[1]
+    }
+    else if (arr[0] == "15" || arr[0] == "03" || arr[0] == "3") {
+        formattedTime = "03:" + arr[1];
+        TimeforMilliseconds = "15:" + arr[1]
+    }
+    else if (arr[0] == "16" || arr[0] == "04" || arr[0] == "4") {
+        formattedTime = "04:" + arr[1];
+        TimeforMilliseconds = "16:" + arr[1]
+    }
+    else if (arr[0] == "17" || arr[0] == "05" || arr[0] == "05") {
+        formattedTime = "05:" + arr[1];
+        TimeforMilliseconds = "17:" + arr[1]
+    }
+    else if (arr[0] == "20" || arr[0] == "08" || arr[0] == "8") {
+        formattedTime = "08:" + arr[1];
+        midday = "am"
+        TimeforMilliseconds = "8:" + arr[1]
+
+    }
+    else if (arr[0] == "21" || arr[0] == "09" || arr[0] == "9") {
+        formattedTime = "09:" + arr[1];
+        midday = "am"
+        TimeforMilliseconds = "9:" + arr[1]
+    }
+    else if (arr[0] == "22" || arr[0] == "10") {
+        formattedTime = "10:" + arr[1];
+        midday = "am"
+        TimeforMilliseconds = "10:" + arr[1]
+    }
+    else if (arr[0] == "23" || arr[0] == "11") {
+        formattedTime = "11:" + arr[1];
+        midday = "am"
+        TimeforMilliseconds = "11:" + arr[1]
+    }
+    else if (arr[0] == "00" || arr[0] == "12") {
+        formattedTime = "12:" + arr[1];
+        midday = "am"
+        TimeforMilliseconds = "12:" + arr[1]
+    }
+
+    else {
+        formattedTime = arr[0] + ":" + arr[1];
+        midday = "am";
+    }
+    console.log("TimeforMilliseconds" + TimeforMilliseconds)
+    callback(formattedTime, midday, TimeforMilliseconds)
+}
 function printLogs(msg) {
     console.log("msg:========>:" + msg)
 }
