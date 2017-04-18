@@ -673,28 +673,27 @@ function managerAction(msg, value, typeOfaction) {
 
   var employeeEmail = ""
   var managerId = ""
-  getTodayDate(function (todayDate) {
-    var fromDate = ""
-    var toDate = ""
-    arr = value.toString().split(",");
-    type = arr[5]
-    managerEmail = arr[2];
-    fromDateInMilliseconds = arr[3];
-    toDateInMilliseconds = arr[4]
-    workingDays = arr[6]
-    fromDate = arr[7]
-    toDate = arr[8]
-    employeeEmail = arr[9]
-    managerId = arr[10]
-    hrHelper.sendVacationPostRequest(/*from  */fromDateInMilliseconds, toDateInMilliseconds, "ss", employeeEmail, type, function (vacationId, managerApproval) {
+  var fromDate = ""
+  var toDate = ""
+  arr = value.toString().split(",");
+  type = arr[5]
+  managerEmail = arr[2];
+  fromDateInMilliseconds = arr[3];
+  toDateInMilliseconds = arr[4]
+  workingDays = arr[6]
+  fromDate = arr[7]
+  toDate = arr[8]
+  employeeEmail = arr[9]
+  managerId = arr[10]
+  hrHelper.sendVacationPostRequest(/*from  */fromDateInMilliseconds, toDateInMilliseconds, "ss", employeeEmail, type, function (vacationId, managerApproval) {
 
-        console.log("sent VacationPostRequest");
-
-    });
-
-
+    console.log("sent VacationPostRequest");
 
   });
+
+
+
+
   fromDate = "";
   toDate = "";
 }
