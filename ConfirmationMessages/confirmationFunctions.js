@@ -155,7 +155,7 @@ function getmessage(formattedFromTime, middayFrom, fromDate, formattedTime, midd
 function getIdByEmail(email, callback) {
 
     makePostRequest('employee/get-id', email, function (response, body) {
-        printLogs("body:" + body)
+        console.log("body:" + body)
         callback(body)
     })
 
@@ -165,7 +165,7 @@ function makePostRequest(path, email, callback) {
         var uri = 'http://' + IP + '/api/v1/' + path
         hrHelper.general_remember_me = remember_me_cookie;
         hrHelper.general_session_Id = session_Id;
-        printLogs("uri " + uri)
+        console.log("uri " + uri)
         request({
             url: uri, //URL to hitDs
             method: 'POST',
@@ -177,7 +177,6 @@ function makePostRequest(path, email, callback) {
             body: email
             //Set the body as a stringcc
         }, function (error, response, body) {
-            printLogs("body:" + body)
             callback(response, body)
         })
     })
