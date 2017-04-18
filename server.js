@@ -280,6 +280,16 @@ slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
   var hrEmail = arr[3]
   var fromtDate = arr[5]
   var toDate = arr[6]
+  var type = arr[7]
+  var typeText = " time off"
+  if (type == "sick") {
+    typeText = " sick time off "
+  } else if (type == "Maternity") {
+    typeText = " maternity" + " time off"
+  } else if (type == "Paternity") {
+    typeText = " paternity" + " time off"
+  } else if (type == "WFH")
+    typeText = " work from home"
   hrHelper.sendVacationPutRequest(vacationId, approvalId, hrEmail, "Approved")
   request({
     url: 'http://' + IP + '/api/v1/toffy/get-record', //URL to hitDs
@@ -293,7 +303,7 @@ slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
   }, function (error, response, body) {
     var responseBody = JSON.parse(body);
     hrHelper.sendFeedBackMessage(responseBody, hrEmail, fromtDate, toDate)
-    msg.say("You have accepted the time off request for " + userEmail + " ( " + fromtDate + "-" + toDate + ").")
+    msg.say("You have accepted the" + typeText + " request for " + userEmail + " ( " + fromtDate + "-" + toDate + ").")
 
 
   });
@@ -306,6 +316,7 @@ slapp.action('confirm_reject_compensation', 'confirm', (msg, value) => {
   console.log("userEmail111" + userEmail)
   var numberOfExtraTimeOff = arr[2];
   var type = arr[3]
+
 
   //hrHelper.sendVacationPutRequest(vacationId, approvalId, hrEmail, "Approved")
   request({
@@ -357,6 +368,16 @@ slapp.action('manager_confirm_reject', 'reject', (msg, value) => {
   var hrEmail = arr[3]
   var fromtDate = arr[5]
   var toDate = arr[6]
+  var type = arr[7]
+  var typeText = " time off"
+  if (type == "sick") {
+    typeText = " sick time off "
+  } else if (type == "Maternity") {
+    typeText = " maternity" + " time off"
+  } else if (type == "Paternity") {
+    typeText = " paternity" + " time off"
+  } else if (type == "WFH")
+    typeText = " work from home"
   hrHelper.sendVacationPutRequest(vacationId, approvalId, hrEmail, "Rejected")
   request({
     url: 'http://' + IP + '/api/v1/toffy/get-record', //URL to hitDs
@@ -391,7 +412,7 @@ slapp.action('manager_confirm_reject', 'reject', (msg, value) => {
     });
   });
 
-  msg.say("you have rejected the time off request for " + userEmail)
+  msg.say("you have rejected the" + typeText + "  request for " + userEmail)
 })
 
 
@@ -403,6 +424,16 @@ slapp.action('manager_confirm_reject', 'dont_detuct', (msg, value) => {
   var hrEmail = arr[3]
   var fromtDate = arr[5]
   var toDate = arr[6]
+  var type = arr[7]
+  var typeText = " time off"
+  if (type == "sick") {
+    typeText = " sick time off "
+  } else if (type == "Maternity") {
+    typeText = " maternity" + " time off"
+  } else if (type == "Paternity") {
+    typeText = " paternity" + " time off"
+  } else if (type == "WFH")
+    typeText = " work from home"
   console.log("Regected userEmail " + userEmail)
   console.log("Regected vacationId " + vacationId)
   console.log("Regected approvalId " + approvalId)
@@ -446,7 +477,7 @@ slapp.action('manager_confirm_reject', 'dont_detuct', (msg, value) => {
     });
   });
 
-  msg.say("you have accepted  the time off request but without detuction for " + userEmail + " ( " + fromtDate + "-" + toDate + ").")
+  msg.say("you have accepted  the" + typeText + " request but without detuction for " + userEmail + " ( " + fromtDate + "-" + toDate + ").")
 
 
 })
