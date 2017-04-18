@@ -686,7 +686,7 @@ function managerAction(msg, value, typeOfaction) {
     toDate = arr[8]
     employeeEmail = arr[9]
     managerId = arr[10]
-    hrHelper.sendVacationPostRequest(/*from  */fromDateInMilliseconds, toDateInMilliseconds, managerToffyHelper.userIdInHr, employeeEmail, type, function (vacationId, managerApproval) {
+    hrHelper.sendVacationPostRequest(/*from  */fromDateInMilliseconds, toDateInMilliseconds, "ss", employeeEmail, type, function (vacationId, managerApproval) {
 
         console.log("sent VacationPostRequest");
 
