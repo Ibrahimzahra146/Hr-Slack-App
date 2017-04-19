@@ -773,6 +773,7 @@ slapp.action('cancel_request', 'cancel', (msg, value) => {
         'Cookie': remember_me_cookie + ";" + session_Id
       },
     }, function (error, response, body) {
+      console.log("Deelted")
       msg.respond(msg.body.response_url, "Your request has been canceled")
     })
   })
