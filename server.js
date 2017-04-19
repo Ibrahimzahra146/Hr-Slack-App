@@ -688,7 +688,8 @@ function managerAction(msg, value, typeOfaction) {
   console.log("Freooooom" + fromDate)
   console.log("toDate", toDate)
   hrHelper.sendVacationPostRequest(/*from  */fromDateInMilliseconds, toDateInMilliseconds, "ss", employeeEmail, type, function (vacationId, managerApproval) {
-
+    console.log("Freooooom" + fromDate)
+    console.log("toDate", toDate)
     console.log("sent VacationPostRequest");
     var messageFB = "Your request ( " + fromDate + "-" + toDate + " ) for " + employeeEmail + " has been submitted and is awaiting your managers approval "
 
