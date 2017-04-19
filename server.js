@@ -13,7 +13,8 @@ const async = require('async');
 const apiai = require('apiai');
 const APIAI_LANG = 'en';
 var hrHelper = require('./HrHelper.js');
-const confirmationFunctions = require('./ConfirmationMessages/confirmationFunctions')
+const confirmationFunctions = require('./ConfirmationMessages/confirmationFunctions.js')
+const messageSender = require('./ConfirmationMessages/messageSender.js')
 var employee = require('./employeeSide.js')
 const apiAiService = apiai(APIAI_ACCESS_TOKEN);
 var pg = require('pg');
@@ -728,7 +729,7 @@ function managerAction(msg, value, typeOfaction) {
                   "text": "Cancel Request",
                   "style": "danger",
                   "type": "button",
-                  "value": managerEmail + ";" + vacationId + ";" + fromDate + ";" + toDate
+                  "value": managerEmail + ";" + vacationId + ";" + fromDate + ";" + toDate + ";" + employeeEmail
 
                 }
               ]
@@ -738,6 +739,7 @@ function managerAction(msg, value, typeOfaction) {
         console.log("cancel_request1" + JSON.stringify(managerApproval))
 
         msg.respond(msg.body.response_url, text12)
+        messageSender.sendMessageSpecEmployee(employeeEmail, "Hi, HR " + managerEmail + " has submitted a time off for you from " + fromDate + "-" + toDate + ".");
 
       });
     })
@@ -758,11 +760,12 @@ slapp.action('cancel_request', 'cancel', (msg, value) => {
 
   var fromDate = arr[2]
   var toDate = arr[3]
+  var employeeEmail = arr[4]
   console.log("cancel_request")
   hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, session_Id) {
     //get vacation state
 
-  
+
     var uri = 'http://' + IP + '/api/v1/vacation/' + vacationId
     console.log("URI", uri)
     //delete vacation request
@@ -775,7 +778,7 @@ slapp.action('cancel_request', 'cancel', (msg, value) => {
       },
     }, function (error, response, body) {
       console.log("Deelted")
-      msg.respond(msg.body.response_url, "Your request has been canceled")
+      msg.respond(msg.body.response_url, "Your request for " + employeeEmail + " ( " + fromDate + "-" + toDate + " ) has been canceled")
     })
   })
 })
