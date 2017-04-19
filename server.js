@@ -688,75 +688,96 @@ function managerAction(msg, value, typeOfaction) {
   console.log("Freooooom" + fromDate)
   console.log("toDate", toDate)
   hrHelper.sendVacationPostRequest(/*from  */fromDateInMilliseconds, toDateInMilliseconds, "ss", employeeEmail, type, function (vacationId, managerApproval) {
+    arr = value.toString().split(",");
+    fromDate = arr[7]
+    toDate = arr[8]
+    employeeEmail = arr[9]
+    managerId = arr[10]
     console.log("Freooooom" + fromDate)
     console.log("toDate", toDate)
-    console.log("sent VacationPostRequest");
-    var messageFB = "Your request ( " + fromDate + "-" + toDate + " ) for " + employeeEmail + " has been submitted and is awaiting your managers approval "
 
-    var text12 = {
-      "text": "Your request has been submitted",
-      "attachments": [
-        {
-          "text": messageFB,
-          "callback_id": 'cancel_request',
-          "color": "#3AA3E3",
-          "attachment_type": "default",
-          "actions": [
+    hrHelper.convertTimeFormat(arr[0], function (formattedTime, midday) {
+
+      hrHelper.convertTimeFormat(arr[1], function (formattedTime1, midday1) {
+
+        if (arr[0] && (arr[0] != undefined)) {
+          fromDate = fromDate + " at " + formattedTime + " " + midday
+        } else fromDate = fromDate + " at 08:00 am ";
+
+        if (arr[1] && (arr[1] != undefined)) {
+          toDate = toDate + " at " + formattedTime1 + " " + midday1
+        } else toDate = toDate + " at 05:00 pm ";
+
+
+        console.log("Freooooom" + fromDate)
+        console.log("toDate", toDate)
+        console.log("sent VacationPostRequest");
+        var messageFB = "Your request ( " + fromDate + "-" + toDate + " ) for " + employeeEmail + " has been submitted and is awaiting your managers approval "
+
+        var text12 = {
+          "text": "Your request has been submitted",
+          "attachments": [
             {
-              "name": 'cancel',
-              "text": "Cancel Request",
-              "style": "danger",
-              "type": "button",
-              "value": managerEmail + ";" + vacationId + ";" + JSON.stringify(managerApproval) + ";" + fromDate + ";" + toDate
+              "text": messageFB,
+              "callback_id": 'cancel_request',
+              "color": "#3AA3E3",
+              "attachment_type": "default",
+              "actions": [
+                {
+                  "name": 'cancel',
+                  "text": "Cancel Request",
+                  "style": "danger",
+                  "type": "button",
+                  "value": managerEmail + ";" + vacationId + ";" + JSON.stringify(managerApproval) + ";" + fromDate + ";" + toDate
 
+                }
+              ]
             }
           ]
         }
-      ]
+        console.log("cancel_request1" + JSON.stringify(managerApproval))
+
+        msg.respond(msg.body.response_url, text12)
+
+      });
+
+
+
+
+      fromDate = "";
+      toDate = "";
     }
-    console.log("cancel_request1" + JSON.stringify(managerApproval))
-
-    msg.respond(msg.body.response_url, text12)
-
-  });
-
-
-
-
-  fromDate = "";
-  toDate = "";
-}
 slapp.action('cancel_request', 'cancel', (msg, value) => {
-  var arr = value.toString().split(";")
-  var email = arr[0]
-  var vacationId = arr[1]
-  var managerApproval = arr[2]
-  var fromDate = arr[3]
-  var toDate = arr[4]
-  console.log("cancel_request" + JSON.stringify(managerApproval))
-  hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, session_Id) {
-    //get vacation state
+        var arr = value.toString().split(";")
+        var email = arr[0]
+        var vacationId = arr[1]
+        var managerApproval = arr[2]
+        var fromDate = arr[3]
+        var toDate = arr[4]
+        console.log("cancel_request" + JSON.stringify(managerApproval))
+        hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, session_Id) {
+          //get vacation state
 
-  }, function (error, response, body) {
+        }, function (error, response, body) {
 
-    //delete vacation request
-    request({
-      url: 'http://' + IP + '/api/v1/vacation/' + vacationId,
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        'Cookie': remember_me_cookie + ";" + session_Id
-      },
-    }, function (error, response, body) {
-      msg.respond(msg.body.response_url, "Your request has been canceled")
-    })
-  })
-})
+          //delete vacation request
+          request({
+            url: 'http://' + IP + '/api/v1/vacation/' + vacationId,
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+              'Cookie': remember_me_cookie + ";" + session_Id
+            },
+          }, function (error, response, body) {
+            msg.respond(msg.body.response_url, "Your request has been canceled")
+          })
+        })
+      })
 
 app.get('/', function (req, res) {
 
-  res.send('Hello')
-})
+        res.send('Hello')
+      })
 
 console.log('Listening on :' + process.env.PORT)
 app.listen(process.env.PORT)
