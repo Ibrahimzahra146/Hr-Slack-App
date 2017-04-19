@@ -762,7 +762,7 @@ slapp.action('cancel_request', 'cancel', (msg, value) => {
   hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, session_Id) {
     //get vacation state
 
-  }, function (error, response, body) {
+  
     var uri = 'http://' + IP + '/api/v1/vacation/' + vacationId
     console.log("URI", uri)
     //delete vacation request
