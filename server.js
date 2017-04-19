@@ -763,10 +763,11 @@ slapp.action('cancel_request', 'cancel', (msg, value) => {
     //get vacation state
 
   }, function (error, response, body) {
-
+    var uri = 'http://' + IP + '/api/v1/vacation/' + vacationId
+    console.log("URI", uri)
     //delete vacation request
     request({
-      url: 'http://' + IP + '/api/v1/vacation/' + vacationId,
+      url: uri,
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
