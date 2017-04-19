@@ -688,6 +688,8 @@ function managerAction(msg, value, typeOfaction) {
   hrHelper.sendVacationPostRequest(/*from  */fromDateInMilliseconds, toDateInMilliseconds, "ss", employeeEmail, type, function (vacationId, managerApproval) {
 
     console.log("sent VacationPostRequest");
+    var messageFB = "Your request ( " + fromDate + "-" + toDate + " ) for " + employeeEmail + " has been submitted and is awaiting your managers approval "
+
     var text12 = {
       "text": "Your request has been submitted",
       "attachments": [
@@ -721,6 +723,33 @@ function managerAction(msg, value, typeOfaction) {
   fromDate = "";
   toDate = "";
 }
+slapp.action('cancel_request', 'cancel', (msg, value) => {
+  var arr = value.toString().split(";")
+  var email = arr[0]
+  var vacationId = arr[1]
+  var managerApproval = arr[2]
+  var fromDate = arr[3]
+  var toDate = arr[4]
+  console.log("cancel_request" + JSON.stringify(managerApproval))
+  toffyHelper.getNewSessionwithCookie(email, function (remember_me_cookie, session_Id) {
+    //get vacation state
+
+  }, function (error, response, body) {
+
+    //delete vacation request
+    request({
+      url: 'http://' + IP + '/api/v1/vacation/' + vacationId,
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Cookie': remember_me_cookie + ";" + session_Id
+      },
+    }, function (error, response, body) {
+      msg.respond(msg.body.response_url, "Your request has been canceled")
+    })
+  })
+})
+
 app.get('/', function (req, res) {
 
   res.send('Hello')
