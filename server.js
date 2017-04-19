@@ -740,7 +740,8 @@ function managerAction(msg, value, typeOfaction) {
         msg.respond(msg.body.response_url, text12)
 
       });
-
+    })
+  })
 
 
 
