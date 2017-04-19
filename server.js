@@ -685,6 +685,8 @@ function managerAction(msg, value, typeOfaction) {
   toDate = arr[8]
   employeeEmail = arr[9]
   managerId = arr[10]
+  console.log("Freooooom" + fromDate)
+  console.log("toDate", toDate)
   hrHelper.sendVacationPostRequest(/*from  */fromDateInMilliseconds, toDateInMilliseconds, "ss", employeeEmail, type, function (vacationId, managerApproval) {
 
     console.log("sent VacationPostRequest");
@@ -731,7 +733,7 @@ slapp.action('cancel_request', 'cancel', (msg, value) => {
   var fromDate = arr[3]
   var toDate = arr[4]
   console.log("cancel_request" + JSON.stringify(managerApproval))
-  toffyHelper.getNewSessionwithCookie(email, function (remember_me_cookie, session_Id) {
+  hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, session_Id) {
     //get vacation state
 
   }, function (error, response, body) {
