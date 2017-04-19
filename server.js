@@ -688,6 +688,30 @@ function managerAction(msg, value, typeOfaction) {
   hrHelper.sendVacationPostRequest(/*from  */fromDateInMilliseconds, toDateInMilliseconds, "ss", employeeEmail, type, function (vacationId, managerApproval) {
 
     console.log("sent VacationPostRequest");
+    var text12 = {
+      "text": "Your request has been submitted",
+      "attachments": [
+        {
+          "text": messageFB,
+          "callback_id": 'cancel_request',
+          "color": "#3AA3E3",
+          "attachment_type": "default",
+          "actions": [
+            {
+              "name": 'cancel',
+              "text": "Cancel Request",
+              "style": "danger",
+              "type": "button",
+              "value": managerEmail + ";" + vacationId + ";" + JSON.stringify(managerApproval) + ";" + fromDate + ";" + toDate
+
+            }
+          ]
+        }
+      ]
+    }
+    console.log("cancel_request1" + JSON.stringify(managerApproval))
+
+    msg.respond(msg.body.response_url, text12)
 
   });
 
