@@ -721,14 +721,14 @@ function managerAction(msg, value, typeOfaction) {
               "text": messageFB,
               "callback_id": 'cancel_request',
               "color": "#3AA3E3",
-              "attachment_type": "default",
+              "attachment_type": "defaul  t",
               "actions": [
                 {
                   "name": 'cancel',
                   "text": "Cancel Request",
                   "style": "danger",
                   "type": "button",
-                  "value": managerEmail + ";" + vacationId + ";" + JSON.stringify(managerApproval) + ";" + fromDate + ";" + toDate
+                  "value": managerEmail + ";" + vacationId + ";" + fromDate + ";" + toDate
 
                 }
               ]
@@ -752,11 +752,13 @@ slapp.action('cancel_request', 'cancel', (msg, value) => {
   console.log("Cancelation")
   var arr = value.toString().split(";")
   var email = arr[0]
+  console.log("email", email)
   var vacationId = arr[1]
-  var managerApproval = arr[2]
-  var fromDate = arr[3]
-  var toDate = arr[4]
-  console.log("cancel_request" + JSON.stringify(managerApproval))
+  console.log("vacationId", vacationId)
+
+  var fromDate = arr[2]
+  var toDate = arr[3]
+  console.log("cancel_request")
   hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, session_Id) {
     //get vacation state
 
