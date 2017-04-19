@@ -779,6 +779,7 @@ slapp.action('cancel_request', 'cancel', (msg, value) => {
     }, function (error, response, body) {
       console.log("Deelted")
       msg.respond(msg.body.response_url, "Your request for " + employeeEmail + " ( " + fromDate + "-" + toDate + " ) has been canceled")
+      messageSender.sendMessageSpecEmployee(employeeEmail, "Hi, HR " + email + " has canceled a time off for you ( " + fromDate + "-" + toDate + " ).Sorry!")
     })
   })
 })
