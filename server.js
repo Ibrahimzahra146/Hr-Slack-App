@@ -694,8 +694,7 @@ function managerAction(msg, value, typeOfaction) {
     toDate = arr[8]
     employeeEmail = arr[9]
     managerId = arr[10]
-    console.log("Freooooom" + fromDate)
-    console.log("toDate", toDate)
+
 
     hrHelper.convertTimeFormat(arr[0], function (formattedTime, midday) {
 
@@ -710,13 +709,11 @@ function managerAction(msg, value, typeOfaction) {
         } else toDate = toDate + " at 05:00 pm ";
 
 
-        console.log("Freooooom" + fromDate)
-        console.log("toDate", toDate)
-        console.log("sent VacationPostRequest");
-        var messageFB = "Your request ( " + fromDate + "-" + toDate + " ) for " + employeeEmail + " has been submitted and is awaiting your managers approval "
+
+        var messageFB = "Your request ( " + fromDate + "-" + toDate + " ) for " + employeeEmail + " has been submitted ."
 
         var text12 = {
-          "text": "Your request has been submitted",
+          "text": "",
           "attachments": [
             {
               "text": messageFB,
