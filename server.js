@@ -736,7 +736,7 @@ function managerAction(msg, value, typeOfaction) {
         console.log("cancel_request1" + JSON.stringify(managerApproval))
 
         msg.respond(msg.body.response_url, text12)
-        messageSender.sendMessageSpecEmployee(employeeEmail, "Hi, HR " + managerEmail + " has submitted a time off for you from " + fromDate + "-" + toDate + ".");
+        messageSender.sendMessageSpecEmployee(employeeEmail, "Hi, HR " + managerEmail + " has posted a time off for you from " + fromDate + "-" + toDate + ".");
 
       });
     })

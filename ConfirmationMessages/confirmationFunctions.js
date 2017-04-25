@@ -34,7 +34,7 @@ module.exports.sendVacationWithLeaveConfirmation = function sendLeaveSpecTimeSpe
                             "text": "",
                             "attachments": [
                                 {
-                                    "text": messagetext,
+                                    "text": messagetext + "\n ( Note: Any official holiday will not be deducted from your time off request.)",
                                     "callback_id": 'leave_with_vacation_confirm_reject',
                                     "color": "#3AA3E3",
                                     "attachment_type": "default",
@@ -53,7 +53,7 @@ module.exports.sendVacationWithLeaveConfirmation = function sendLeaveSpecTimeSpe
                                             "type": "button",
                                             "value": fromTime + "," + toTime + "," + email + "," + fromMilliseconds + "," + toMilliseconds + "," + type + "," + workingDays + "," + fromDate + "," + ToDate + "," + employeeEmail + "," + Id
                                         }
-                                       
+
                                     ]
                                 }
                             ]
