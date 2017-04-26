@@ -9,6 +9,8 @@ var sessionFlag = 0;
 var generalCookies = "initial"
 var IP = process.env.SLACK_IP
 var general_remember_me = ""
+exports.general_remember_me = general_remember_me;
+exports.general_session_id = general_session_id
 var general_session_id = ""
 module.exports.sendVacationPutRequest = function sendVacationPutRequest(vacationId, approvalId, managerEmail, status) {
     console.log("sending vacation put request " + status)

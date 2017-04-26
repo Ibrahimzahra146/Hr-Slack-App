@@ -203,3 +203,83 @@ module.exports.sendCompensationConfirmationToHr = function sendCompensationConfi
 
 
 
+//show employee history 
+module.exports.showEmployeeHistory = function showEmployeeHistory(email, employeeEmail, msg) {
+    msg.say(employeeEmail + " history is :")
+    hrHelper.getIdFromEmail(email, employeeEmail, function (Id) {
+        var uri = 'http://' + IP + '/api/v1/employee/' + Id + '/vacations/2017'
+        console.log("uri" + uri)
+
+        request({
+            url: uri,
+            json: true,
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': hrHelper.general_remember_me + ";" + hrHelper.general_session_id
+            }
+        }, function (error, response, body) {
+
+            var i = 0;
+            //check if no history ,so empty response
+            if (!error && response.statusCode === 200) {
+
+                if (!(body[i])) {
+                    msg.say("There are no requested vacations for you");
+                }
+                else {
+                    //build message Json result to send it to slack
+                    while ((body)[i]) {
+                        var parsedBody = body[i]
+                        var stringMessage = "["
+                        var fromDate = new Date(parsedBody.fromDate);
+                        fromDate = fromDate.toString().split("GMT")
+                        fromDate = fromDate[0]
+                        var toDate = new Date(parsedBody.toDate)
+                        toDate = toDate.toString().split("GMT")
+                        toDate = toDate[0]
+                        stringMessage = stringMessage + "{" + "\"title\":" + "\"" + "From date" + "\"" + ",\"value\":" + "\"" + fromDate + "\"" + ",\"short\":true}"
+                        stringMessage = stringMessage + ","
+                        stringMessage = stringMessage + "{" + "\"title\":" + "\"" + "To date" + "\"" + ",\"value\":" + "\"" + toDate + "\"" + ",\"short\":true}"
+                        stringMessage = stringMessage + ","
+                        stringMessage = stringMessage + "{" + "\"title\":" + "\"" + "Vacation state" + "\"" + ",\"value\":" + "\"" + parsedBody.vacationState + "\"" + ",\"short\":true}"
+                        var typeOfVacation = ""
+                        if (parsedBody.type == 0)
+                            typeOfVacation = "Time off"
+                        else if (parsedBody.type == 4)
+                            typeOfVacation = "Sick time off"
+                        printLogs("stringMessage::" + stringMessage);
+                        stringMessage = stringMessage + "]"
+                        var messageBody = {
+                            "text": "*" + typeOfVacation + "*",
+                            "attachments": [
+                                {
+                                    "attachment_type": "default",
+                                    "text": " ",
+                                    "fallback": "ReferenceError",
+                                    "fields": stringMessage,
+                                    "color": "#F35A00"
+                                }
+                            ]
+                        }
+                        printLogs("messageBody" + messageBody)
+                        var stringfy = JSON.stringify(messageBody);
+
+                        printLogs("stringfy" + stringfy)
+                        stringfy = stringfy.replace(/\\/g, "")
+                        stringfy = stringfy.replace(/]\"/, "]")
+                        stringfy = stringfy.replace(/\"\[/, "[")
+                        stringfy = JSON.parse(stringfy)
+
+                        msg.say(stringfy)
+                        i++;
+
+                    }
+
+                }
+            }
+
+        })
+    })
+}
+
