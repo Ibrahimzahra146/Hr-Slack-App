@@ -396,6 +396,8 @@ function sendRequestToApiAi(emailValue, msg) {
       });
       apiaiRequest.on('error', (error) => console.error(error));
       apiaiRequest.end();
+    } else if (role == 1000) {
+      msg.say("Your account has been deactivated. You are not allowed to use the system.")
     } else msg.say("Sorry!.You dont have the permession to use this bot.")
   })
 
