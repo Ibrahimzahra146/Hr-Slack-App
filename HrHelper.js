@@ -99,7 +99,7 @@ module.exports.getRoleByEmail = function getRoleByEmail(email, role, callback) {
     var flag = false;
     printLogs("getting Roles ");
 
-    hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, session_Id) {]
+    hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, session_Id) {
         if (remember_me_cookie == 1000) {
             callback(1000)
         } else {
