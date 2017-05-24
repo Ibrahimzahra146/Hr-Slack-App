@@ -80,6 +80,7 @@ module.exports.replaceMessage = function replaceMessage(msg, userEmail, managerE
 }
 //return original message when click on undo
 module.exports.undoAction = function unduAction(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, approver2Action, vacationState, myAction) {
+    console.log("myAction" + myAction)
     getEmoji(approver2Action, vacationState, type, myAction, function (approverActionEmoji, finalStateEmoji, typeEmoji, myActionEmoji) {
         var dont_detuct_button = ""
         if (type != "WFH") {
@@ -436,15 +437,15 @@ function getEmoji(state, finalState, type, myAction, callback) {
     var typeEmoji = ""
     var finalStateEmoji = ":thinking_face:"
     var myActionEmoji = ":thinking_face:"
-    if (state == "--"){
-    var approverActionEmoji = ""
-        
+    if (state == "--") {
+        var approverActionEmoji = ""
+
     }
-        if (state == "Rejected") {
-            approverActionEmoji = ":no_entry_sign:"
-        } else if (state == "Approved") {
-            approverActionEmoji = ":white_check_mark:"
-        }
+    if (state == "Rejected") {
+        approverActionEmoji = ":no_entry_sign:"
+    } else if (state == "Approved") {
+        approverActionEmoji = ":white_check_mark:"
+    }
     if (type == "sick") {
         typeEmoji = ":ambulance:"
     }
