@@ -478,7 +478,7 @@ function HrAction(msg, value, approvalType, comment) {
     typeText = " paternity" + " time off"
   } else if (type == "WFH")
     typeText = " work from home"
-  hrHelper.sendVacationPutRequest(vacationId, approvalId, hrEmail, "Approved")
+  hrHelper.sendVacationPutRequest(vacationId, approvalId, hrEmail, approvalType)
   request({
     url: 'http://' + IP + '/api/v1/toffy/get-record', //URL to hitDs
     method: 'POST',
