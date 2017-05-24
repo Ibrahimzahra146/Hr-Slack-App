@@ -653,6 +653,49 @@ function managerAction(msg, value, typeOfaction) {
   fromDate = "";
   toDate = "";
 }
+/**
+ * 
+ * 
+ */
+slapp.action('manager_confirm_reject', 'Undo', (msg, value) => {
+  var arr = value.toString().split(";")
+  var userEmail = arr[0];
+  var vacationId = arr[1];
+  var approvalId = arr[2]
+  var managerEmail = arr[3]
+  var fromWho = arr[4];
+  var fromDate = arr[5];
+  var toDate = arr[6];
+  var type = arr[7]
+  var workingDays = arr[8]
+  var ImageUrl = arr[9]
+
+  var uri = 'http://' + IP + '/api/v1/vacation/' + vacationId
+  request({
+    url: uri, //URL to hitDs
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Cookie': managerToffyHelper.general_remember_me + ";" + managerToffyHelper.general_session_Id
+
+    }
+    //Set the body as a stringcc
+  }, function (error, response, body) {
+
+      vacationHelper.getSecondApproverStateAndFinalState(managerEmail, body, 1, function (myEmail, myAction, vacationState) {
+        replaceMessage.undoAction(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, "approver2Action", vacationState, myAction)
+      })
+
+
+
+
+
+    
+  })
+})
+/**
+ * 
+ */
 slapp.action('cancel_request', 'cancel', (msg, value) => {
   console.log("Cancelation")
   var arr = value.toString().split(";")
