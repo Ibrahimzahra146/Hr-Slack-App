@@ -459,6 +459,7 @@ function getEmoji(state, finalState, type, myAction, callback) {
     } else if (myAction == "Approved") {
         myActionEmoji = ":white_check_mark:"
     }
+    console.log("myActionEmoji" + myActionEmoji)
 
     callback(approverActionEmoji, finalStateEmoji, typeEmoji, myActionEmoji)
 
