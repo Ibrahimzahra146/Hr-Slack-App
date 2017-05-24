@@ -13,6 +13,7 @@ const async = require('async');
 const apiai = require('apiai');
 const APIAI_LANG = 'en';
 var hrHelper = require('./HrHelper.js');
+var vacationHelper = require("./public/Vacation.js")
 var replaceMessage = require('./messagesHelper/replaceManagerActionMessage.js')
 const confirmationFunctions = require('./ConfirmationMessages/confirmationFunctions.js')
 const messageSender = require('./ConfirmationMessages/messageSender.js')
@@ -682,15 +683,15 @@ slapp.action('manager_confirm_reject', 'Undo', (msg, value) => {
     //Set the body as a stringcc
   }, function (error, response, body) {
 
-      vacationHelper.getSecondApproverStateAndFinalState(managerEmail, body, 1, function (myEmail, myAction, vacationState) {
-        replaceMessage.undoAction(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, "approver2Action", vacationState, myAction)
-      })
+    vacationHelper.getSecondApproverStateAndFinalState(managerEmail, body, 1, function (myEmail, myAction, vacationState) {
+      replaceMessage.undoAction(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, "approver2Action", vacationState, myAction)
+    })
 
 
 
 
 
-    
+
   })
 })
 /**
