@@ -13,6 +13,7 @@ const async = require('async');
 const apiai = require('apiai');
 const APIAI_LANG = 'en';
 var hrHelper = require('./HrHelper.js');
+var replaceMessage = require('./messagesHelper/replaceManagerActionMessage.js')
 const confirmationFunctions = require('./ConfirmationMessages/confirmationFunctions.js')
 const messageSender = require('./ConfirmationMessages/messageSender.js')
 var employee = require('./employeeSide.js')
@@ -451,16 +452,22 @@ space
 -------------____________________________________________________---------------------
 */
 
-
-slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
+function HrAction(msg, value, approvalType, comment) {
   var arr = value.toString().split(";")
   var userEmail = arr[0];
   var vacationId = arr[1];
   var approvalId = arr[2]
   var hrEmail = arr[3]
-  var fromtDate = arr[5]
-  var toDate = arr[6]
+  var fromWho = arr[4];
+  var fromDate = arr[5];
+  var toDate = arr[6];
   var type = arr[7]
+  var workingDays = arr[8]
+  var ImageUrl = arr[9]
+  var approver2Email = arr[10]
+  var approver2Action = arr[11]
+  var vacationState = arr[12]
+  //
   var typeText = " time off"
   if (type == "sick") {
     typeText = " sick time off "
@@ -482,11 +489,15 @@ slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
     //Set the body as a stringcc
   }, function (error, response, body) {
     var responseBody = JSON.parse(body);
-    hrHelper.sendFeedBackMessage(responseBody, hrEmail, fromtDate, toDate)
-    msg.say("You have accepted the" + typeText + " request for " + userEmail + " ( " + fromtDate + "-" + toDate + ").")
+    //hrHelper.sendFeedBackMessage(responseBody, hrEmail, fromtDate, toDate)
+    // msg.say("You have accepted the" + typeText + " request for " + userEmail + " ( " + fromtDate + "-" + toDate + ").")
+    replaceMessage.replaceMessage(msg, userEmail, hrEmail, fromDate, toDate, type, approvalType, vacationId, approvalId, ImageUrl, typeText, workingDays, "approver2Email", "approver2Action", "vacationState")
 
 
   });
+}
+slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
+  HrAction(msg, value, "Approved", "")
 })
 
 slapp.action('confirm_reject_compensation', 'confirm', (msg, value) => {
@@ -541,123 +552,12 @@ slapp.action('confirm_reject_compensation', 'confirm', (msg, value) => {
 
 
 slapp.action('manager_confirm_reject', 'reject', (msg, value) => {
-  var arr = value.toString().split(";")
-  var userEmail = arr[0];
-  var vacationId = arr[1];
-  var approvalId = arr[2]
-  var hrEmail = arr[3]
-  var fromtDate = arr[5]
-  var toDate = arr[6]
-  var type = arr[7]
-  var typeText = " time off"
-  if (type == "sick") {
-    typeText = " sick time off "
-  } else if (type == "Maternity") {
-    typeText = " maternity" + " time off"
-  } else if (type == "Paternity") {
-    typeText = " paternity" + " time off"
-  } else if (type == "WFH")
-    typeText = " work from home"
-  hrHelper.sendVacationPutRequest(vacationId, approvalId, hrEmail, "Rejected")
-  request({
-    url: 'http://' + IP + '/api/v1/toffy/get-record', //URL to hitDs
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Cookie': 'JSESSIONID=24D8D542209A0B2FF91AB2A333C8FA70'
-    },
-    body: userEmail
-    //Set the body as a stringcc
-  }, function (error, response, body) {
-    var responseBody = JSON.parse(body);
-
-    var message = {
-      'type': 'message',
-      'channel': responseBody.userChannelId,
-      user: responseBody.slackUserId,
-      text: 'what is my name',
-      ts: '1482920918.000057',
-      team: responseBody.teamId,
-      event: 'direct_message'
-    };
-    bot.startConversation(message, function (err, convo) {
-      if (!err) {
-        var text12 = {
-          "text": "HR " + hrEmail + " has rejected your time off request" + " ( " + fromtDate + "-" + toDate + " ).Sorry! ",
-        }
-        var stringfy = JSON.stringify(text12);
-        var obj1 = JSON.parse(stringfy);
-        bot.reply(message, obj1);
-      }
-    });
-  });
-
-  msg.say("you have rejected the" + typeText + "  request for " + userEmail)
+  HrAction(msg, value, "Rejected", "")
 })
 
 
 slapp.action('manager_confirm_reject', 'dont_detuct', (msg, value) => {
-  var arr = value.toString().split(";")
-  var userEmail = arr[0];
-  var vacationId = arr[1];
-  var approvalId = arr[2]
-  var hrEmail = arr[3]
-  var fromtDate = arr[5]
-  var toDate = arr[6]
-  var type = arr[7]
-  var typeText = " time off"
-  if (type == "sick") {
-    typeText = " sick time off "
-  } else if (type == "Maternity") {
-    typeText = " maternity" + " time off"
-  } else if (type == "Paternity") {
-    typeText = " paternity" + " time off"
-  } else if (type == "WFH")
-    typeText = " work from home"
-  console.log("Regected userEmail " + userEmail)
-  console.log("Regected vacationId " + vacationId)
-  console.log("Regected approvalId " + approvalId)
-
-  console.log("Regected hrEmail " + hrEmail)
-
-  hrHelper.sendVacationPutRequest(vacationId, approvalId, hrEmail, "ApprovedWithoutDeduction")
-  request({
-    url: 'http://' + IP + '/api/v1/toffy/get-record', //URL to hitDs
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Cookie': 'JSESSIONID=24D8D542209A0B2FF91AB2A333C8FA70'
-    },
-    body: userEmail
-    //Set the body as a stringcc
-  }, function (error, response, body) {
-    var responseBody = JSON.parse(body);
-
-    var message = {
-      'type': 'message',
-      'channel': responseBody.userChannelId,
-      user: responseBody.slackUserId,
-      text: 'what is my name',
-      ts: '1482920918.000057',
-      team: responseBody.teamId,
-      event: 'direct_message'
-    };
-    bot.startConversation(message, function (err, convo) {
-
-
-      if (!err) {
-        var text12 = {
-          "text": "HR " + hrEmail + " has accepted your time off request without detuction" + " ( " + fromtDate + "-" + toDate + "). Enjoy!",
-        }
-        var stringfy = JSON.stringify(text12);
-        var obj1 = JSON.parse(stringfy);
-        bot.reply(message, obj1);
-
-      }
-    });
-  });
-
-  msg.say("you have accepted the" + typeText + " request but without detuction for " + userEmail + " ( " + fromtDate + "-" + toDate + ").")
+  HrAction(msg, value, "ApprovedWithoutDeduction", "")
 
 
 })
