@@ -14,7 +14,7 @@ var async = require('async');
  */
 module.exports.getVacationState = function getVacationState(email, vacationId, callback) {
     console.log("getVacationState")
-   hrHelper .getNewSessionwithCookie(email, function (remember_me_cookie, sessionId) {
+    hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, sessionId) {
         hrHelper.general_remember_me = remember_me_cookie
         hrHelper.general_session_id = sessionId
 
@@ -50,8 +50,8 @@ module.exports.getSecondApproverStateAndFinalState = function getSecondApproverS
         async.whilst(
             function () { return JSON.parse(body).managerApproval[i]; },
             function (callback) {
-                if (JSON.parse(body).managerApproval[i].managerEmail == email && state == 1) {
-                    console.log("Callback ")
+                if (JSON.parse(body).managerApproval[i].managerEmail == email && state == 1 && JSON.parse(body).managerApproval[i].role == "HR") {
+                    console.log("Callback l")
 
                     approver2Email = JSON.parse(body).managerApproval[i].managerEmail
                     approver2Action = JSON.parse(body).managerApproval[i].state
