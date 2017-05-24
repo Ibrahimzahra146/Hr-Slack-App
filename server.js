@@ -672,26 +672,26 @@ slapp.action('manager_confirm_reject', 'Undo', (msg, value) => {
   var ImageUrl = arr[9]
 
   var uri = 'http://' + IP + '/api/v1/vacation/' + vacationId
-  hrHelper.getNewSessionwithCookie(managerEmail, function (remember_me_cookie, session_Id) {
+  // hrHelper.getNewSessionwithCookie(managerEmail, function (remember_me_cookie, session_Id) {
 
 
-    request({
-      url: uri, //URL to hitDs
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Cookie': remember_me_cookie + ";" + session_Id
+  request({
+    url: uri, //URL to hitDs
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Cookie': remember_me_cookie + ";" + session_Id
 
-      }
-      //Set the body as a stringcc
-    }, function (error, response, body) {
-      //console.log(JSON.stringify(body))
+    }
+    //Set the body as a stringcc
+  }, function (error, response, body) {
+    //console.log(JSON.stringify(body))
 
-      vacationHelper.getSecondApproverStateAndFinalState(managerEmail, body, 1, function (myEmail, myAction, vacationState) {
-        console.log("myAction" + myAction)
-        replaceMessage.undoAction(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, "approver2Action", vacationState, myAction)
-      })
+    vacationHelper.getSecondApproverStateAndFinalState(managerEmail, body, 1, function (myEmail, myAction, vacationState) {
+      console.log("myAction" + myAction)
+      replaceMessage.undoAction(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, "approver2Action", vacationState, myAction)
     })
+    // })
 
 
 

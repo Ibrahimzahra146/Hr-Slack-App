@@ -79,7 +79,7 @@ module.exports.replaceMessage = function replaceMessage(msg, userEmail, managerE
     })
 }
 //return original message when click on undo
-module.exports.undoAction = function unduAction(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, approver2Action, vacationState, myAction) {
+module.exports.undoAction = function undoAction(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, approver2Action, vacationState, myAction) {
     console.log("myAction" + myAction)
     getEmoji(approver2Action, vacationState, type, myAction, function (approverActionEmoji, finalStateEmoji, typeEmoji, myActionEmoji) {
         var dont_detuct_button = ""
