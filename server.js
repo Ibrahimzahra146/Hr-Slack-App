@@ -685,9 +685,10 @@ slapp.action('manager_confirm_reject', 'Undo', (msg, value) => {
       }
       //Set the body as a stringcc
     }, function (error, response, body) {
-      console.log(JSON.stringify(body))
+      //console.log(JSON.stringify(body))
 
       vacationHelper.getSecondApproverStateAndFinalState(managerEmail, body, 1, function (myEmail, myAction, vacationState) {
+        console.log("myAction" + myAction)
         replaceMessage.undoAction(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, "approver2Action", vacationState, myAction)
       })
     })
