@@ -677,7 +677,7 @@ slapp.action('manager_confirm_reject', 'Undo', (msg, value) => {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      'Cookie': managerToffyHelper.general_remember_me + ";" + managerToffyHelper.general_session_Id
+      'Cookie': hrHelper.general_remember_me + ";" + hrHelper.general_session_Id
 
     }
     //Set the body as a stringcc
