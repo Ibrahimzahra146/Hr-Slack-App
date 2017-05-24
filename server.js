@@ -660,6 +660,7 @@ function managerAction(msg, value, typeOfaction) {
  */
 slapp.action('manager_confirm_reject', 'Undo', (msg, value) => {
   var arr = value.toString().split(";")
+  console.log("UNDO UNDO")
   var userEmail = arr[0];
   var vacationId = arr[1];
   var approvalId = arr[2]

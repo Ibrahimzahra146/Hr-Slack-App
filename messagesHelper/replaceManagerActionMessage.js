@@ -58,7 +58,7 @@ module.exports.replaceMessage = function replaceMessage(msg, userEmail, managerE
                     "actions": [
                         {
                             "name": "Undo",
-                            "text": "back",
+                            "text": "Undo",
                             "type": "button",
 
                             "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl
