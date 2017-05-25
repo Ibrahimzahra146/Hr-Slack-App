@@ -705,8 +705,33 @@ slapp.action('manager_confirm_reject', 'Undo', (msg, value) => {
   })
 })
 /**
+ * Reject with commemt listener
  * 
  */
+slapp.action('manager_confirm_reject', 'reject_with_comment', (msg, value) => {
+  var arr = value.toString().split(";")
+  var userEmail = arr[0];
+  var vacationId = arr[1];
+  var approvalId = arr[2]
+  var managerEmail = arr[3]
+  var fromWho = arr[4];
+  var fromDate = arr[5];
+  var toDate = arr[6];
+  var type = arr[7]
+  var workingDays = arr[8]
+  var ImageUrl = arr[9]
+  vacationHelper.getVacationBody(managerEmail, vacationId, function (vacationBody) {
+
+
+    vacationHelper.getSecondApproverStateAndFinalState(managerEmail, vacationBody, 1, function (myEmail, myAction, vacationState) {
+
+
+
+      replaceMessage.replaceWithComment(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, "approver2Email", "approver2Action", vacationState, myAction)
+    })
+
+  })
+})
 slapp.action('cancel_request', 'cancel', (msg, value) => {
   console.log("Cancelation")
   var arr = value.toString().split(";")
