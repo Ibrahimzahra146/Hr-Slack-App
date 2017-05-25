@@ -66,11 +66,15 @@ function getIdByEmail(email, callback) {
 
 }
 
-module.exports.sendFeedBackMessage = function sendFeedBackMessage(responseBody, hrEmail, fromDate, toDate, approvalType) {
+module.exports.sendFeedBackMessage = function sendFeedBackMessage(responseBody, hrEmail, fromDate, toDate, approvalType, comment) {
     console.log("responseBody.userChannelId " + responseBody.userChannelId)
     console.log("responseBody.slackUserId " + responseBody.slackUserId)
     console.log("responseBody.teamId " + responseBody.teamId)
     console.log("Arrive sendFeedBackMessage  ")
+
+    var hrComment = "Comment: " + comment
+    if (comment == "")
+        hrComment = ""
     var message = {
         'type': 'message',
         'channel': responseBody.userChannelId,
@@ -85,7 +89,7 @@ module.exports.sendFeedBackMessage = function sendFeedBackMessage(responseBody, 
 
         if (!err) {
             var text12 = {
-                "text": "HR " + hrEmail + " has " + approvalType + " your time off request" + " ( " + fromDate + "-" + toDate + ").Take care.",
+                "text": "HR " + hrEmail + " has " + approvalType + " your time off request" + " ( " + fromDate + "-" + toDate + ").Take care.\n" + hrComment,
             }
             var stringfy = JSON.stringify(text12);
             var obj1 = JSON.parse(stringfy);

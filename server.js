@@ -492,7 +492,7 @@ function HrAction(msg, value, approvalType, comment) {
     var responseBody = JSON.parse(body);
     vacationHelper.getVacationBody(hrEmail, vacationId, function (vacationBody) {
       vacationHelper.getSecondApproverStateAndFinalState(hrEmail, vacationBody, 1, function (myEmail, myAction, vacationState) {
-        hrHelper.sendFeedBackMessage(responseBody, hrEmail, fromDate, toDate, approvalType)
+        hrHelper.sendFeedBackMessage(responseBody, hrEmail, fromDate, toDate, approvalType, comment)
         // msg.say("You have accepted the" + typeText + " request for " + userEmail + " ( " + fromtDate + "-" + toDate + ").")
         replaceMessage.replaceMessage(msg, userEmail, hrEmail, fromDate, toDate, type, approvalType, vacationId, approvalId, ImageUrl, typeText, workingDays, "approver2Email", "approver2Action", vacationState)
 
@@ -731,6 +731,12 @@ slapp.action('manager_confirm_reject', 'reject_with_comment', (msg, value) => {
     })
 
   })
+})
+slapp.action('manager_confirm_reject', 'Send_comment', (msg, value) => {
+  var arr = value.toString().split(";")
+  var comment = arr[10]
+
+  HrAction(msg, value, "Rejected", comment)
 })
 slapp.action('cancel_request', 'cancel', (msg, value) => {
   console.log("Cancelation")
