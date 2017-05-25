@@ -120,11 +120,11 @@ module.exports.getRoleByEmail = function getRoleByEmail(email, role, callback) {
             }, function (error, response, body) {
                 console.log("body" + body)
 
-                var roles = (JSON.parse(body));
+                var roles1 = (JSON.parse(body));
                 var i = 0
                 while (roles[i]) {
-                    printLogs("roles[i].name" + roles[i].name)
-                    if (roles[i].name == role) {
+                    printLogs("roles[i].name" + roles1.roles[i].name)
+                    if ( roles1.roles[i].name == role) {
                         flag = true;
                         callback(flag)
                         break;
