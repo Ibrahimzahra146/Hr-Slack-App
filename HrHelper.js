@@ -101,7 +101,7 @@ module.exports.sendFeedBackMessage = function sendFeedBackMessage(responseBody, 
 
 module.exports.getRoleByEmail = function getRoleByEmail(email, role, callback) {
     var flag = false;
-    printLogs("getting Roles ");
+    printLogs("getting  Roles ");
 
     hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, session_Id) {
         if (remember_me_cookie == 1000) {
@@ -118,6 +118,7 @@ module.exports.getRoleByEmail = function getRoleByEmail(email, role, callback) {
                 body: email
                 //Set the body as a stringcc
             }, function (error, response, body) {
+                
                 var roles = (JSON.parse(body));
                 var i = 0
                 while (roles[i]) {
