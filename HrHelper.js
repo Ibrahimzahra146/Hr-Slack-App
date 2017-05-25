@@ -124,14 +124,15 @@ module.exports.getRoleByEmail = function getRoleByEmail(email, role, callback) {
                 var i = 0
                 while (roles1.roles[i]) {
                     printLogs("roles[i].name" + roles1.roles[i].name)
-                    if ( roles1.roles[i].name == role) {
+                    if (roles1.roles[i].name == role) {
                         flag = true;
-                        callback(flag)
+
                         break;
                     }
                     i++;
 
                 }
+                callback(flag)
 
 
             })
