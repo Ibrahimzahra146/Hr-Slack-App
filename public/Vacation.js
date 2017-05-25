@@ -79,7 +79,7 @@ module.exports.getSecondApproverStateAndFinalState = function getSecondApproverS
     }
 
 }
-module.exports.getVacationBody = function getVacationBody(managerEmail, callback) {
+module.exports.getVacationBody = function getVacationBody(managerEmail, vacationId, callback) {
 
     var uri = 'http://' + IP + '/api/v1/vacation/' + vacationId
     hrHelper.getNewSessionwithCookie(managerEmail, function (remember_me_cookie, session_Id) {
