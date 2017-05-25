@@ -66,7 +66,7 @@ function getIdByEmail(email, callback) {
 
 }
 
-module.exports.sendFeedBackMessage = function sendFeedBackMessage(responseBody, hrEmail, fromDate, toDateز, approvalType) {
+module.exports.sendFeedBackMessage = function sendFeedBackMessage(responseBody, hrEmail, fromDate, toDate, approvalType) {
     console.log("responseBody.userChannelId " + responseBody.userChannelId)
     console.log("responseBody.slackUserId " + responseBody.slackUserId)
     console.log("responseBody.teamId " + responseBody.teamId)
