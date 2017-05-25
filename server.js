@@ -494,7 +494,7 @@ function HrAction(msg, value, approvalType, comment) {
       vacationHelper.getSecondApproverStateAndFinalState(hrEmail, vacationBody, 1, function (myEmail, myAction, vacationState) {
         hrHelper.sendFeedBackMessage(responseBody, hrEmail, fromDate, toDate, approvalType)
         // msg.say("You have accepted the" + typeText + " request for " + userEmail + " ( " + fromtDate + "-" + toDate + ").")
-        replaceMessage.replaceMessage(msg, userEmail, hrEmail, fromDate, toDate, type, approvalType, vacationId, approvalId, ImageUrl, typeText, workingDays, "approver2Email", "approver2Action", vacationStateF)
+        replaceMessage.replaceMessage(msg, userEmail, hrEmail, fromDate, toDate, type, approvalType, vacationId, approvalId, ImageUrl, typeText, workingDays, "approver2Email", "approver2Action", vacationState)
 
       })
     })
