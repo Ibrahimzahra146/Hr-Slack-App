@@ -78,8 +78,26 @@ module.exports.getSecondApproverStateAndFinalState = function getSecondApproverS
         );
     }
 
+}
+module.exports.getVacationBody = function getVacationBody(managerEmail, callback) {
+
+    var uri = 'http://' + IP + '/api/v1/vacation/' + vacationId
+    hrHelper.getNewSessionwithCookie(managerEmail, function (remember_me_cookie, session_Id) {
 
 
+        request({
+            url: uri, //URL to hitDs
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': remember_me_cookie + ";" + session_Id
 
+            }
+            //Set the body as a stringcc
+        }, function (error, response, body) {
+            callback(body)
+
+        })
+    })
 
 }

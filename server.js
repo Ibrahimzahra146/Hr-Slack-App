@@ -490,12 +490,15 @@ function HrAction(msg, value, approvalType, comment) {
     //Set the body as a stringcc
   }, function (error, response, body) {
     var responseBody = JSON.parse(body);
-    vacationHelper.getSecondApproverStateAndFinalState(hrEmail, body, 1, function (myEmail, myAction, vacationState) {
-      hrHelper.sendFeedBackMessage(responseBody, hrEmail, fromtDate, toDate, approvalType)
-      // msg.say("You have accepted the" + typeText + " request for " + userEmail + " ( " + fromtDate + "-" + toDate + ").")
-      replaceMessage.replaceMessage(msg, userEmail, hrEmail, fromDate, toDate, type, approvalType, vacationId, approvalId, ImageUrl, typeText, workingDays, "approver2Email", "approver2Action", vacationStateF)
+    vacationHelper.getVacationBody(hrEmail, function (vacationBody) {
+      vacationHelper.getSecondApproverStateAndFinalState(hrEmail, vacationBody, 1, function (myEmail, myAction, vacationState) {
+        hrHelper.sendFeedBackMessage(responseBody, hrEmail, fromtDate, toDate, approvalType)
+        // msg.say("You have accepted the" + typeText + " request for " + userEmail + " ( " + fromtDate + "-" + toDate + ").")
+        replaceMessage.replaceMessage(msg, userEmail, hrEmail, fromDate, toDate, type, approvalType, vacationId, approvalId, ImageUrl, typeText, workingDays, "approver2Email", "approver2Action", vacationStateF)
 
+      })
     })
+
   });
 }
 slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
@@ -532,9 +535,7 @@ slapp.action('confirm_reject_compensation', 'confirm', (msg, value) => {
       team: responseBody.teamId,
       event: 'direct_message'
     };
-    console.log("userEmail" + userEmail)
-    console.log("responseBody.userChannelId" + responseBody.userChannelId)
-    console.log("responseBody.slackUserId" + responseBody.slackUserId)
+
     bot.startConversation(message, function (err, convo) {
       console.log("cannot send message")
 
@@ -687,6 +688,7 @@ slapp.action('manager_confirm_reject', 'Undo', (msg, value) => {
       }
       //Set the body as a stringcc
     }, function (error, response, body) {
+
       //console.log(JSON.stringify(body))
 
       vacationHelper.getSecondApproverStateAndFinalState(managerEmail, body, 1, function (myEmail, myAction, vacationState) {
