@@ -492,7 +492,7 @@ function HrAction(msg, value, approvalType, comment) {
     var responseBody = JSON.parse(body);
     vacationHelper.getVacationBody(hrEmail, vacationId, function (vacationBody) {
       vacationHelper.getSecondApproverStateAndFinalState(hrEmail, vacationBody, 1, function (myEmail, myAction, vacationState) {
-        hrHelper.sendFeedBackMessage(responseBody, hrEmail, fromtDate, toDate, approvalType)
+        hrHelper.sendFeedBackMessage(responseBody, hrEmail, fromDate, toDate, approvalType)
         // msg.say("You have accepted the" + typeText + " request for " + userEmail + " ( " + fromtDate + "-" + toDate + ").")
         replaceMessage.replaceMessage(msg, userEmail, hrEmail, fromDate, toDate, type, approvalType, vacationId, approvalId, ImageUrl, typeText, workingDays, "approver2Email", "approver2Action", vacationStateF)
 
