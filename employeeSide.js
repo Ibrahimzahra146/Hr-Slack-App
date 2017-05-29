@@ -24,9 +24,6 @@ module.exports.showEmployeeProfile = function showEmployeeProfile(email, employe
                 Approver2 = body.manager[1].name;
 
             }
-
-            printLogs("show profile bod" + JSON.stringify(body))
-            printLogs("show profile bod" + response.statusCode)
             var imageUrl = body.profilePicture.replace(/ /, "%20")
             var messageBody = {
                 "text": "Your profile details",
