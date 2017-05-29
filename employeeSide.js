@@ -8,13 +8,6 @@ module.exports.showEmployeeProfile = function showEmployeeProfile(email, employe
     var Approver2 = "---";
     printLogs("employeeEmail::" + employeeEmail)
     hrHelper.getIdFromEmail(email, employeeEmail, function (Id) {
-
-
-
-        console.log("2-hrHelper.general_remember_me" + hrHelper.general_remember_me)
-        console.log("2-hrHelper.general_session_id" + hrHelper.general_session_id)
-
-
         request({
             url: "http://" + IP + "/api/v1/employee/" + Id,
             json: true,
@@ -24,14 +17,14 @@ module.exports.showEmployeeProfile = function showEmployeeProfile(email, employe
                 'Cookie': hrHelper.general_remember_me + ";" + hrHelper.general_session_id
             },
         }, function (error, response, body) {
-            console.log("3-" + response.statusCode)
+            body.manager.sort(function (a, b) {
+                return a.rank - b.rank;
+            });
             if (body.manager[1]) {
                 Approver2 = body.manager[1].name;
 
             }
-            body.manager.sort(function (a, b) {
-                return a.rank - b.rank;
-            });
+
             printLogs("show profile bod" + JSON.stringify(body))
             printLogs("show profile bod" + response.statusCode)
             var imageUrl = body.profilePicture.replace(/ /, "%20")
