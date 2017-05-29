@@ -29,7 +29,9 @@ module.exports.showEmployeeProfile = function showEmployeeProfile(email, employe
                 Approver2 = body.manager[1].name;
 
             }
-
+            body.manager.sort(function (a, b) {
+                return a.rank - b.rank;
+            });
             printLogs("show profile bod" + JSON.stringify(body))
             printLogs("show profile bod" + response.statusCode)
             var imageUrl = body.profilePicture.replace(/ /, "%20")
@@ -58,7 +60,7 @@ module.exports.showEmployeeProfile = function showEmployeeProfile(email, employe
                             },
                             {
                                 "title": "Approver 1",
-                                "value": Approver1,
+                                "value": body.manager[0].name,
                                 "short": true
                             },
 
