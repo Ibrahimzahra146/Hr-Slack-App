@@ -32,8 +32,9 @@ module.exports.showEmployeeProfile = function showEmployeeProfile(email, employe
 
             printLogs("show profile bod" + JSON.stringify(body))
             printLogs("show profile bod" + response.statusCode)
+            var imageUrl = body.profilePicture.replace(/ /, "%20")
             var messageBody = {
-                "text": employeeEmail + " profile details",
+                "text": "Your profile details",
                 "attachments": [
                     {
                         "attachment_type": "default",
@@ -57,27 +58,24 @@ module.exports.showEmployeeProfile = function showEmployeeProfile(email, employe
                             },
                             {
                                 "title": "Approver 1",
-                                "value": body.manager[0].name,
+                                "value": Approver1,
                                 "short": true
                             },
 
+
                             {
-                                "title": "Emp.type ",
-                                "value": body.employeeType,
+                                "title": "Hire date",
+                                "value": body.hireDate,
                                 "short": true
                             },
                             {
                                 "title": "Approver 2",
                                 "value": Approver2,
                                 "short": true
-                            },
-                            {
-                                "title": "Employment date",
-                                "value": body.hireDate,
-                                "short": true
                             }
                         ],
-                        "color": "#F35A00"
+                        "color": "#F35A00",
+                        thumb_url: imageUrl
                     }
                 ]
             }
