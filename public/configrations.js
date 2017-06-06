@@ -31,6 +31,7 @@ const async = require('async');
 exports.async = async
 
 const apiai = require('apiai');
+exports.apiai=apiai
 
 const mRequests = require('.././Requests/requests.js')
 exports.mRequests = mRequests
