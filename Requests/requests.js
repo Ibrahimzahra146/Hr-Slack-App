@@ -159,7 +159,6 @@ module.exports.getTimeOffRules = function getTimeOffRules(email, callback) {
  * 
  */
 module.exports.getEmployeeProfile = function getEmployeeProfile(email, Id, callback) {
-    env.hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, session_Id) {
 
         env.request({
             url: "http://" + env.IP + "/api/v1/employee/" + Id,
@@ -172,7 +171,7 @@ module.exports.getEmployeeProfile = function getEmployeeProfile(email, Id, callb
         }, function (error, response, body) {
             callback(error, response, body)
         })
-    })
+    
 }
 /**
  * 
