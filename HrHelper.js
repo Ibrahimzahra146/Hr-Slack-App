@@ -12,7 +12,7 @@ module.exports.sendVacationPutRequest = function sendVacationPutRequest(vacation
 
     env.hrHelper.getNewSessionwithCookie(managerEmail, function (remember_me_cookie, session_Id) {
 
-        var uri = 'http://' + IP + '/api/v1/vacation/' + vacationId + '/managerApproval/' + approvalId
+        var uri = 'http://' +  env.IP + '/api/v1/vacation/' + vacationId + '/managerApproval/' + approvalId
         printLogs("uri::" + uri)
         var approvalBody = {
             "id": approvalId,
@@ -95,7 +95,7 @@ module.exports.getRoleByEmail = function getRoleByEmail(email, role, callback) {
             callback(1000)
         } else {
             env.request({
-                url: 'http://' + IP + '/api/v1/employee/roles', //URL to hitDs
+                url: 'http://' + env.IP + '/api/v1/employee/roles', //URL to hitDs
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -132,7 +132,7 @@ module.exports.getRoleByEmail = function getRoleByEmail(email, role, callback) {
  */
 module.exports.getNewSessionwithCookie = function getNewSessionwithCookie(email, callback) {
      env.request({
-        url: 'http://' + IP + '/api/v1/employee/login', //URL to hitDs
+        url: 'http://' +  env.IP + '/api/v1/employee/login', //URL to hitDs
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -179,7 +179,7 @@ module.exports.showEmployeesBalance = function showEmployeesBalance(msg, email, 
     else from_to_request = "from-balance=" + number + "&" + "to-balance=" + number;
     ``
     env.hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, session_Id) {
-        var url = "http://" + IP + "/api/v1/employee/vacation-balance/2017?" + from_to_request;
+        var url = "http://" + env.IP + "/api/v1/employee/vacation-balance/2017?" + from_to_request;
         console.log(url)
          env.request({
             url: url,
@@ -345,7 +345,7 @@ module.exports.sendVacationPostRequest = function sendVacationPostRequest(from, 
 
         }
         vacationBody = JSON.stringify(vacationBody)
-        var uri = 'http://' + IP + '/api/v1/vacation'
+        var uri = 'http://' +  env.IP + '/api/v1/vacation'
         printLogs("Uri " + uri)
          env.request({
             url: uri, //URL to hitDs
