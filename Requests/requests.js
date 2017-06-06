@@ -84,7 +84,7 @@ module.exports.getUserIdByEmail = function getUserIdByEmail(callback) {
         env.hrHelper.general_session_id = sessionId
 
         env.request({
-            url: "http://" + IP + "/api/v1/employee/get-id", //URL to hitDs
+            url: "http://" + env.IP + "/api/v1/employee/get-id", //URL to hitDs
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
