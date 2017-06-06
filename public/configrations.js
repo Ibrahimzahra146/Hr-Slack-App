@@ -82,7 +82,6 @@ var session = "";
 var token = "";
 var generalId = "";
 const APIAI_LANG = 'en';
-const opn = require('opn');
 var sessionId = uuid.v1();
 exports.sessionId = sessionId
 var requestify = require('requestify');
