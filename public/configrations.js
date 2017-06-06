@@ -52,8 +52,8 @@ exports.stringFile = stringFile
 var Constants = require('.././Constants.js');
 exports.Constants = Constants
 
-
-
+var messageGenerator = require('.././messagesHelper/messageGenerator.js');
+exports.messageGenerator = messageGenerator
 
 var apiAiService = apiai(APIAI_ACCESS_TOKEN);
 exports.apiAiService = apiAiService

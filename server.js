@@ -421,11 +421,14 @@ function HrAction(msg, value, approvalType, comment) {
 
 
     var responseBody = JSON.parse(body);
-    vacationHelper.getVacationBody(hrEmail, vacationId, function (vacationBody) {
-      vacationHelper.getSecondApproverStateAndFinalState(hrEmail, vacationBody, 1, function (myEmail, myAction, vacationState) {
+    env.mRequests.getVacationInfo(hrEmail, vacationId, function (error, response, body) {
+      var state = response.statusCode;
+      var vacationState = JSON.parse(body).vacationState
+      env.messageGenerator.generateManagerApprovelsSection(JSON.parse(body).managerApproval, hrEmail, function (managerApprovalsSection) {
+        console.log("generate ManagerApprovelsSection " + JSON.stringify(body))
         env.hrHelper.sendFeedBackMessage(responseBody, hrEmail, fromDate, toDate, approvalType, comment)
         // msg.say("You have accepted the" + typeText + " request for " + userEmail + " ( " + fromtDate + "-" + toDate + ").")
-        replaceMessage.replaceMessage(msg, userEmail, hrEmail, fromDate, toDate, type, approvalType, vacationId, approvalId, ImageUrl, typeText, workingDays, "approver2Email", "approver2Action", vacationState)
+        replaceMessage.replaceMessage(msg, userEmail, hrEmail, fromDate, toDate, type, approvalType, vacationId, approvalId, ImageUrl, typeText, workingDays, managerApprovalsSection, vacationState, JSON.parse(body).comments)
 
       })
     })

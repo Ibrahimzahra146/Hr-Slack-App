@@ -1,12 +1,23 @@
 const request = require('request');
-var hrHelper = require('.././HrHelper.js')
+//var managerHelper = require('.././managerToffyHelper.js')
 var server = require('.././server.js')
 var sessionFlag = 0;
 var generalCookies = "initial"
 var IP = process.env.SLACK_IP
-module.exports.replaceMessage = function replaceMessage(msg, userEmail, managerEmail, fromDate, toDate, type, approvalType, vacationId, approvalId, ImageUrl, typeText, workingDays, approver2Email, approver2Action, vacationState) {
-    getEmoji(approver2Action, vacationState, type, approvalType, function (approverActionEmoji, finalStateEmoji, typeEmoji, myActionEmoji) {
-        console.log("ImageUrl" + ImageUrl)
+module.exports.replaceMessage = function replaceMessage(msg, userEmail, managerEmail, fromDate, toDate, type, approvalType, vacationId, approvalId, ImageUrl, typeText, workingDays, managerApprovalsSection, vacationState, comment) {
+    console.log("Comment" + comment)
+    var commentField = ""
+    if (comment != null && comment != "") {
+        commentField =
+            {
+                "title": "Comment ",
+                "value": comment,
+                "short": false
+
+            }
+    }
+    getEmoji("", vacationState, type, approvalType, function (approverActionEmoji, finalStateEmoji, typeEmoji, myActionEmoji) {
+
         var messageBody = {
             "text": "Time off request:",
             "attachments": [
@@ -43,22 +54,20 @@ module.exports.replaceMessage = function replaceMessage(msg, userEmail, managerE
                             "short": true
                         }
                         ,
-                        {
-                            "title": "Approver2 action",
-                            "value": approver2Action + " " + approverActionEmoji,
-                            "short": true
-                        },
+                        managerApprovalsSection
+                        , commentField,
+
                         {
                             "title": "Final state",
                             "value": vacationState + " " + finalStateEmoji,
-                            "short": true
+                            "short": false
                         }
 
                     ],
                     "actions": [
                         {
                             "name": "Undo",
-                            "text": "Undo",
+                            "text": "back",
                             "type": "button",
 
                             "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl
@@ -75,18 +84,50 @@ module.exports.replaceMessage = function replaceMessage(msg, userEmail, managerE
                 }
             ]
         }
-        msg.respond(msg.body.response_url, messageBody)
+
+
+        prepareMessage(messageBody, function (stringfy) {
+            msg.respond(msg.body.response_url, stringfy)
+        })
     })
 }
 //return original message when click on undo
-module.exports.undoAction = function undoAction(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, approver2Action, vacationState, myAction) {
-    console.log("myAction" + myAction)
-    getEmoji(approver2Action, vacationState, type, myAction, function (approverActionEmoji, finalStateEmoji, typeEmoji, myActionEmoji) {
+module.exports.undoAction = function unduAction(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, managerApprovalsSection, vacationState, myAction, comment) {
+    //console.log("undoAction1" + undoAction)
+    var commentField = ""
+    if (comment != null && comment != "") {
+        commentField =
+            {
+                "title": "Comment ",
+                "value": comment,
+                "short": false
+
+            }
+    }
+    getEmoji("", vacationState, type, myAction, function (approverActionEmoji, finalStateEmoji, typeEmoji, myActionEmoji) {
+        var reject_with_comment_button = {
+            "name": "reject_with_comment",
+            "text": "Reject with comment",
+            "style": "danger",
+            "type": "button",
+            "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl + ";" + "Pending" + ";" + "Pending" + ";" + "Pending"
+        }
         var dont_detuct_button = ""
         if (type != "WFH") {
             dont_detuct_button = {
                 "name": "dont_detuct",
                 "text": "Don’t Deduct ",
+                "type": "button",
+                "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl
+            }
+        }
+        var actions_based_on_type = dont_detuct_button
+        if (type == "sick") {
+            reject_with_comment_button = ""
+            actions_based_on_type = {
+                "name": "accept_with_report",
+                "text": "Accept with report",
+
                 "type": "button",
                 "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl
             }
@@ -127,15 +168,12 @@ module.exports.undoAction = function undoAction(msg, userEmail, managerEmail, fr
                             "short": true
                         }
                         ,
-                        {
-                            "title": "Approver2 action",
-                            "value": approver2Action + " " + approverActionEmoji,
-                            "short": true
-                        },
+                        managerApprovalsSection,
+                        commentField,
                         {
                             "title": "Final state",
                             "value": vacationState + " " + finalStateEmoji,
-                            "short": true
+                            "short": false
                         }
 
                     ],
@@ -146,22 +184,16 @@ module.exports.undoAction = function undoAction(msg, userEmail, managerEmail, fr
                             "style": "primary",
                             "type": "button",
                             "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl
-                        },
+                        }, actions_based_on_type,
                         {
                             "name": "reject",
                             "text": "Reject",
                             "style": "danger",
                             "type": "button",
                             "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl
-                        },
+                        }, reject_with_comment_button,
+
                         {
-                            "name": "reject_with_comment",
-                            "text": "Reject with comment",
-                            "style": "danger",
-                            "type": "button",
-                            "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl
-                        }, dont_detuct_button
-                        , {
                             "name": "check_state",
                             "text": ":arrows_counterclockwise:",
 
@@ -174,12 +206,24 @@ module.exports.undoAction = function undoAction(msg, userEmail, managerEmail, fr
                 }
             ]
         }
-        msg.respond(msg.body.response_url, messageBody)
+        prepareMessage(messageBody, function (stringfy) {
+            msg.respond(msg.body.response_url, stringfy)
+        })
     })
 }
 
-module.exports.replaceWithComment = function replaceWithComment(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, approver2Email, approver2Action, vacationState, myAction) {
-    getEmoji(approver2Action, vacationState, type, myAction, function (approverActionEmoji, finalStateEmoji, typeEmoji, myActionEmoji) {
+module.exports.replaceWithComment = function replaceWithComment(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, managerApprovalsSection, vacationState, myAction, comment) {
+    var commentField = ""
+    if (comment != null && comment != "") {
+        commentField =
+            {
+                "title": "Comment ",
+                "value": comment,
+                "short": false
+
+            }
+    }
+    getEmoji("", vacationState, type, myAction, function (approverActionEmoji, finalStateEmoji, typeEmoji, myActionEmoji) {
 
         var dont_detuct_button = ""
 
@@ -218,46 +262,43 @@ module.exports.replaceWithComment = function replaceWithComment(msg, userEmail, 
                             "value": myAction + " " + myActionEmoji,
                             "short": true
                         }
-                        ,
-                        {
-                            "title": "Approver2 action",
-                            "value": approver2Action + " " + approverActionEmoji,
-                            "short": true
-                        },
+                        , managerApprovalsSection,
+                        commentField,
+
                         {
                             "title": "Final state",
                             "value": vacationState + " " + finalStateEmoji,
-                            "short": true
+                            "short": false
                         }
                     ],
                     "actions": [
                         {
                             "name": "Send_comment",
-                            "text": "Invalid report",
+                            "text": "Sorry",
 
                             "type": "button",
-                            "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl + ";Invalid report."
+                            "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl + ";Sorry!."
                         },
                         {
                             "name": "Send_comment",
-                            "text": "Invalid dates",
+                            "text": "Project deadline",
 
                             "type": "button",
-                            "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl + ";Invalid dates."
+                            "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl + ";Project deadline."
                         },
 
                         {
                             "name": "Send_comment",
-                            "text": "irrelevant report",
+                            "text": "Discuss it privately",
 
                             "type": "button",
-                            "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl + ";irrelevant report"
+                            "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl + ";Discuss it privately."
                         },
                         {
                             "name": "Send_comment",
-                            "text": "Unclear report",
+                            "text": "No replaceable emp",
                             "type": "button",
-                            "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl + ";Unclear report."
+                            "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl + ";No replaceable emp."
                         }, {
                             "name": "Undo",
                             "text": "back",
@@ -272,7 +313,9 @@ module.exports.replaceWithComment = function replaceWithComment(msg, userEmail, 
                 }
             ]
         }
-        msg.respond(msg.body.response_url, messageBody)
+        prepareMessage(messageBody, function (stringfy) {
+            msg.respond(msg.body.response_url, stringfy)
+        })
     })
 }
 
@@ -331,12 +374,30 @@ module.exports.replaceCanceledRequestOnAction = function replaceCanceledRequestO
  * Check state of not canceled request
  * 
  */
-module.exports.replaceMessageOnCheckState = function replaceMessageOnCheckState(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, approver2Email, approver2Action, vacationState, myAction) {
-    getEmoji(approver2Action, vacationState, type, myAction, function (approverActionEmoji, finalStateEmoji, typeEmoji, myActionEmoji) {
+module.exports.replaceMessageOnCheckState = function replaceMessageOnCheckState(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, managerApprovalsSection, vacationState, myAction, comment) {
+    var commentField = ""
+    if (comment != null && comment != "") {
+        commentField =
+            {
+                "title": "Comment ",
+                "value": comment,
+                "short": false
 
+            }
+    }
+    getEmoji("", vacationState, type, myAction, function (approverActionEmoji, finalStateEmoji, typeEmoji, myActionEmoji) {
 
+        var reject_with_comment_button = {
+            "name": "reject_with_comment",
+            "text": "Reject with comment",
+            "style": "danger",
+            "type": "button",
+            "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl + ";" + "Pending" + ";" + "Pending" + ";" + "Pending"
+        }
         var dont_detuct_button = ""
         if (type != "WFH") {
+
+
             dont_detuct_button = {
                 "name": "dont_detuct",
                 "text": "Don’t Deduct ",
@@ -344,6 +405,18 @@ module.exports.replaceMessageOnCheckState = function replaceMessageOnCheckState(
                 "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl
             }
         }
+        var actions_based_on_type = dont_detuct_button
+        if (type == "sick") {
+            reject_with_comment_button = ""
+            actions_based_on_type = {
+                "name": "accept_with_report",
+                "text": "Accept with report",
+
+                "type": "button",
+                "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl
+            }
+        }
+
         console.log("replaceMessageOnCheckState")
         var messageBody = {
             "text": "Time off request:",
@@ -381,15 +454,12 @@ module.exports.replaceMessageOnCheckState = function replaceMessageOnCheckState(
                             "short": true
                         }
                         ,
-                        {
-                            "title": "Approver2 action",
-                            "value": approver2Action + " " + approverActionEmoji,
-                            "short": true
-                        },
+                        managerApprovalsSection,
+                        commentField,
                         {
                             "title": "Final state",
                             "value": vacationState + " " + finalStateEmoji,
-                            "short": true
+                            "short": false
                         }
 
                     ], "actions": [
@@ -399,22 +469,17 @@ module.exports.replaceMessageOnCheckState = function replaceMessageOnCheckState(
                             "style": "primary",
                             "type": "button",
                             "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl
-                        },
+                        }, actions_based_on_type,
                         {
                             "name": "reject",
                             "text": "Reject",
                             "style": "danger",
                             "type": "button",
                             "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl
-                        },
+                        }, reject_with_comment_button,
+
+
                         {
-                            "name": "reject_with_comment",
-                            "text": "Reject with comment",
-                            "style": "danger",
-                            "type": "button",
-                            "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl
-                        }, dont_detuct_button
-                        , {
                             "name": "check_state",
                             "text": ":arrows_counterclockwise:",
 
@@ -428,7 +493,9 @@ module.exports.replaceMessageOnCheckState = function replaceMessageOnCheckState(
                 }
             ]
         }
-        msg.respond(msg.body.response_url, messageBody)
+        prepareMessage(messageBody, function (stringfy) {
+            msg.respond(msg.body.response_url, stringfy)
+        })
     })
 }
 //
@@ -445,24 +512,56 @@ function getEmoji(state, finalState, type, myAction, callback) {
         approverActionEmoji = ":no_entry_sign:"
     } else if (state == "Approved") {
         approverActionEmoji = ":white_check_mark:"
+    } else if (state == "ApprovedWithoutDeduction") {
+        approverActionEmoji = "::eight_spoked_asterisk::"
     }
+
     if (type == "sick") {
         typeEmoji = ":ambulance:"
     }
+
     if (finalState == "Rejected") {
         finalStateEmoji = ":no_entry_sign:"
     } else if (finalState == "Approved") {
         finalStateEmoji = ":white_check_mark:"
+    } else if (finalState == "ApprovedWithoutDeduction") {
+        finalStateEmoji = "::eight_spoked_asterisk::"
     }
+
+
     if (myAction == "Rejected") {
         myActionEmoji = ":no_entry_sign:"
     } else if (myAction == "Approved") {
         myActionEmoji = ":white_check_mark:"
     }
-    console.log("myActionEmoji" + myActionEmoji)
+    else if (myAction == "ApprovedWithoutDeduction") {
+        myActionEmoji = ":eight_spoked_asterisk:"
+    }
 
     callback(approverActionEmoji, finalStateEmoji, typeEmoji, myActionEmoji)
 
+}
+//prepare message
+function prepareMessage(messageBody, callback) {
+    var stringfy = JSON.stringify(messageBody)
+    stringfy = stringfy.replace(/\\/, "")
+
+    stringfy = stringfy.replace(/}\"/g, "}")
+    stringfy = stringfy.replace(/\"\{/g, "{")
+    stringfy = stringfy.replace(/\\/g, "")
+    stringfy = stringfy.replace(/\",\"\"/g, "")
+    stringfy = stringfy.replace(/,,/, ",")
+    stringfy = stringfy.replace(/\"\{/g, "{")
+    console.log("stringfy11" + stringfy)
+    stringfy = stringfy.replace(/,\",{/g, ",")
+    stringfy = stringfy.replace(/},\"/g, "},{\"")
+    stringfy = stringfy.replace(/{\"\"\",/g, "")
+    stringfy = stringfy.replace(/{\"\",/g, "")
+
+    console.log("stringfy2" + stringfy)
+
+    stringfy = JSON.parse(stringfy)
+    callback(stringfy)
 }
 
 
