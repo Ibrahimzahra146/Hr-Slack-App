@@ -3,7 +3,7 @@ const env = require('./public/configrations.js')
 module.exports.showEmployeeProfile = function showEmployeeProfile(email, employeeEmail, msg) {
     var Approver2 = "---";
     env.mRequests.getIdFromEmail(email, employeeEmail, function (Id) {
-        env.mRequests.getEmployeeProfile(Id, function (error, response, body) {
+        env.mRequests.getEmployeeProfile(email, Id, function (error, response, body) {
             body.manager.sort(function (a, b) {
                 return a.rank - b.rank;
             });
