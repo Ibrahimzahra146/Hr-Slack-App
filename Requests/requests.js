@@ -42,7 +42,7 @@ module.exports.getVacationInfo = function getVacationInfo(email, vacationId, cal
             }
             //Set the body as a stringcc
         }, function (error, response, body) {
-           callback(error, response, body)
+            callback(error, response, body)
         })
     })
 }
@@ -72,6 +72,7 @@ module.exports.deleteVacation = function deleteVacation(email, vacationId, callb
             'Cookie': env.hrHelper.remember_me_cookie + ";" + env.hrHelper.session_Id
         },
     }, function (error, response, body) {
+        callback(error, response, body);
     })
 }
 /**
@@ -119,7 +120,7 @@ module.exports.getEmployeeHistory = function getEmployeeHistory(Id, callback) {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'Cookie':  env.hrHelper.general_remember_me + ";" + env.hrHelper.general_session_id
+            'Cookie': env.hrHelper.general_remember_me + ";" + env.hrHelper.general_session_id
         },
     }, function (error, response, body) {
         callback(error, response, body)

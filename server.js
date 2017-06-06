@@ -1,5 +1,6 @@
 'use strict'
-const env = require('./Public/configrations.js')
+const env = require('./public/configrations.js')
+
 
 var APIAI_ACCESS_TOKEN = process.env.APIAI_ACCESS_KEY
 var requestIp = require('request-ip');
@@ -680,25 +681,12 @@ slapp.action('cancel_request', 'cancel', (msg, value) => {
   var fromDate = arr[2]
   var toDate = arr[3]
   var employeeEmail = arr[4]
-  hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, session_Id) {
-    //get vacation state
-
-
-    var uri = 'http://' + IP + '/api/v1/vacation/' + vacationId
-    //delete vacation request
-    request({
-      url: uri,
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        'Cookie': remember_me_cookie + ";" + session_Id
-      },
-    }, function (error, response, body) {
-      msg.respond(msg.body.response_url, "Your request for " + employeeEmail + " ( " + fromDate + "-" + toDate + " ) has been canceled")
-      messageSender.sendMessageSpecEmployee(employeeEmail, "Hi, HR " + email + " has canceled a time off for you ( " + fromDate + "-" + toDate + " ).Sorry!")
-    })
+  env.mRequests.deleteVacation(email, vacationId, function (error, response, body) {
+    msg.respond(msg.body.response_url, "Your request for " + employeeEmail + " ( " + fromDate + "-" + toDate + " ) has been canceled")
+    messageSender.sendMessageSpecEmployee(employeeEmail, "Hi, HR " + email + " has canceled a time off for you ( " + fromDate + "-" + toDate + " ).Sorry!")
   })
 })
+
 
 app.get('/', function (req, res) {
 
