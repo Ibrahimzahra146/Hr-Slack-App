@@ -189,7 +189,7 @@ module.exports.getIdFromEmail = function getIdFromEmail(email, employeeEmail, ca
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Cookie': hrHelper.general_remember_me
+                'Cookie': env.hrHelper.general_remember_me
             },
             body: employeeEmail
             //Set the body as a stringcc
