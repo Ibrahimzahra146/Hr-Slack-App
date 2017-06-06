@@ -143,6 +143,7 @@ module.exports.getNewSessionwithCookie = function getNewSessionwithCookie(email,
         if (response.statusCode == 500 || response.statusCode == 451) {
             callback(1000, 1000)
         } else {
+            
             var cookies = JSON.stringify((response.headers["set-cookie"])[1]);
             var arr = cookies.toString().split(";")
             res = arr[0].replace(/['"]+/g, '');
