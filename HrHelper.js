@@ -22,7 +22,7 @@ module.exports.sendVacationPutRequest = function sendVacationPutRequest(vacation
 
         }
         approvalBody = JSON.stringify(approvalBody)
-        request({
+         env.request({
             url: uri, //URL to hitDs
             method: 'PUT',
             headers: {
@@ -94,7 +94,7 @@ module.exports.getRoleByEmail = function getRoleByEmail(email, role, callback) {
         if (remember_me_cookie == 1000) {
             callback(1000)
         } else {
-            request({
+            env.request({
                 url: 'http://' + IP + '/api/v1/employee/roles', //URL to hitDs
                 method: 'POST',
                 headers: {
@@ -131,7 +131,7 @@ module.exports.getRoleByEmail = function getRoleByEmail(email, role, callback) {
  * 
  */
 module.exports.getNewSessionwithCookie = function getNewSessionwithCookie(email, callback) {
-    request({
+     env.request({
         url: 'http://' + IP + '/api/v1/employee/login', //URL to hitDs
         method: 'POST',
         headers: {
@@ -181,7 +181,7 @@ module.exports.showEmployeesBalance = function showEmployeesBalance(msg, email, 
     env.hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, session_Id) {
         var url = "http://" + IP + "/api/v1/employee/vacation-balance/2017?" + from_to_request;
         console.log(url)
-        request({
+         env.request({
             url: url,
             json: true,
             method: 'GET',
@@ -331,7 +331,7 @@ module.exports.convertTimeFormat = function convertTimeFormat(time, callback) {
 //send Vacation Post request for force vacation 
 module.exports.sendVacationPostRequest = function sendVacationPostRequest(from, to, employee_id, email, type, callback) {
 
-    en(email, email, function (Id) {
+    env.mRequests.getIdByEmail(email, email, function (Id) {
         console.log("::::" + "::" + email + "::" + Id)
         var vacationType = "6"
 
@@ -347,7 +347,7 @@ module.exports.sendVacationPostRequest = function sendVacationPostRequest(from, 
         vacationBody = JSON.stringify(vacationBody)
         var uri = 'http://' + IP + '/api/v1/vacation'
         printLogs("Uri " + uri)
-        request({
+         env.request({
             url: uri, //URL to hitDs
             method: 'POST',
             headers: {
