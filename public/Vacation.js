@@ -8,8 +8,7 @@ var env = require('.././public/configrations.js')
  */
 
 module.exports.getSecondApproverStateAndFinalState = function getSecondApproverStateAndFinalState(email, body, state, callback1) {
-    console.log(JSON.stringify(body))
-    console.log("getSecondApproverStateAndFinalState")
+  
 
     var approver2Email = "--"
     var approver2Action = "--"
@@ -21,7 +20,7 @@ module.exports.getSecondApproverStateAndFinalState = function getSecondApproverS
         callback1("--", "--", JSON.parse(body).vacationState)
     } else {
         var i = 0;
-        async.whilst(
+        env.async.whilst(
             function () { return JSON.parse(body).managerApproval[i]; },
             function (callback) {
                 if (JSON.parse(body).managerApproval[i].managerEmail == email && state == 1 && JSON.parse(body).managerApproval[i].type == "HR") {
