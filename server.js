@@ -332,7 +332,7 @@ function sendRequestToApiAi(emailValue, msg) {
           var quantity_Type = response.result.parameters.quantityType;
           var period_types = response.result.parameters.period_types;
           var number = response.result.parameters.number;
-         env.hrHelper.showEmployeesBalance(msg, emailValue, number, quantity_Type, period_types)
+          env.hrHelper.showEmployeesBalance(msg, emailValue, number, quantity_Type, period_types)
 
         }
 
@@ -350,6 +350,7 @@ function sendRequestToApiAi(emailValue, msg) {
 }
 //get the email of the sender by request slack Api and compare Ids to get the email of mapped ID
 function getMembersList(Id, msg) {
+  var emailValue = ""
   env.mRequests.getSlackMembers(function (error, response, body) {
 
 
