@@ -90,7 +90,7 @@ module.exports.getRoleByEmail = function getRoleByEmail(email, role, callback) {
     var flag = false;
     printLogs("getting  Roles ");
 
-    hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, session_Id) {
+     env.hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, session_Id) {
         if (remember_me_cookie == 1000) {
             callback(1000)
         } else {
@@ -156,13 +156,7 @@ module.exports.getNewSessionwithCookie = function getNewSessionwithCookie(email,
 
 }
 
-module.exports.getIdFromEmail = function getIdFromEmail(email, employeeEmail, callback) {
 
-   
-
-
-
-}
 /**
  * 
  */
@@ -184,7 +178,7 @@ module.exports.showEmployeesBalance = function showEmployeesBalance(msg, email, 
     }
     else from_to_request = "from-balance=" + number + "&" + "to-balance=" + number;
     ``
-    hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, session_Id) {
+    env.hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, session_Id) {
         var url = "http://" + IP + "/api/v1/employee/vacation-balance/2017?" + from_to_request;
         console.log(url)
         request({
@@ -358,7 +352,7 @@ module.exports.sendVacationPostRequest = function sendVacationPostRequest(from, 
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Cookie': hrHelper.general_remember_me + ";" + hrHelper.general_session_id
+                'Cookie': env.hrHelper.general_remember_me + ";" +  env.hrHelper.general_session_id
             },
 
             body: vacationBody
