@@ -1,4 +1,4 @@
-var env = require('.././Public/configrations.js')
+var env = require('.././public/configrations.js')
 
 //var messageReplacer = require('.././messagesHelper/replaceManagerActionMessage.js')
 
