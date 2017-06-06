@@ -375,7 +375,7 @@ function getMembersList(Id, msg) {
      -------------____________________________________________________---------------------
      */
 
-var app = env.slapp.attachToExpress(express())
+var app = env.slapp.attachToExpress(env.express())
 slapp.message('(.*)', ['direct_message'], (msg, text, match1) => {
   if (msg.body.event.user == "U3V5LRL76") {
 
