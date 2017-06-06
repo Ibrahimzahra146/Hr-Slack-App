@@ -184,7 +184,7 @@ module.exports.getIdFromEmail = function getIdFromEmail(email, employeeEmail, ca
         env.hrHelper.general_session_id = sessionId
 
 
-        request({
+        env.request({
             url: "http://" + IP + "/api/v1/employee/get-id", //URL to hitDs
             method: 'POST',
             headers: {
