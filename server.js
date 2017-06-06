@@ -122,7 +122,7 @@ function storeHrSlackInformation(email, msg) {
 //send the text to api ai 
 
 function sendRequestToApiAi(emailValue, msg) {
-  hrHelper.getRoleByEmail(emailValue, "HR", function (role) {
+  hrHelper.getRoleByEmail(emailValue, "HR_ADMIN", function (role) {
     console.log("role" + role)
     if (role == true) {
       storeHrSlackInformation(emailValue, msg);
