@@ -10,7 +10,6 @@ const messageSender = require('./ConfirmationMessages/messageSender.js')
 var employee = require('./employeeSide.js')
 const apiAiService = env.apiai(env.APIAI_ACCESS_TOKEN);
 var pg = require('pg');
-var sessionId = uuid.v1();
 
 var SLACK_ACCESS_TOKEN = process.env.SLACK_APP_ACCESS_KEY;
 var SLACK_BOT_TOKEN = process.env.SLACK_BOT_ACCESS_KEY;
