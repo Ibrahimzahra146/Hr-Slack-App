@@ -185,7 +185,7 @@ module.exports.getIdFromEmail = function getIdFromEmail(email, employeeEmail, ca
 
 
         env.request({
-            url: "http://" + IP + "/api/v1/employee/get-id", //URL to hitDs
+            url: "http://" + env.IP + "/api/v1/employee/get-id", //URL to hitDs
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
