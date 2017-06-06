@@ -1,4 +1,4 @@
-const env = require('.././Public/configrations.js')
+const env = require('.././public/configrations.js')
 
 
 /**
