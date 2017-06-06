@@ -44,7 +44,6 @@ var Botkit = require('./lib/Botkit.js');
 var controller = Botkit.slackbot({
   debug: true,
 });
-console.log("the token is " + APIAI_ACCESS_TOKEN)
 var bot = controller.spawn({
   token: SLACK_BOT_TOKEN
 
@@ -124,7 +123,7 @@ function storeHrSlackInformation(email, msg) {
 
 function sendRequestToApiAi(emailValue, msg) {
   hrHelper.getRoleByEmail(emailValue, "HR", function (role) {
-    console.log("role"+role)
+    console.log("role" + role)
     if (role == true) {
       storeHrSlackInformation(emailValue, msg);
 
@@ -360,7 +359,6 @@ function sendRequestToApiAi(emailValue, msg) {
               employeeEmail = employeeEmail.toString().split('|')
               employeeEmail = employeeEmail[1];
               employeeEmail = employeeEmail.replace(/>/g, "");
-              console.log("Email after split mail to ")
             }
             else {
               employeeEmail = response.result.parameters.email
@@ -423,7 +421,6 @@ function getMembersList(Id, msg) {
           sendRequestToApiAi(emailValue, msg);
           break;
         }
-        console.log(body.members[i]["profile"].email);
 
         i++;
       }
@@ -438,14 +435,11 @@ function getMembersList(Id, msg) {
 var app = slapp.attachToExpress(express())
 slapp.message('(.*)', ['direct_message'], (msg, text, match1) => {
   if (msg.body.event.user == "U3V5LRL76") {
-    console.log("message from bot ")
 
   } else {
 
 
     var stringfy = JSON.stringify(msg);
-    console.log("the message is ");
-    console.log(stringfy);
     getMembersList(msg.body.event.user, msg)
   }
 })
@@ -742,20 +736,16 @@ slapp.action('manager_confirm_reject', 'Send_comment', (msg, value) => {
 slapp.action('cancel_request', 'cancel', (msg, value) => {
   var arr = value.toString().split(";")
   var email = arr[0]
-  console.log("email", email)
   var vacationId = arr[1]
-  console.log("vacationId", vacationId)
 
   var fromDate = arr[2]
   var toDate = arr[3]
   var employeeEmail = arr[4]
-  console.log("cancel_request")
   hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, session_Id) {
     //get vacation state
 
 
     var uri = 'http://' + IP + '/api/v1/vacation/' + vacationId
-    console.log("URI", uri)
     //delete vacation request
     request({
       url: uri,
@@ -765,7 +755,6 @@ slapp.action('cancel_request', 'cancel', (msg, value) => {
         'Cookie': remember_me_cookie + ";" + session_Id
       },
     }, function (error, response, body) {
-      console.log("Deelted")
       msg.respond(msg.body.response_url, "Your request for " + employeeEmail + " ( " + fromDate + "-" + toDate + " ) has been canceled")
       messageSender.sendMessageSpecEmployee(employeeEmail, "Hi, HR " + email + " has canceled a time off for you ( " + fromDate + "-" + toDate + " ).Sorry!")
     })
