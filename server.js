@@ -276,7 +276,6 @@ function sendRequestToApiAi(emailValue, msg) {
               employeeEmail = employeeEmail.toString().split('|')
               employeeEmail = employeeEmail[1];
               employeeEmail = employeeEmail.replace(/>/g, "");
-              console.log("Email after split mail to ")
             }
             else employeeEmail = response.result.parameters.email
 
@@ -343,8 +342,8 @@ function sendRequestToApiAi(emailValue, msg) {
       apiaiRequest.on('error', (error) => console.error(error));
       apiaiRequest.end();
     } else if (role == 1000) {
-      msg.say("Your account has been deactivated. You are not allowed to use the system.")
-    } else msg.say("Sorry!.You dont have the permession to use this bot.")
+      msg.say(env.stringFile.deactivated_message)
+    } else msg.say(env.stringFile.permession_denied_message)
   })
 
 }

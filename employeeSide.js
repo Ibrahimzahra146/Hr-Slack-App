@@ -1,22 +1,9 @@
-const request = require('request');
-var hrHelper = require('./HrHelper.js')
-var server = require('./server.js')
-var sessionFlag = 0;
-var generalCookies = "initial"
-var IP = process.env.SLACK_IP
+const env = require('./public/configrations.js')
+
 module.exports.showEmployeeProfile = function showEmployeeProfile(email, employeeEmail, msg) {
     var Approver2 = "---";
-    printLogs("employeeEmail::" + employeeEmail)
-    hrHelper.getIdFromEmail(email, employeeEmail, function (Id) {
-        request({
-            url: "http://" + IP + "/api/v1/employee/" + Id,
-            json: true,
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Cookie': hrHelper.general_remember_me + ";" + hrHelper.general_session_id
-            },
-        }, function (error, response, body) {
+    env.mRequests.getIdFromEmail(email, employeeEmail, function (Id) {
+        env.mRequests.getEmployeeProfile(Id, function (error, response, body) {
             body.manager.sort(function (a, b) {
                 return a.rank - b.rank;
             });
@@ -89,16 +76,8 @@ Show Employee stats like annual vacation and etc.. from Hr side
 *****/
 module.exports.showEmployeeStats = function showEmployeeStats(email, employeeEmail, msg) {
     printLogs("showEmployeeStats")
-    hrHelper.getIdFromEmail(email, employeeEmail, function (Id) {
-        request({
-            url: "http://" + IP + "/api/v1/employee/" + Id + "/balance",
-            json: true,
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Cookie': hrHelper.general_remember_me + ";" + hrHelper.general_session_id
-            }
-        }, function (error, response, body) {
+    env.mRequests.getIdFromEmail(email, employeeEmail, function (Id) {
+        env.mRequests.getEmployeeBalance(Id, function (error, response, body) {
             var messageBody = {
                 "text": employeeEmail + " stats and anuual time off details",
                 "attachments": [
@@ -196,19 +175,8 @@ module.exports.sendCompensationConfirmationToHr = function sendCompensationConfi
 //show employee history 
 module.exports.showEmployeeHistory = function showEmployeeHistory(email, employeeEmail, msg) {
     msg.say(employeeEmail + " history is :")
-    hrHelper.getIdFromEmail(email, employeeEmail, function (Id) {
-        var uri = 'http://' + IP + '/api/v1/employee/' + Id + '/vacations/2017'
-        console.log("uri" + uri)
-
-        request({
-            url: uri,
-            json: true,
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Cookie': hrHelper.general_remember_me + ";" + hrHelper.general_session_id
-            }
-        }, function (error, response, body) {
+    env.mRequests.getIdFromEmail(email, employeeEmail, function (Id) {
+        env.mRequests.getEmployeeHistory(Id, function (error, response, body) {
 
             var i = 0;
             //check if no history ,so empty response
@@ -252,10 +220,8 @@ module.exports.showEmployeeHistory = function showEmployeeHistory(email, employe
                                 }
                             ]
                         }
-                        printLogs("messageBody" + messageBody)
                         var stringfy = JSON.stringify(messageBody);
 
-                        printLogs("stringfy" + stringfy)
                         stringfy = stringfy.replace(/\\/g, "")
                         stringfy = stringfy.replace(/]\"/, "]")
                         stringfy = stringfy.replace(/\"\[/, "[")

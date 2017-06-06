@@ -1,13 +1,8 @@
-
+const env=require('./public/configrations.js')
 /*
 Send Put reques from HR to accept or reject a vacation
 */
-const request = require('request');
-var hrHelper = require('./HrHelper.js')
-var server = require('./server.js')
-var sessionFlag = 0;
-var generalCookies = "initial"
-var IP = process.env.SLACK_IP
+
 var general_remember_me = ""
 exports.general_remember_me = general_remember_me;
 exports.general_session_id = general_session_id
@@ -15,10 +10,8 @@ var general_session_id = ""
 module.exports.sendVacationPutRequest = function sendVacationPutRequest(vacationId, approvalId, managerEmail, status) {
     console.log("sending vacation put request " + status)
 
-    hrHelper.getNewSessionwithCookie(managerEmail, function (remember_me_cookie, session_Id) {
-        printLogs("vacationId" + vacationId)
-        printLogs("approvalId" + approvalId)
-        printLogs("managerEmail" + managerEmail)
+    env.hrHelper.getNewSessionwithCookie(managerEmail, function (remember_me_cookie, session_Id) {
+
         var uri = 'http://' + IP + '/api/v1/vacation/' + vacationId + '/managerApproval/' + approvalId
         printLogs("uri::" + uri)
         var approvalBody = {
@@ -39,8 +32,7 @@ module.exports.sendVacationPutRequest = function sendVacationPutRequest(vacation
             body: approvalBody
             //Set the body as a stringcc
         }, function (error, response, body) {
-            printLogs("response.lll" + response.statusCode)
-            printLogs("error" + error)
+
 
         });
 
@@ -79,7 +71,7 @@ module.exports.sendFeedBackMessage = function sendFeedBackMessage(responseBody, 
         team: responseBody.teamId,
         event: 'direct_message'
     };
-    server.bot.startConversation(message, function (err, convo) {
+    env.bot.startConversation(message, function (err, convo) {
         console.log("cannot send message")
 
         if (!err) {
@@ -88,7 +80,7 @@ module.exports.sendFeedBackMessage = function sendFeedBackMessage(responseBody, 
             }
             var stringfy = JSON.stringify(text12);
             var obj1 = JSON.parse(stringfy);
-            server.bot.reply(message, obj1);
+            env.bot.reply(message, obj1);
 
         }
     });
@@ -166,31 +158,7 @@ module.exports.getNewSessionwithCookie = function getNewSessionwithCookie(email,
 
 module.exports.getIdFromEmail = function getIdFromEmail(email, employeeEmail, callback) {
 
-    hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, sessionId) {
-        hrHelper.general_remember_me = remember_me_cookie
-        hrHelper.general_session_id = sessionId
-
-        console.log("1-hrHelper.general_remember_me+ " + hrHelper.general_remember_me)
-        printLogs("hrHelper.generalCookies=======> " + hrHelper.generalCookies)
-        printLogs("==========>Getting user id from Hr")
-        request({
-            url: "http://" + IP + "/api/v1/employee/get-id", //URL to hitDs
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Cookie': hrHelper.general_remember_me
-            },
-            body: employeeEmail
-            //Set the body as a stringcc
-        }, function (error, response, body) {
-            printLogs("=======>body: " + body)
-            userIdInHr = JSON.parse(body);
-            printLogs("====>user id:" + userIdInHr)
-            printLogs(JSON.stringify(body))
-            callback(body)
-
-        })
-    });
+   
 
 
 
@@ -368,13 +336,8 @@ module.exports.convertTimeFormat = function convertTimeFormat(time, callback) {
 }
 //send Vacation Post request for force vacation 
 module.exports.sendVacationPostRequest = function sendVacationPostRequest(from, to, employee_id, email, type, callback) {
-    printLogs("Sending vacation post request")
-    printLogs("Email:" + email)
-    printLogs("arrive at va")
-    printLogs("from" + from);
-    printLogs("to======>" + to);
-    printLogs("type======>" + type);
-    hrHelper.getIdFromEmail(email, email, function (Id) {
+
+    en(email, email, function (Id) {
         console.log("::::" + "::" + email + "::" + Id)
         var vacationType = "6"
 
@@ -401,14 +364,9 @@ module.exports.sendVacationPostRequest = function sendVacationPostRequest(from, 
             body: vacationBody
             //Set the body as a stringcc
         }, function (error, response, body) {
-            printLogs("the vacation have been posted " + response.statusCode)
-            printLogs(error)
-            printLogs(response.message)
+
             var vacationId = (JSON.parse(body)).id;
             var managerApproval = (JSON.parse(body)).managerApproval
-            printLogs("Vacaction ID---->" + (JSON.parse(body)).id)
-            printLogs("managerApproval --->" + managerApproval)
-            printLogs("managerApproval --->" + JSON.stringify(managerApproval))
             callback(vacationId, managerApproval);
 
         })

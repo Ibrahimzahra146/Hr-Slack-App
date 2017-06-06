@@ -79,16 +79,22 @@ module.exports.deleteVacation = function deleteVacation(email, vacationId, callb
  * get user Id By email
  */
 module.exports.getUserIdByEmail = function getUserIdByEmail(callback) {
-    request({
-        url: "http://" + IP + "/api/v1/employee/get-id", //URL to hitDs
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Cookie': remember_me_cookie + ";" + sessionId
-        },
-        body: email
-        //Set the body as a stringcc
-    }, function (error, response, body) {
+    env.hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, sessionId) {
+        env.hrHelper.general_remember_me = remember_me_cookie
+        env.hrHelper.general_session_id = sessionId
+
+        env.request({
+            url: "http://" + IP + "/api/v1/employee/get-id", //URL to hitDs
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': env.hrHelper.general_remember_me + ";" + env.hrHelper.general_session_id
+            },
+            body: email
+            //Set the body as a stringcc
+        }, function (error, response, body) {
+            callback(error, response, body)
+        })
     })
 }
 
@@ -167,4 +173,29 @@ module.exports.getEmployeeProfile = function getEmployeeProfile(email, Id, callb
             callback(error, response, body)
         })
     })
+}
+/**
+ * 
+ * get Id from email
+ */
+module.exports.getIdFromEmail = function getIdFromEmail(email, employeeEmail, callback) {
+    env.hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, sessionId) {
+        env.hrHelper.general_remember_me = remember_me_cookie
+        env.hrHelper.general_session_id = sessionId
+
+
+        request({
+            url: "http://" + IP + "/api/v1/employee/get-id", //URL to hitDs
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': hrHelper.general_remember_me
+            },
+            body: employeeEmail
+            //Set the body as a stringcc
+        }, function (error, response, body) {
+            callback(body)
+
+        })
+    });
 }
