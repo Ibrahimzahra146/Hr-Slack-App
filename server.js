@@ -2,20 +2,7 @@
 const env = require('./public/configrations.js')
 
 
-var APIAI_ACCESS_TOKEN = process.env.APIAI_ACCESS_KEY
-var requestIp = require('request-ip');
-const express = require('express')
-const Slapp = require('slapp')
-const BeepBoopConvoStore = require('slapp-convo-beepboop')
-const BeepBoopContext = require('slapp-context-beepboop')
-const bodyParser = require('body-parser');
-const uuid = require('node-uuid');
-const request = require('request');
-const JSONbig = require('json-bigint');
-const async = require('async');
-const apiai = require('apiai');
-const APIAI_LANG = 'en';
-var hrHelper = require('./HrHelper.js');
+
 var vacationHelper = require("./public/Vacation.js")
 var replaceMessage = require('./messagesHelper/replaceManagerActionMessage.js')
 const confirmationFunctions = require('./ConfirmationMessages/confirmationFunctions.js')
@@ -31,27 +18,8 @@ var fs = require('fs');
 var userId = ""
 var employeeChannel = "";
 var managerChannel = "D3RR2RE68"
-var Constants = require('./Constants.js');
-const requestify = require('requestify');
 var generalEmail = ""
 var vacation_type1 = ""
-
-var IP = process.env.SLACK_IP
-pg.defaults.ssl = true;
-if (!process.env.PORT) throw Error('PORT missing but required')
-var slapp = Slapp({
-  convo_store: BeepBoopConvoStore(),
-  context: BeepBoopContext()
-})
-var Botkit = require('./lib/Botkit.js');
-var controller = Botkit.slackbot({
-  debug: true,
-});
-var bot = controller.spawn({
-  token: SLACK_BOT_TOKEN
-
-}).startRTM();
-exports.bot = bot;
 
 function storeHrSlackInformation(email, msg) {
   env.mRequests.getSlackRecord(email, function (error, response, body) {
@@ -100,7 +68,7 @@ function storeHrSlackInformation(email, msg) {
 //send the text to api ai 
 
 function sendRequestToApiAi(emailValue, msg) {
-  hrHelper.getRoleByEmail(emailValue, "HR_ADMIN", function (role) {
+  env.hrHelper.getRoleByEmail(emailValue, "HR_ADMIN", function (role) {
     console.log("role" + role)
     if (role == true) {
       storeHrSlackInformation(emailValue, msg);
@@ -108,7 +76,7 @@ function sendRequestToApiAi(emailValue, msg) {
       var text = msg.body.event.text;
       let apiaiRequest = apiAiService.textRequest(text,
         {
-          sessionId: sessionId
+          sessionId: env.sessionId
         });
 
       apiaiRequest.on('response', (response) => {
@@ -116,7 +84,7 @@ function sendRequestToApiAi(emailValue, msg) {
         if (responseText == "vacationWithLeave") {
           var messageText = ""
           var employeeEmail = ""
-          hrHelper.getTodayDate(function (today) {
+          env.hrHelper.getTodayDate(function (today) {
             var time1 = "17:00:00";
             var time = "8:00:00";
             var date = today
@@ -251,8 +219,8 @@ function sendRequestToApiAi(emailValue, msg) {
                     vacation_type1 = "personal"
                   }
                   //get the milliseconds for the  end of the vacation 
-                  hrHelper.convertTimeFormat(time, function (x, y, convertedTime) {
-                    hrHelper.convertTimeFormat(time1, function (x, y, convertedTime1) {
+                  env.hrHelper.convertTimeFormat(time, function (x, y, convertedTime) {
+                    env.hrHelper.convertTimeFormat(time1, function (x, y, convertedTime1) {
 
                       var toDate = date1 + " " + convertedTime1
                       var fromDate = date + " " + convertedTime;
@@ -365,7 +333,7 @@ function sendRequestToApiAi(emailValue, msg) {
           var quantity_Type = response.result.parameters.quantityType;
           var period_types = response.result.parameters.period_types;
           var number = response.result.parameters.number;
-          hrHelper.showEmployeesBalance(msg, emailValue, number, quantity_Type, period_types)
+         env.hrHelper.showEmployeesBalance(msg, emailValue, number, quantity_Type, period_types)
 
         }
 
@@ -383,11 +351,9 @@ function sendRequestToApiAi(emailValue, msg) {
 }
 //get the email of the sender by request slack Api and compare Ids to get the email of mapped ID
 function getMembersList(Id, msg) {
-  var emailValue = "";
-  request({
-    url: Constants.SLACK_MEMBERS_LIST_URL + "" + SLACK_ACCESS_TOKEN,
-    json: true
-  }, function (error, response, body) {
+  env.mRequests.getSlackMembers(function (error, response, body) {
+
+
 
     if (!error && response.statusCode === 200) {
       var i = 0;
@@ -410,7 +376,7 @@ function getMembersList(Id, msg) {
      -------------____________________________________________________---------------------
      */
 
-var app = slapp.attachToExpress(express())
+var app = env.slapp.attachToExpress(express())
 slapp.message('(.*)', ['direct_message'], (msg, text, match1) => {
   if (msg.body.event.user == "U3V5LRL76") {
 
@@ -451,14 +417,14 @@ function HrAction(msg, value, approvalType, comment) {
     typeText = " paternity" + " time off"
   } else if (type == "WFH")
     typeText = " work from home"
-  hrHelper.sendVacationPutRequest(vacationId, approvalId, hrEmail, approvalType)
+  env.hrHelper.sendVacationPutRequest(vacationId, approvalId, hrEmail, approvalType)
   env.mRequests.getSlackRecord(userEmail, function (error, response, body) {
 
 
     var responseBody = JSON.parse(body);
     vacationHelper.getVacationBody(hrEmail, vacationId, function (vacationBody) {
       vacationHelper.getSecondApproverStateAndFinalState(hrEmail, vacationBody, 1, function (myEmail, myAction, vacationState) {
-        hrHelper.sendFeedBackMessage(responseBody, hrEmail, fromDate, toDate, approvalType, comment)
+        env.hrHelper.sendFeedBackMessage(responseBody, hrEmail, fromDate, toDate, approvalType, comment)
         // msg.say("You have accepted the" + typeText + " request for " + userEmail + " ( " + fromtDate + "-" + toDate + ").")
         replaceMessage.replaceMessage(msg, userEmail, hrEmail, fromDate, toDate, type, approvalType, vacationId, approvalId, ImageUrl, typeText, workingDays, "approver2Email", "approver2Action", vacationState)
 
@@ -467,11 +433,11 @@ function HrAction(msg, value, approvalType, comment) {
 
   });
 }
-slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
+env.slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
   HrAction(msg, value, "Approved", "")
 })
 
-slapp.action('confirm_reject_compensation', 'confirm', (msg, value) => {
+env.slapp.action('confirm_reject_compensation', 'confirm', (msg, value) => {
   var arr = value.toString().split(",")
   var hrEmail = arr[0];
   var userEmail = arr[1];
@@ -492,7 +458,7 @@ slapp.action('confirm_reject_compensation', 'confirm', (msg, value) => {
       event: 'direct_message'
     };
 
-    bot.startConversation(message, function (err, convo) {
+    env.bot.startConversation(message, function (err, convo) {
 
       if (!err) {
         var text12 = {
@@ -509,21 +475,21 @@ slapp.action('confirm_reject_compensation', 'confirm', (msg, value) => {
 })
 
 
-slapp.action('manager_confirm_reject', 'reject', (msg, value) => {
+env.slapp.action('manager_confirm_reject', 'reject', (msg, value) => {
   HrAction(msg, value, "Rejected", "")
 })
 
 
-slapp.action('manager_confirm_reject', 'dont_detuct', (msg, value) => {
+env.slapp.action('manager_confirm_reject', 'dont_detuct', (msg, value) => {
   HrAction(msg, value, "ApprovedWithoutDeduction", "")
 
 
 })
 //force vacation for employee
-slapp.action('leave_with_vacation_confirm_reject', 'confirm', (msg, value) => {
+env.slapp.action('leave_with_vacation_confirm_reject', 'confirm', (msg, value) => {
   managerAction(msg, value, "Approved")
 })
-slapp.action('leave_with_vacation_confirm_reject', 'reject', (msg, value) => {
+env.slapp.action('leave_with_vacation_confirm_reject', 'reject', (msg, value) => {
   msg.say("Ok, operation aborted.")
   fromDate = "";
   toDate = "";
@@ -551,7 +517,7 @@ function managerAction(msg, value, typeOfaction) {
   employeeEmail = arr[9]
   managerId = arr[10]
 
-  hrHelper.sendVacationPostRequest(/*from  */fromDateInMilliseconds, toDateInMilliseconds, "ss", employeeEmail, type, function (vacationId, managerApproval) {
+  env.hrHelper.sendVacationPostRequest(/*from  */fromDateInMilliseconds, toDateInMilliseconds, "ss", employeeEmail, type, function (vacationId, managerApproval) {
     arr = value.toString().split(",");
     fromDate = arr[7]
     toDate = arr[8]
@@ -559,9 +525,9 @@ function managerAction(msg, value, typeOfaction) {
     managerId = arr[10]
 
 
-    hrHelper.convertTimeFormat(arr[0], function (formattedTime, midday) {
+    env.hrHelper.convertTimeFormat(arr[0], function (formattedTime, midday) {
 
-      hrHelper.convertTimeFormat(arr[1], function (formattedTime1, midday1) {
+      env.hrHelper.convertTimeFormat(arr[1], function (formattedTime1, midday1) {
 
         if (arr[0] && (arr[0] != undefined)) {
           fromDate = fromDate + " at " + formattedTime + " " + midday
@@ -613,7 +579,7 @@ function managerAction(msg, value, typeOfaction) {
  * 
  * 
  */
-slapp.action('manager_confirm_reject', 'Undo', (msg, value) => {
+env.slapp.action('manager_confirm_reject', 'Undo', (msg, value) => {
   var arr = value.toString().split(";")
   console.log("UNDO UNDO")
   var userEmail = arr[0];
@@ -627,7 +593,7 @@ slapp.action('manager_confirm_reject', 'Undo', (msg, value) => {
   var workingDays = arr[8]
   var ImageUrl = arr[9]
 
-  var uri = 'http://' + IP + '/api/v1/vacation/' + vacationId
+
   env.mRequests.getVacationInfo(userEmail, vacationId, function (error, response, body) {
 
     //console.log(JSON.stringify(body))
@@ -643,7 +609,7 @@ slapp.action('manager_confirm_reject', 'Undo', (msg, value) => {
  * Reject with commemt listener
  * 
  */
-slapp.action('manager_confirm_reject', 'reject_with_comment', (msg, value) => {
+env.slapp.action('manager_confirm_reject', 'reject_with_comment', (msg, value) => {
   var arr = value.toString().split(";")
   var userEmail = arr[0];
   var vacationId = arr[1];
@@ -667,13 +633,13 @@ slapp.action('manager_confirm_reject', 'reject_with_comment', (msg, value) => {
 
   })
 })
-slapp.action('manager_confirm_reject', 'Send_comment', (msg, value) => {
+env.slapp.action('manager_confirm_reject', 'Send_comment', (msg, value) => {
   var arr = value.toString().split(";")
   var comment = arr[10]
 
   HrAction(msg, value, "Rejected", comment)
 })
-slapp.action('cancel_request', 'cancel', (msg, value) => {
+env.slapp.action('cancel_request', 'cancel', (msg, value) => {
   var arr = value.toString().split(";")
   var email = arr[0]
   var vacationId = arr[1]
