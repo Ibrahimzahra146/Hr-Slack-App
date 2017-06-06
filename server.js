@@ -1,4 +1,6 @@
 'use strict'
+const env = require('./Public/configrations.js')
+
 var APIAI_ACCESS_TOKEN = process.env.APIAI_ACCESS_KEY
 var requestIp = require('request-ip');
 const express = require('express')
@@ -51,21 +53,9 @@ var bot = controller.spawn({
 exports.bot = bot;
 
 function storeHrSlackInformation(email, msg) {
-  console.log("IP" + IP)
-  request({
-    url: 'http://' + IP + '/api/v1/toffy/get-record', //URL to hitDs
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Cookie': 'JSESSIONID=24D8D542209A0B2FF91AB2A333C8FA70'
-    },
-    body: email
-    //Set the body as a stringcc
-  }, function (error, response, body) {
+  env.mRequests.getSlackRecord(email, function (error, response, body) {
 
-    console.log(JSON.stringify(body))
     if (response.statusCode == 404) {
-
       console.log("the employee  not found ")
       requestify.post('http://' + IP + '/api/v1/toffy', {
         "email": email,
@@ -83,33 +73,20 @@ function storeHrSlackInformation(email, msg) {
     }
 
     else if (response.statusCode == 200) {
-      console.log((JSON.parse(body)).hrChannelId)
-      console.log(msg.body.event.channel)
+
       if (((JSON.parse(body)).hrChannelId) != (msg.body.event.channel)) {
 
         var userChId = JSON.parse(body).userChannelId;
         var managerChId = JSON.parse(body).managerChannelId;
-        request({
-          url: "http://" + IP + "/api/v1/toffy/" + JSON.parse(body).id, //URL to hitDs
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-            'Cookie': 'JSESSIONID=24D8D542209A0B2FF91AB2A333C8FA70'
-          },
-          body: email
-          //Set the body as a stringcc
-        }, function (error, response, body) {
-          console.log("The record has been deleted");
-
-        });
-        requestify.post('http://' + IP + '/api/v1/toffy', {
-          "email": email,
-          "hrChannelId": msg.body.event.channel,
-          "managerChannelId": managerChId,
-          "slackUserId": msg.body.event.user,
-          "teamId": msg.body.team_id,
-          "userChannelId": userChId
-        })
+        env.
+          requestify.post('http://' + IP + '/api/v1/toffy', {
+            "email": email,
+            "hrChannelId": msg.body.event.channel,
+            "managerChannelId": managerChId,
+            "slackUserId": msg.body.event.user,
+            "teamId": msg.body.team_id,
+            "userChannelId": userChId
+          })
           .then(function (response) {
 
             // Get the response body
@@ -474,16 +451,9 @@ function HrAction(msg, value, approvalType, comment) {
   } else if (type == "WFH")
     typeText = " work from home"
   hrHelper.sendVacationPutRequest(vacationId, approvalId, hrEmail, approvalType)
-  request({
-    url: 'http://' + IP + '/api/v1/toffy/get-record', //URL to hitDs
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Cookie': 'JSESSIONID=24D8D542209A0B2FF91AB2A333C8FA70'
-    },
-    body: userEmail
-    //Set the body as a stringcc
-  }, function (error, response, body) {
+  env.mRequests.getSlackRecord(userEmail, function (error, response, body) {
+
+
     var responseBody = JSON.parse(body);
     vacationHelper.getVacationBody(hrEmail, vacationId, function (vacationBody) {
       vacationHelper.getSecondApproverStateAndFinalState(hrEmail, vacationBody, 1, function (myEmail, myAction, vacationState) {
@@ -504,22 +474,12 @@ slapp.action('confirm_reject_compensation', 'confirm', (msg, value) => {
   var arr = value.toString().split(",")
   var hrEmail = arr[0];
   var userEmail = arr[1];
-  console.log("userEmail111" + userEmail)
   var numberOfExtraTimeOff = arr[2];
   var type = arr[3]
 
 
   //hrHelper.sendVacationPutRequest(vacationId, approvalId, hrEmail, "Approved")
-  request({
-    url: 'http://' + IP + '/api/v1/toffy/get-record', //URL to hitDs
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Cookie': 'JSESSIONID=24D8D542209A0B2FF91AB2A333C8FA70'
-    },
-    body: userEmail
-    //Set the body as a stringcc
-  }, function (error, response, body) {
+  env.mRequests.getSlackRecord(userEmail, function (error, response, body) {
     var responseBody = JSON.parse(body);
     var message = {
       'type': 'message',
@@ -532,7 +492,6 @@ slapp.action('confirm_reject_compensation', 'confirm', (msg, value) => {
     };
 
     bot.startConversation(message, function (err, convo) {
-      console.log("cannot send message")
 
       if (!err) {
         var text12 = {
@@ -590,8 +549,7 @@ function managerAction(msg, value, typeOfaction) {
   toDate = arr[8]
   employeeEmail = arr[9]
   managerId = arr[10]
-  console.log("Freooooom" + fromDate)
-  console.log("toDate", toDate)
+
   hrHelper.sendVacationPostRequest(/*from  */fromDateInMilliseconds, toDateInMilliseconds, "ss", employeeEmail, type, function (vacationId, managerApproval) {
     arr = value.toString().split(",");
     fromDate = arr[7]
@@ -637,7 +595,6 @@ function managerAction(msg, value, typeOfaction) {
             }
           ]
         }
-        console.log("cancel_request1" + JSON.stringify(managerApproval))
 
         msg.respond(msg.body.response_url, text12)
         messageSender.sendMessageSpecEmployee(employeeEmail, "Hi, HR " + managerEmail + " has posted a time off for you from " + fromDate + "-" + toDate + ".");
@@ -670,34 +627,16 @@ slapp.action('manager_confirm_reject', 'Undo', (msg, value) => {
   var ImageUrl = arr[9]
 
   var uri = 'http://' + IP + '/api/v1/vacation/' + vacationId
-  hrHelper.getNewSessionwithCookie(managerEmail, function (remember_me_cookie, session_Id) {
+  env.mRequests.getVacationInfo(userEmail, vacationId, function (error, response, body) {
 
+    //console.log(JSON.stringify(body))
 
-    request({
-      url: uri, //URL to hitDs
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Cookie': remember_me_cookie + ";" + session_Id
-
-      }
-      //Set the body as a stringcc
-    }, function (error, response, body) {
-
-      //console.log(JSON.stringify(body))
-
-      vacationHelper.getSecondApproverStateAndFinalState(managerEmail, body, 1, function (myEmail, myAction, vacationState) {
-        console.log("myAction" + myAction)
-        replaceMessage.undoAction(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, "approver2Action", vacationState, myAction)
-      })
+    vacationHelper.getSecondApproverStateAndFinalState(managerEmail, body, 1, function (myEmail, myAction, vacationState) {
+      console.log("myAction" + myAction)
+      replaceMessage.undoAction(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, "approver2Action", vacationState, myAction)
     })
-
-
-
-
-
-
   })
+
 })
 /**
  * Reject with commemt listener
@@ -715,10 +654,10 @@ slapp.action('manager_confirm_reject', 'reject_with_comment', (msg, value) => {
   var type = arr[7]
   var workingDays = arr[8]
   var ImageUrl = arr[9]
-  vacationHelper.getVacationBody(managerEmail, vacationId, function (vacationBody) {
+  env.mRequests.getVacationInfo(managerEmail, vacationId, function (error, response, body) {
 
 
-    vacationHelper.getSecondApproverStateAndFinalState(managerEmail, vacationBody, 1, function (myEmail, myAction, vacationState) {
+    vacationHelper.getSecondApproverStateAndFinalState(managerEmail, body, 1, function (myEmail, myAction, vacationState) {
 
 
 

@@ -32,6 +32,8 @@ exports.async = async
 
 const apiai = require('apiai');
 
+const mRequests = require('.././Requests/requests.js')
+exports.mRequests = mRequests
 
 var hrHelper = require('.././HrHelper')
 exports.hrHelper = hrHelper

@@ -67,11 +67,6 @@ function getIdByEmail(email, callback) {
 }
 
 module.exports.sendFeedBackMessage = function sendFeedBackMessage(responseBody, hrEmail, fromDate, toDate, approvalType, comment) {
-    console.log("responseBody.userChannelId " + responseBody.userChannelId)
-    console.log("responseBody.slackUserId " + responseBody.slackUserId)
-    console.log("responseBody.teamId " + responseBody.teamId)
-    console.log("Arrive sendFeedBackMessage  ")
-
     var hrComment = "Comment: " + comment
     if (comment == "")
         hrComment = ""
@@ -153,7 +148,6 @@ module.exports.getNewSessionwithCookie = function getNewSessionwithCookie(email,
         body: email
         //Set the body as a stringcc
     }, function (error, response, body) {
-        console.log("response.statusCode == 500 " + response.statusCode)
         if (response.statusCode == 500 || response.statusCode == 451) {
             callback(1000, 1000)
         } else {
@@ -163,7 +157,6 @@ module.exports.getNewSessionwithCookie = function getNewSessionwithCookie(email,
             var cookies1 = JSON.stringify((response.headers["set-cookie"])[0]);
             var arr1 = cookies1.toString().split(";")
             res1 = arr1[0].replace(/['"]+/g, '');
-            printLogs("final session is =========>" + res)
             callback(res, res1);
         }
     });
