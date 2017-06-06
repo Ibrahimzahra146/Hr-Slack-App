@@ -740,7 +740,6 @@ slapp.action('manager_confirm_reject', 'Send_comment', (msg, value) => {
   HrAction(msg, value, "Rejected", comment)
 })
 slapp.action('cancel_request', 'cancel', (msg, value) => {
-  console.log("Cancelation")
   var arr = value.toString().split(";")
   var email = arr[0]
   console.log("email", email)
