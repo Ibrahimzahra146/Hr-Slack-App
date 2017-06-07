@@ -116,16 +116,7 @@ module.exports.undoAction = function unduAction(msg, userEmail, managerEmail, fr
             "type": "button",
             "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl + ";" + "Pending" + ";" + "Pending" + ";" + "Pending"
         }
-        var dont_detuct_button = ""
-        if (type != "WFH") {
-            dont_detuct_button = {
-                "name": "dont_detuct",
-                "text": "Don’t Deduct ",
-                "type": "button",
-                "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl
-            }
-        }
-        var actions_based_on_type = dont_detuct_button
+
 
 
         var messageBody = {
@@ -214,7 +205,7 @@ module.exports.undoAction = function unduAction(msg, userEmail, managerEmail, fr
     })
 }
 
-module.exports.replaceWithComment = function replaceWithComment(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, managerApprovalsSection, vacationState, myAction, comment) {
+module.exports.replaceWithComment = function replaceWithComment(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, managerApprovalsSection, vacationState, myAction, comment, attachment_url) {
     var commentField = ""
     if (comment != null && comment != "") {
         commentField =
@@ -271,7 +262,12 @@ module.exports.replaceWithComment = function replaceWithComment(msg, userEmail, 
                             "title": "Final state",
                             "value": vacationState + " " + finalStateEmoji,
                             "short": false
+                        }, {
+                            "title": "Sick report",
+                            "value": "<" + attachment_url + "|link>",
+                            "short": false
                         }
+
                     ],
                     "actions": [
                         {
@@ -325,7 +321,7 @@ module.exports.replaceWithComment = function replaceWithComment(msg, userEmail, 
  * Refresh the current message
  */
 
-module.exports.replaceCanceledRequestOnAction = function replaceCanceledRequestOnAction(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays) {
+module.exports.replaceCanceledRequestOnAction = function replaceCanceledRequestOnAction(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays,) {
 
 
     var messageBody = {
@@ -376,7 +372,7 @@ module.exports.replaceCanceledRequestOnAction = function replaceCanceledRequestO
  * Check state of not canceled request
  * 
  */
-module.exports.replaceMessageOnCheckState = function replaceMessageOnCheckState(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, managerApprovalsSection, vacationState, myAction, comment) {
+module.exports.replaceMessageOnCheckState = function replaceMessageOnCheckState(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, managerApprovalsSection, vacationState, myAction, comment,attachment_url) {
     console.log("replaceMessageOnCheckState")
     var commentField = ""
     if (comment != null && comment != "") {
@@ -397,28 +393,8 @@ module.exports.replaceMessageOnCheckState = function replaceMessageOnCheckState(
             "type": "button",
             "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl + ";" + "Pending" + ";" + "Pending" + ";" + "Pending"
         }
-        var dont_detuct_button = ""
-        if (type != "WFH") {
 
 
-            dont_detuct_button = {
-                "name": "dont_detuct",
-                "text": "Don’t Deduct ",
-                "type": "button",
-                "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl
-            }
-        }
-        var actions_based_on_type = dont_detuct_button
-        if (type == "sick") {
-            reject_with_comment_button = ""
-            actions_based_on_type = {
-                "name": "accept_with_report",
-                "text": "Accept with report",
-
-                "type": "button",
-                "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl
-            }
-        }
 
         console.log("replaceMessageOnCheckState")
         var messageBody = {
@@ -463,7 +439,12 @@ module.exports.replaceMessageOnCheckState = function replaceMessageOnCheckState(
                             "title": "Final state",
                             "value": vacationState + " " + finalStateEmoji,
                             "short": false
+                        }, {
+                            "title": "Sick report",
+                            "value": "<" + attachment_url + "|link>",
+                            "short": false
                         }
+
 
                     ], "actions": [
                         {
@@ -472,7 +453,7 @@ module.exports.replaceMessageOnCheckState = function replaceMessageOnCheckState(
                             "style": "primary",
                             "type": "button",
                             "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl
-                        }, actions_based_on_type,
+                        },
                         {
                             "name": "reject",
                             "text": "Reject",
