@@ -658,7 +658,7 @@ env.slapp.action('manager_confirm_reject', 'reject_with_comment', (msg, value) =
   var type = arr[7]
   var workingDays = arr[8]
   var ImageUrl = arr[9]
-  env.mRequests.getVacationInfo(managerEmail, vacationId, function (state, body) {
+  env.mRequests.getVacationInfo(managerEmail, vacationId, function (error,response, body) {
     vacationHelper.getSecondApproverStateAndFinalState(managerEmail, body, 1, function (myEmail, myAction, vacationState) {
       var attachment_url = JSON.parse(body).attachments[0].reference
 
