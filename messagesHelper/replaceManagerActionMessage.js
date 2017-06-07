@@ -272,7 +272,7 @@ module.exports.replaceWithComment = function replaceWithComment(msg, userEmail, 
                     "actions": [
                         {
                             "name": "Send_comment",
-                            "text": "Sorry",
+                            "text": "Irrelevent report",
 
                             "type": "button",
                             "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl + ";Sorry!."

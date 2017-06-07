@@ -658,16 +658,15 @@ env.slapp.action('manager_confirm_reject', 'reject_with_comment', (msg, value) =
   var type = arr[7]
   var workingDays = arr[8]
   var ImageUrl = arr[9]
-  env.mRequests.getVacationInfo(managerEmail, vacationId, function (error, response, body) {
-
-
+  env.mRequests.getVacationInfo(managerEmail, vacationId, function (state, body) {
     vacationHelper.getSecondApproverStateAndFinalState(managerEmail, body, 1, function (myEmail, myAction, vacationState) {
+      var attachment_url = JSON.parse(body).attachments[0].reference
 
+      env.messageGenerator.generateManagerApprovelsSection(JSON.parse(body).managerApproval, managerEmail, function (managerApprovalsSection) {
 
-
-      replaceMessage.replaceWithComment(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, "approver2Email", "approver2Action", vacationState, myAction)
+        replaceMessage.replaceWithComment(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, managerApprovalsSection, vacationState, myAction, JSON.parse(body).comments, attachment_url)
+      })
     })
-
   })
 })
 env.slapp.action('manager_confirm_reject', 'Send_comment', (msg, value) => {
