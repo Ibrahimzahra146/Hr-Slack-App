@@ -377,6 +377,7 @@ module.exports.replaceCanceledRequestOnAction = function replaceCanceledRequestO
  * 
  */
 module.exports.replaceMessageOnCheckState = function replaceMessageOnCheckState(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, managerApprovalsSection, vacationState, myAction, comment) {
+    console.log("replaceMessageOnCheckState")
     var commentField = ""
     if (comment != null && comment != "") {
         commentField =
