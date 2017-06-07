@@ -485,7 +485,7 @@ env.slapp.action('manager_confirm_reject', 'dont_detuct', (msg, value) => {
  * 
  * Check state
  */
-slapp.action('manager_confirm_reject', 'check_state', (msg, value) => {
+env.slapp.action('manager_confirm_reject', 'check_state', (msg, value) => {
   var arr = value.toString().split(";")
   var userEmail = arr[0];
   var vacationId = arr[1];
