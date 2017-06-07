@@ -425,10 +425,11 @@ function HrAction(msg, value, approvalType, comment) {
       var state = response.statusCode;
       var vacationState = JSON.parse(body).vacationState
       env.messageGenerator.generateManagerApprovelsSection(JSON.parse(body).managerApproval, hrEmail, function (managerApprovalsSection) {
+        var attachment_url = JSON.parse(body).managerApproval[0].reference
         console.log("generate ManagerApprovelsSection " + JSON.stringify(body))
         env.hrHelper.sendFeedBackMessage(responseBody, hrEmail, fromDate, toDate, approvalType, comment)
-        // msg.say("You have accepted the" + typeText + " request for " + userEmail + " ( " + fromtDate + "-" + toDate + ").")
-        replaceMessage.replaceMessage(msg, userEmail, hrEmail, fromDate, toDate, type, approvalType, vacationId, approvalId, ImageUrl, typeText, workingDays, managerApprovalsSection, vacationState, JSON.parse(body).comments)
+
+        replaceMessage.replaceMessage(msg, userEmail, hrEmail, fromDate, toDate, type, approvalType, vacationId, approvalId, ImageUrl, typeText, workingDays, managerApprovalsSection, vacationState, JSON.parse(body).comments,attachment_url )
 
       })
     })
