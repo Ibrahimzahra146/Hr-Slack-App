@@ -425,7 +425,7 @@ function HrAction(msg, value, approvalType, comment) {
       var state = response.statusCode;
       var vacationState = JSON.parse(body).vacationState
       env.messageGenerator.generateManagerApprovelsSection(JSON.parse(body).managerApproval, hrEmail, function (managerApprovalsSection) {
-        var attachment_url = JSON.parse(body).managerApproval[0].reference
+        var attachment_url = JSON.parse(body).attachments[0].reference
         console.log("generate attachment_url " + JSON.stringify(body))
         env.hrHelper.sendFeedBackMessage(responseBody, hrEmail, fromDate, toDate, approvalType, comment)
 
