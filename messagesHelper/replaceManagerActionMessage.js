@@ -272,31 +272,31 @@ module.exports.replaceWithComment = function replaceWithComment(msg, userEmail, 
                     "actions": [
                         {
                             "name": "Send_comment",
-                            "text": "Irrelevent report",
+                            "text": "Invalid report",
 
                             "type": "button",
-                            "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl + ";Sorry!."
+                            "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl + ";Invalid report!."
                         },
                         {
                             "name": "Send_comment",
-                            "text": "Project deadline",
+                            "text": "Invalid dates",
 
                             "type": "button",
-                            "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl + ";Project deadline."
+                            "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl + ";Invalid dates"
                         },
 
                         {
                             "name": "Send_comment",
-                            "text": "Discuss it privately",
+                            "text": "irrelevant report",
 
                             "type": "button",
-                            "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl + ";Discuss it privately."
+                            "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl + ";irrelevant report"
                         },
                         {
                             "name": "Send_comment",
-                            "text": "No replaceable emp",
+                            "text": "Unclear report",
                             "type": "button",
-                            "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl + ";No replaceable emp."
+                            "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl + ";Unclear report."
                         }, {
                             "name": "Undo",
                             "text": "back",
