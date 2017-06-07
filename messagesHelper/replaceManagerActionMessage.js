@@ -96,7 +96,7 @@ module.exports.replaceMessage = function replaceMessage(msg, userEmail, managerE
     })
 }
 //return original message when click on undo
-module.exports.undoAction = function unduAction(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, managerApprovalsSection, vacationState, myAction, comment) {
+module.exports.undoAction = function unduAction(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, managerApprovalsSection, vacationState, myAction, comment, attachment_url) {
     //console.log("undoAction1" + undoAction)
     var commentField = ""
     if (comment != null && comment != "") {
@@ -126,8 +126,8 @@ module.exports.undoAction = function unduAction(msg, userEmail, managerEmail, fr
             }
         }
         var actions_based_on_type = dont_detuct_button
-      
-        
+
+
         var messageBody = {
             "text": "Time off request:",
             "attachments": [
@@ -170,7 +170,13 @@ module.exports.undoAction = function unduAction(msg, userEmail, managerEmail, fr
                             "title": "Final state",
                             "value": vacationState + " " + finalStateEmoji,
                             "short": false
+                        },
+                        {
+                            "title": "Sick report",
+                            "value": "<" + attachment_url + "|link>",
+                            "short": false
                         }
+
 
                     ],
                     "actions": [

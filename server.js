@@ -574,6 +574,8 @@ function managerAction(msg, value, typeOfaction) {
 /**
  * 
  * 
+ * 
+ * 
  */
 env.slapp.action('manager_confirm_reject', 'Undo', (msg, value) => {
   var arr = value.toString().split(";")
@@ -590,10 +592,12 @@ env.slapp.action('manager_confirm_reject', 'Undo', (msg, value) => {
   var ImageUrl = arr[9]
 
   env.mRequests.getVacationInfo(managerEmail, vacationId, function (error, response, body) {
+    var attachment_url = JSON.parse(body).attachments[0].reference
+    console.log("generate attachment_url " + JSON.stringify(body))
     env.messageGenerator.generateManagerApprovelsSection(JSON.parse(body).managerApproval, managerEmail, function (managerApprovalsSection) {
 
       vacationHelper.getSecondApproverStateAndFinalState(managerEmail, body, 1, function (myEmail, myAction, vacationState) {
-        replaceMessage.undoAction(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, managerApprovalsSection, vacationState, myAction, JSON.parse(body).comments)
+        replaceMessage.undoAction(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, managerApprovalsSection, vacationState, myAction, JSON.parse(body).comments, attachment_url)
       })
 
 
@@ -602,7 +606,7 @@ env.slapp.action('manager_confirm_reject', 'Undo', (msg, value) => {
 
     })
   })
- 
+
 })
 /**
  * Reject with commemt listener
