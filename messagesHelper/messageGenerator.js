@@ -26,7 +26,7 @@ module.exports.generateManagerApprovelsSection = function generateManagerApprove
                 flag == "false }"
             }
             var arr = managerApproval[i].managerEmail.toString().split("@")
-            if (managerApproval[i].managerEmail != managerEmail) {
+            if (managerApproval[i].managerEmail != managerEmail || (managerApproval[i].managerEmail == managerEmail && managerApproval[i].type == "Manager")) {
                 console.log("Arrivvve")
                 getEmoji(managerApproval[i].state, "", "", "", function (emoji) {
 
