@@ -177,7 +177,7 @@ module.exports.undoAction = function unduAction(msg, userEmail, managerEmail, fr
                             "style": "primary",
                             "type": "button",
                             "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl
-                        }, actions_based_on_type,
+                        },
                         {
                             "name": "reject",
                             "text": "Reject",
