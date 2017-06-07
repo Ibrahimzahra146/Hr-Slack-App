@@ -481,6 +481,37 @@ env.slapp.action('manager_confirm_reject', 'dont_detuct', (msg, value) => {
 
 
 })
+/**
+ * 
+ * Check state
+ */
+slapp.action('manager_confirm_reject', 'check_state', (msg, value) => {
+  var arr = value.toString().split(";")
+  var userEmail = arr[0];
+  var vacationId = arr[1];
+  var approvalId = arr[2]
+  var managerEmail = arr[3]
+  var fromWho = arr[4];
+  var fromDate = arr[5];
+  var toDate = arr[6];
+  var type = arr[7]
+  var workingDays = arr[8]
+  var ImageUrl = arr[9]
+  env.mRequests.getVacationInfo(managerEmail, vacationId, function (state, body) {
+    if (state == 404) {
+      replaceMessage.replaceCanceledRequestOnAction(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays)
+    } else if (state == 200) {
+      // replaceMessage.replaceMessageOnCheckState(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays)
+      env.messageGenerator.generateManagerApprovelsSection(JSON.parse(body).managerApproval, managerEmail, function (managerApprovalsSection) {
+        vacationHelper.getSecondApproverStateAndFinalState(managerEmail, body, 1, function (myEmail, myAction, vacationState) {
+          replaceMessage.replaceMessageOnCheckState(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, managerApprovalsSection, vacationState, myAction, JSON.parse(body).comments)
+
+        })
+      })
+    }
+  })
+})
+
 //force vacation for employee
 env.slapp.action('leave_with_vacation_confirm_reject', 'confirm', (msg, value) => {
   managerAction(msg, value, "Approved")
