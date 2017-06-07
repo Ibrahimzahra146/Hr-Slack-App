@@ -126,16 +126,8 @@ module.exports.undoAction = function unduAction(msg, userEmail, managerEmail, fr
             }
         }
         var actions_based_on_type = dont_detuct_button
-        if (type == "sick") {
-            reject_with_comment_button = ""
-            actions_based_on_type = {
-                "name": "accept_with_report",
-                "text": "Accept with report",
-
-                "type": "button",
-                "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl
-            }
-        }
+      
+        
         var messageBody = {
             "text": "Time off request:",
             "attachments": [

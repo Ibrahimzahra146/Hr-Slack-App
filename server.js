@@ -429,7 +429,7 @@ function HrAction(msg, value, approvalType, comment) {
         console.log("generate attachment_url " + JSON.stringify(body))
         env.hrHelper.sendFeedBackMessage(responseBody, hrEmail, fromDate, toDate, approvalType, comment)
 
-        replaceMessage.replaceMessage(msg, userEmail, hrEmail, fromDate, toDate, type, approvalType, vacationId, approvalId, ImageUrl, typeText, workingDays, managerApprovalsSection, vacationState, JSON.parse(body).comments,attachment_url )
+        replaceMessage.replaceMessage(msg, userEmail, hrEmail, fromDate, toDate, type, approvalType, vacationId, approvalId, ImageUrl, typeText, workingDays, managerApprovalsSection, vacationState, JSON.parse(body).comments, attachment_url)
 
       })
     })
@@ -589,17 +589,20 @@ env.slapp.action('manager_confirm_reject', 'Undo', (msg, value) => {
   var workingDays = arr[8]
   var ImageUrl = arr[9]
 
+  env.mRequests.getVacationInfo(managerEmail, vacationId, function (error, response, body) {
+    env.messageGenerator.generateManagerApprovelsSection(JSON.parse(body).managerApproval, managerEmail, function (managerApprovalsSection) {
 
-  env.mRequests.getVacationInfo(userEmail, vacationId, function (error, response, body) {
+      vacationHelper.getSecondApproverStateAndFinalState(managerEmail, body, 1, function (myEmail, myAction, vacationState) {
+        replaceMessage.undoAction(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, managerApprovalsSection, vacationState, myAction, JSON.parse(body).comments)
+      })
 
-    //console.log(JSON.stringify(body))
 
-    vacationHelper.getSecondApproverStateAndFinalState(managerEmail, body, 1, function (myEmail, myAction, vacationState) {
-      console.log("myAction" + myAction)
-      replaceMessage.undoAction(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, "approver2Action", vacationState, myAction)
+
+
+
     })
   })
-
+ 
 })
 /**
  * Reject with commemt listener
