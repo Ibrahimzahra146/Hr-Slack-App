@@ -643,6 +643,37 @@ env.slapp.action('manager_confirm_reject', 'Undo', (msg, value) => {
 
 })
 /**
+ * 
+ * Undo on checj state
+ */
+env.slapp.action('manager_confirm_reject', 'check_state_undo', (msg, value) => {
+  var arr = value.toString().split(";")
+  var userEmail = arr[0];
+  var vacationId = arr[1];
+  var approvalId = arr[2]
+  var managerEmail = arr[3]
+  var fromWho = arr[4];
+  var fromDate = arr[5];
+  var toDate = arr[6];
+  var type = arr[7]
+  var workingDays = arr[8]
+  var ImageUrl = arr[9]
+  env.mRequests.getVacationInfo(managerEmail, vacationId, function (error, response, body) {
+    if (response.statusCode == 404) {
+      replaceMessage.replaceCanceledRequestOnAction(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays)
+    } else if (response.statusCode == 200) {
+      var attachment_url = JSON.parse(body).attachments[0].reference
+      // replaceMessage.replaceMessageOnCheckState(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays)
+      env.messageGenerator.generateManagerApprovelsSection(JSON.parse(body).managerApproval, managerEmail, function (managerApprovalsSection) {
+        vacationHelper.getSecondApproverStateAndFinalState(managerEmail, body, 1, function (myEmail, myAction, vacationState) {
+          replaceMessage.replaceMessage(msg, userEmail, managerEmail, fromDate, toDate, type, myAction, vacationId, approvalId, ImageUrl, "", workingDays, managerApprovalsSection, vacationState, JSON.parse(body).comments,attachment_url)
+
+        })
+      })
+    }
+  })
+})
+/**
  * Reject with commemt listener
  * 
  */
@@ -658,7 +689,7 @@ env.slapp.action('manager_confirm_reject', 'reject_with_comment', (msg, value) =
   var type = arr[7]
   var workingDays = arr[8]
   var ImageUrl = arr[9]
-  env.mRequests.getVacationInfo(managerEmail, vacationId, function (error,response, body) {
+  env.mRequests.getVacationInfo(managerEmail, vacationId, function (error, response, body) {
     vacationHelper.getSecondApproverStateAndFinalState(managerEmail, body, 1, function (myEmail, myAction, vacationState) {
       var attachment_url = JSON.parse(body).attachments[0].reference
 
