@@ -321,7 +321,7 @@ module.exports.replaceWithComment = function replaceWithComment(msg, userEmail, 
  * Refresh the current message
  */
 
-module.exports.replaceCanceledRequestOnAction = function replaceCanceledRequestOnAction(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays,) {
+module.exports.replaceCanceledRequestOnAction = function replaceCanceledRequestOnAction(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays) {
 
 
     var messageBody = {
