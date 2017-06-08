@@ -1,4 +1,4 @@
-const env=require('./public/configrations.js')
+const env = require('./public/configrations.js')
 /*
 Send Put reques from HR to accept or reject a vacation
 */
@@ -12,7 +12,7 @@ module.exports.sendVacationPutRequest = function sendVacationPutRequest(vacation
 
     env.hrHelper.getNewSessionwithCookie(managerEmail, function (remember_me_cookie, session_Id) {
 
-        var uri = 'http://' +  env.IP + '/api/v1/vacation/' + vacationId + '/managerApproval/' + approvalId
+        var uri = 'http://' + env.IP + '/api/v1/vacation/' + vacationId + '/managerApproval/' + approvalId
         printLogs("uri::" + uri)
         var approvalBody = {
             "id": approvalId,
@@ -22,7 +22,7 @@ module.exports.sendVacationPutRequest = function sendVacationPutRequest(vacation
 
         }
         approvalBody = JSON.stringify(approvalBody)
-         env.request({
+        env.request({
             url: uri, //URL to hitDs
             method: 'PUT',
             headers: {
@@ -90,7 +90,7 @@ module.exports.getRoleByEmail = function getRoleByEmail(email, role, callback) {
     var flag = false;
     printLogs("getting  Roles ");
 
-     env.hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, session_Id) {
+    env.hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, session_Id) {
         if (remember_me_cookie == 1000) {
             callback(1000)
         } else {
@@ -111,7 +111,7 @@ module.exports.getRoleByEmail = function getRoleByEmail(email, role, callback) {
                 var i = 0
                 while (roles1.roles[i]) {
                     printLogs("roles[i].name" + roles1.roles[i].name)
-                    if (roles1.roles[i].name == role) {
+                    if (roles1.roles[i].name == role || roles1.roles[i].name == "HR_OFFICER") {
                         flag = true;
 
                         break;
@@ -131,8 +131,8 @@ module.exports.getRoleByEmail = function getRoleByEmail(email, role, callback) {
  * 
  */
 module.exports.getNewSessionwithCookie = function getNewSessionwithCookie(email, callback) {
-     env.request({
-        url: 'http://' +  env.IP + '/api/v1/employee/login', //URL to hitDs
+    env.request({
+        url: 'http://' + env.IP + '/api/v1/employee/login', //URL to hitDs
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -143,7 +143,7 @@ module.exports.getNewSessionwithCookie = function getNewSessionwithCookie(email,
         if (response.statusCode == 500 || response.statusCode == 451) {
             callback(1000, 1000)
         } else {
-            
+
             var cookies = JSON.stringify((response.headers["set-cookie"])[1]);
             var arr = cookies.toString().split(";")
             res = arr[0].replace(/['"]+/g, '');
@@ -182,7 +182,7 @@ module.exports.showEmployeesBalance = function showEmployeesBalance(msg, email, 
     env.hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, session_Id) {
         var url = "http://" + env.IP + "/api/v1/employee/vacation-balance/2017?" + from_to_request;
         console.log(url)
-         env.request({
+        env.request({
             url: url,
             json: true,
             method: 'GET',
@@ -346,14 +346,14 @@ module.exports.sendVacationPostRequest = function sendVacationPostRequest(from, 
 
         }
         vacationBody = JSON.stringify(vacationBody)
-        var uri = 'http://' +  env.IP + '/api/v1/vacation'
+        var uri = 'http://' + env.IP + '/api/v1/vacation'
         printLogs("Uri " + uri)
-         env.request({
+        env.request({
             url: uri, //URL to hitDs
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Cookie': env.hrHelper.general_remember_me + ";" +  env.hrHelper.general_session_id
+                'Cookie': env.hrHelper.general_remember_me + ";" + env.hrHelper.general_session_id
             },
 
             body: vacationBody
