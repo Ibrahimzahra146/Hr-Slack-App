@@ -47,7 +47,7 @@ function storeHrSlackInformation(email, msg) {
         var userChId = JSON.parse(body).userChannelId;
         var managerChId = JSON.parse(body).managerChannelId;
         env.
-          requestify.post('http://' + IP + '/api/v1/toffy', {
+          requestify.post('http://' + env.IP + '/api/v1/toffy', {
             "email": email,
             "hrChannelId": msg.body.event.channel,
             "managerChannelId": managerChId,
