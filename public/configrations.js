@@ -24,6 +24,7 @@ exports.uuid = uuid
 const request = require('request');
 exports.request = request
 
+
 const JSONbig = require('json-bigint');
 exports.JSONbig = JSONbig
 
@@ -31,7 +32,7 @@ const async = require('async');
 exports.async = async
 
 const apiai = require('apiai');
-exports.apiai=apiai
+exports.apiai = apiai
 
 const mRequests = require('.././Requests/requests.js')
 exports.mRequests = mRequests
@@ -86,6 +87,7 @@ const APIAI_LANG = 'en';
 var sessionId = uuid.v1();
 exports.sessionId = sessionId
 var requestify = require('requestify');
+exports.requestify = requestify;
 var pg = require('pg');
 
 var APIAI_ACCESS_TOKEN = process.env.APIAI_ACCESS_KEY;

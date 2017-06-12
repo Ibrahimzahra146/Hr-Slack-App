@@ -25,7 +25,7 @@ function storeHrSlackInformation(email, msg) {
 
     if (response.statusCode == 404) {
       console.log("the employee  not found ")
-      requestify.post('http://' + env.IP + '/api/v1/toffy', {
+      env.requestify.post('http://' + env.IP + '/api/v1/toffy', {
         "email": email,
         "hrChannelId": msg.body.event.channel,
         "managerChannelId": "",
@@ -46,8 +46,7 @@ function storeHrSlackInformation(email, msg) {
 
         var userChId = JSON.parse(body).userChannelId;
         var managerChId = JSON.parse(body).managerChannelId;
-        env.
-          requestify.post('http://' + env.IP + '/api/v1/toffy', {
+        env.requestify.post('http://' + env.IP + '/api/v1/toffy', {
             "email": email,
             "hrChannelId": msg.body.event.channel,
             "managerChannelId": managerChId,
