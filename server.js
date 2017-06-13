@@ -438,7 +438,7 @@ function managerApproval1(msg, value, approvalType, fromManager, comment, reject
         } else {
 
 
-          env.hrHelper.sendVacationPutRequest(vacationId, approvalId, hrEmail, approvalType)
+          env.hrHelper.sendVacationPutRequest(vacationId, approvalId, managerEmail, approvalType)
 
           env.mRequests.getVacationInfo(managerEmail, vacationId, function (error, response, vacationBody1) {
             //if (JSON.parse(vacationBody1).vacationState == "Approved")
