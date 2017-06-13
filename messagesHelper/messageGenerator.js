@@ -3,6 +3,7 @@ const request = require('request');
 var server = require('.././server.js')
 var sessionFlag = 0;
 var IP = process.env.SLACK_IP
+const env=require('.././public/configrations.js')
 /**
  * Genereta the approvers section when send the time off to them ,so any approvel can check the other approvels action
  */
@@ -28,7 +29,7 @@ module.exports.generateManagerApprovelsSection = function generateManagerApprove
             var arr = managerApproval[i].managerEmail.toString().split("@")
             if (managerApproval[i].managerEmail != managerEmail || (managerApproval[i].managerEmail == managerEmail && managerApproval[i].type == "Manager")) {
                 console.log("Arrivvve")
-                getEmoji(managerApproval[i].state, "", "", "", function (emoji) {
+                env.replaceMessages.getEmoji(managerApproval[i].state, "", "", "", function (emoji) {
 
 
                     messageBody = messageBody + "{" + "\"title\":" + "\"" + "Approver ( " + arr[0] + " )\"" + ",\"value\":" + "\"" + managerApproval[i].state + "" + emoji + "\"" + ",\"short\":" + flag
