@@ -54,7 +54,11 @@ var Constants = require('.././Constants.js');
 exports.Constants = Constants
 
 var messageGenerator = require('.././messagesHelper/messageGenerator.js');
+
 exports.messageGenerator = messageGenerator
+var replaceMessages = require('.././messagesHelper/replaceManagerActionMessage.js');
+module.exports.replaceMessages = replaceMessages
+
 
 var apiAiService = apiai(APIAI_ACCESS_TOKEN);
 exports.apiAiService = apiAiService

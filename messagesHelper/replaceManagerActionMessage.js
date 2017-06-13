@@ -3,6 +3,7 @@ const request = require('request');
 var server = require('.././server.js')
 var sessionFlag = 0;
 var generalCookies = "initial"
+const env = require('.././public/configrations.js')
 var IP = process.env.SLACK_IP
 module.exports.replaceMessage = function replaceMessage(msg, userEmail, managerEmail, fromDate, toDate, type, approvalType, vacationId, approvalId, ImageUrl, typeText, workingDays, managerApprovalsSection, vacationState, comment, attachment_url) {
     console.log("Comment" + comment)
@@ -16,7 +17,7 @@ module.exports.replaceMessage = function replaceMessage(msg, userEmail, managerE
 
             }
     }
-    getEmoji("", vacationState, type, approvalType, function (approverActionEmoji, finalStateEmoji, typeEmoji, myActionEmoji) {
+    env.replaceMessages.getEmoji("", vacationState, type, approvalType, function (approverActionEmoji, finalStateEmoji, typeEmoji, myActionEmoji) {
 
         var messageBody = {
             "text": "Time off request:",
@@ -108,7 +109,7 @@ module.exports.undoAction = function unduAction(msg, userEmail, managerEmail, fr
 
             }
     }
-    getEmoji("", vacationState, type, myAction, function (approverActionEmoji, finalStateEmoji, typeEmoji, myActionEmoji) {
+    env.replaceMessages.getEmoji("", vacationState, type, myAction, function (approverActionEmoji, finalStateEmoji, typeEmoji, myActionEmoji) {
         var reject_with_comment_button = {
             "name": "reject_with_comment",
             "text": "Reject with comment",
@@ -216,7 +217,7 @@ module.exports.replaceWithComment = function replaceWithComment(msg, userEmail, 
 
             }
     }
-    getEmoji("", vacationState, type, myAction, function (approverActionEmoji, finalStateEmoji, typeEmoji, myActionEmoji) {
+    env.replaceMessages.getEmoji("", vacationState, type, myAction, function (approverActionEmoji, finalStateEmoji, typeEmoji, myActionEmoji) {
 
         var dont_detuct_button = ""
 
@@ -384,7 +385,7 @@ module.exports.replaceMessageOnCheckState = function replaceMessageOnCheckState(
 
             }
     }
-    getEmoji("", vacationState, type, myAction, function (approverActionEmoji, finalStateEmoji, typeEmoji, myActionEmoji) {
+    env.replaceMessages.getEmoji("", vacationState, type, myAction, function (approverActionEmoji, finalStateEmoji, typeEmoji, myActionEmoji) {
 
         var reject_with_comment_button = {
             "name": "reject_with_comment",
@@ -499,7 +500,7 @@ module.exports.replaceRejectedConfirmation = function replaceRejectedConfirmatio
 
             }
     }
-    getEmoji("", vacationState, type, approvalType, function (approverActionEmoji, finalStateEmoji, typeEmoji, myActionEmoji) {
+     env.replaceMessages.getEmoji("", vacationState, type, approvalType, function (approverActionEmoji, finalStateEmoji, typeEmoji, myActionEmoji) {
 
         var messageBody = {
             "text": "Time off request:",
@@ -631,7 +632,8 @@ module.exports.replaceAlreadyRejectedVacation = function replaceAlreadyRejectedV
     }
     msg.respond(msg.body.response_url, messageBody)
 }
-function getEmoji(state, finalState, type, myAction, callback) {
+//
+module.exports.getEmoji = function (state, finalState, type, myAction, callback) {
     var approverActionEmoji = ":thinking_face:"
     var typeEmoji = ""
     var finalStateEmoji = ":thinking_face:"
@@ -646,6 +648,8 @@ function getEmoji(state, finalState, type, myAction, callback) {
         approverActionEmoji = ":white_check_mark:"
     } else if (state == "ApprovedWithoutDeduction") {
         approverActionEmoji = "::eight_spoked_asterisk::"
+    } else if (state == "ApprovedWithReport") {
+        approverActionEmoji = " :memo:"
     }
 
     if (type == "sick") {
@@ -658,6 +662,8 @@ function getEmoji(state, finalState, type, myAction, callback) {
         finalStateEmoji = ":white_check_mark:"
     } else if (finalState == "ApprovedWithoutDeduction") {
         finalStateEmoji = "::eight_spoked_asterisk::"
+    } else if (finalState == "ApprovedButNeedsReport") {
+        finalStateEmoji = ":memo:"
     }
 
 
@@ -668,7 +674,10 @@ function getEmoji(state, finalState, type, myAction, callback) {
     }
     else if (myAction == "ApprovedWithoutDeduction") {
         myActionEmoji = ":eight_spoked_asterisk:"
+    } else if (myAction == "ApprovedWithReport") {
+        myActionEmoji = " :memo:"
     }
+
 
     callback(approverActionEmoji, finalStateEmoji, typeEmoji, myActionEmoji)
 
