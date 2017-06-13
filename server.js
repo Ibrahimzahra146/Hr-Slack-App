@@ -477,53 +477,9 @@ function managerApproval1(msg, value, approvalType, fromManager, comment, reject
   })
 }
 
-function HrAction(msg, value, approvalType, comment) {
-  var arr = value.toString().split(";")
-  var userEmail = arr[0];
-  var vacationId = arr[1];
-  var approvalId = arr[2]
-  var hrEmail = arr[3]
-  var fromWho = arr[4];
-  var fromDate = arr[5];
-  var toDate = arr[6];
-  var type = arr[7]
-  var workingDays = arr[8]
-  var ImageUrl = arr[9]
-  var approver2Email = arr[10]
-  var approver2Action = arr[11]
-  var vacationState = arr[12]
-  //
-  var typeText = " time off"
-  if (type == "sick") {
-    typeText = " sick time off "
-  } else if (type == "Maternity") {
-    typeText = " maternity" + " time off"
-  } else if (type == "Paternity") {
-    typeText = " paternity" + " time off"
-  } else if (type == "WFH")
-    typeText = " work from home"
-  env.hrHelper.sendVacationPutRequest(vacationId, approvalId, hrEmail, approvalType)
-  env.mRequests.getSlackRecord(userEmail, function (error, response, body) {
 
-
-    var responseBody = JSON.parse(body);
-    env.mRequests.getVacationInfo(hrEmail, vacationId, function (error, response, body) {
-      var state = response.statusCode;
-      var vacationState = JSON.parse(body).vacationState
-      env.messageGenerator.generateManagerApprovelsSection(JSON.parse(body).managerApproval, hrEmail, function (managerApprovalsSection) {
-        var attachment_url = JSON.parse(body).attachments[0].reference
-        console.log("generate attachment_url " + JSON.stringify(body))
-        env.hrHelper.sendFeedBackMessage(responseBody, hrEmail, fromDate, toDate, approvalType, comment)
-
-        replaceMessage.replaceMessage(msg, userEmail, hrEmail, fromDate, toDate, type, approvalType, vacationId, approvalId, ImageUrl, typeText, workingDays, managerApprovalsSection, vacationState, JSON.parse(body).comments, attachment_url)
-
-      })
-    })
-
-  });
-}
 env.slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
-  HrAction(msg, value, "Approved", "")
+  managerApproval1(msg, value, "Approved", "", "", 0, 0)
 })
 
 env.slapp.action('confirm_reject_compensation', 'confirm', (msg, value) => {
