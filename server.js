@@ -47,13 +47,13 @@ function storeHrSlackInformation(email, msg) {
         var userChId = JSON.parse(body).userChannelId;
         var managerChId = JSON.parse(body).managerChannelId;
         env.requestify.post('http://' + env.IP + '/api/v1/toffy', {
-            "email": email,
-            "hrChannelId": msg.body.event.channel,
-            "managerChannelId": managerChId,
-            "slackUserId": msg.body.event.user,
-            "teamId": msg.body.team_id,
-            "userChannelId": userChId
-          })
+          "email": email,
+          "hrChannelId": msg.body.event.channel,
+          "managerChannelId": managerChId,
+          "slackUserId": msg.body.event.user,
+          "teamId": msg.body.team_id,
+          "userChannelId": userChId
+        })
           .then(function (response) {
 
             // Get the response body
@@ -389,6 +389,93 @@ env.slapp.message('(.*)', ['direct_message'], (msg, text, match1) => {
 space
 -------------____________________________________________________---------------------
 */
+/**
+ * 
+ * 
+ * 
+ */
+function managerApproval1(msg, value, approvalType, fromManager, comment, rejectConfFlag, sickReportFlag) {
+  var pastflag = 0
+  var upload_sick_report_message = "";
+  var feedback_message_to_emp = ""
+  var arr = value.toString().split(";")
+  var userEmail = arr[0];
+  var vacationId = arr[1];
+  var approvalId = arr[2]
+  var managerEmail = arr[3]
+  var fromWho = arr[4];
+  var fromDate = arr[5];
+  var toDate = arr[6];
+  var type = arr[7]
+  var workingDays = arr[8]
+  var ImageUrl = arr[9]
+  console.log("ImageUrl" + ImageUrl)
+  var typeText = " time off"
+  if (type == "sick") {
+    typeText = " sick time off "
+  } else if (type == "Maternity") {
+    typeText = " maternity" + " time off"
+  } else if (type == "Paternity") {
+    typeText = " paternity" + " time off"
+  } else if (type == "WFH")
+    typeText = " work from home"
+  env.mRequests.getVacationInfo(managerEmail, vacationId, function (error, response, vacationBody) {
+    var currentMilliseconds = new Date().getTime();
+    if (currentMilliseconds > JSON.parse(body).fromDate)
+      pastflag = 1
+    //check if the vaction rejected in order to prevent manager to take an action
+    if (JSON.parse(vacationBody).sickCovertedToPersonal == true) {
+      env.replaceMessage.replaceAlreadyRejectedVacation(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays)
+    }
+    else {
+
+
+      env.messageGenerator.generateManagerApprovelsSection(JSON.parse(vacationBody).managerApproval, managerEmail, JSON.parse(vacationBody).needsSickReport, function (managerApprovalsSection) {
+
+
+        if (approvalType == "Rejected" && pastflag == 1 && rejectConfFlag == 0) {
+          replaceMessage.replaceRejectedConfirmation(msg, userEmail, managerEmail, fromDate, toDate, type, "Pending", vacationId, approvalId, ImageUrl, typeText, workingDays, managerApprovalsSection, JSON.parse(vacationBody).vacationState, JSON.parse(vacationBody).comments)
+        } else {
+
+
+          env.hrHelper.sendVacationPutRequest(vacationId, approvalId, hrEmail, approvalType)
+
+          env.mRequests.getVacationInfo(managerEmail, vacationId, function (error, response, vacationBody1) {
+            //if (JSON.parse(vacationBody1).vacationState == "Approved")
+            var existReportFlag = JSON.parse(vacationBody1).needsSickReport
+            env.messageGenerator.generateManagerApprovelsSection(JSON.parse(vacationBody1).managerApproval, managerEmail, existReportFlag, function (managerApprovalsSection1) {
+
+
+              env.mRequests.getSlackRecord(userEmail, function (error, response, body) {
+                var responseBody = JSON.parse(body);
+                var slack_message = env.stringFile.slack_message(responseBody.userChannelId, responseBody.slackUserId, responseBody.teamId)
+
+                if ((JSON.parse(vacationBody1).vacationState == "Approved") || (JSON.parse(vacationBody1).vacationState == "Rejected") || JSON.parse(vacationBody1).vacationState == "ApprovedWithoutDeduction")
+                  messageSender.sendMessagetoEmpOnAction(msg, managerEmail, fromDate, toDate, userEmail, type, bot, approvalType, vacationBody1, typeText, responseBody, comment);
+
+
+                if (approvalType == "Rejected" && rejectConfFlag == 1) {
+                  env.replaceMessage.replaceAlreadyRejectedVacation(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays)
+
+                } else
+
+
+                  replaceMessage.replaceMessage(msg, userEmail, managerEmail, fromDate, toDate, type, approvalType, vacationId, approvalId, ImageUrl, typeText, workingDays, managerApprovalsSection1, JSON.parse(vacationBody1).vacationState, JSON.parse(vacationBody1).comments)
+                /* if (comment != "accept_with_report")
+                   messageSender.sendMessagetoEmpOnAction(msg, managerEmail, fromDate, toDate, userEmail, type, bot, approvalType, body, typeText, responseBody, comment);
+ */
+
+
+
+
+              })
+            })
+          })
+        }
+      })
+    }
+  })
+}
 
 function HrAction(msg, value, approvalType, comment) {
   var arr = value.toString().split(";")
@@ -665,7 +752,7 @@ env.slapp.action('manager_confirm_reject', 'check_state_undo', (msg, value) => {
       // replaceMessage.replaceMessageOnCheckState(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays)
       env.messageGenerator.generateManagerApprovelsSection(JSON.parse(body).managerApproval, managerEmail, function (managerApprovalsSection) {
         vacationHelper.getSecondApproverStateAndFinalState(managerEmail, body, 1, function (myEmail, myAction, vacationState) {
-          replaceMessage.replaceMessage(msg, userEmail, managerEmail, fromDate, toDate, type, myAction, vacationId, approvalId, ImageUrl, "", workingDays, managerApprovalsSection, vacationState, JSON.parse(body).comments,attachment_url)
+          replaceMessage.replaceMessage(msg, userEmail, managerEmail, fromDate, toDate, type, myAction, vacationId, approvalId, ImageUrl, "", workingDays, managerApprovalsSection, vacationState, JSON.parse(body).comments, attachment_url)
 
         })
       })

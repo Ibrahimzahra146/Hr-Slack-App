@@ -372,7 +372,7 @@ module.exports.replaceCanceledRequestOnAction = function replaceCanceledRequestO
  * Check state of not canceled request
  * 
  */
-module.exports.replaceMessageOnCheckState = function replaceMessageOnCheckState(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, managerApprovalsSection, vacationState, myAction, comment,attachment_url) {
+module.exports.replaceMessageOnCheckState = function replaceMessageOnCheckState(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, managerApprovalsSection, vacationState, myAction, comment, attachment_url) {
     console.log("replaceMessageOnCheckState")
     var commentField = ""
     if (comment != null && comment != "") {
@@ -483,6 +483,154 @@ module.exports.replaceMessageOnCheckState = function replaceMessageOnCheckState(
     })
 }
 //
+/**
+ * 
+ * 
+ */
+module.exports.replaceRejectedConfirmation = function replaceRejectedConfirmation(msg, userEmail, managerEmail, fromDate, toDate, type, approvalType, vacationId, approvalId, ImageUrl, typeText, workingDays, managerApprovalsSection, vacationState, comment) {
+    console.log("Comment" + comment)
+    var commentField = ""
+    if (comment != null && comment != "") {
+        commentField =
+            {
+                "title": "Comment ",
+                "value": comment,
+                "short": false
+
+            }
+    }
+    getEmoji("", vacationState, type, approvalType, function (approverActionEmoji, finalStateEmoji, typeEmoji, myActionEmoji) {
+
+        var messageBody = {
+            "text": "Time off request:",
+            "attachments": [
+                {
+                    "attachment_type": "default",
+                    "callback_id": "manager_confirm_reject",
+                    "text": userEmail,
+                    "fallback": "ReferenceError",
+                    "fields": [
+                        {
+                            "title": "From",
+                            "value": fromDate,
+                            "short": true
+                        },
+                        {
+                            "title": "Days/Time ",
+                            "value": workingDays + " day",
+                            "short": true
+                        },
+                        {
+                            "title": "to",
+                            "value": toDate,
+                            "short": true
+                        },
+                        {
+                            "title": "Type",
+                            "value": type + " " + typeEmoji,
+                            "short": true
+                        }
+                        ,
+                        {
+                            "title": "Your action ",
+                            "value": approvalType + " " + myActionEmoji,
+                            "short": true
+                        }
+                        ,
+                        managerApprovalsSection
+                        , commentField,
+
+                        {
+                            "title": "Final state",
+                            "value": vacationState + " " + finalStateEmoji,
+                            "short": false
+                        },
+                        {
+                            "title": "[Note]",
+                            "value": "The rejection of this sick time off request will convert it automatically to deducted personal time off. Please note that this action cannot be UNDONE!"
+                            ,
+                            "short": false
+                        }
+
+
+                    ],
+                    "actions": [
+                        {
+                            "name": "Rejected_Conf",
+                            "text": "Yes",
+
+                            "type": "button",
+                            "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl
+                        },
+                        {
+                            "name": "Undo",
+                            "text": "No",
+                            "type": "button",
+                            "style": "danger",
+                            "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl
+                        },
+                    ],
+                    "color": "#F35A00",
+                    "thumb_url": ImageUrl,
+                }
+            ]
+        }
+
+
+        prepareMessage(messageBody, function (stringfy) {
+            msg.respond(msg.body.response_url, stringfy)
+        })
+    })
+
+
+}
+module.exports.replaceAlreadyRejectedVacation = function replaceAlreadyRejectedVacationovalIde(msg, userEmail, managerEmail, fromDate, toDate, type, approvalType, vacationId, approvalId, ImageUrl, typeText, workingDays, managerApprovalsSection, vacationState, comment) {
+
+
+    var messageBody = {
+        "text": "Time off request:",
+        "attachments": [
+            {
+                "attachment_type": "default",
+                "callback_id": "manager_confirm_reject",
+                "text": userEmail,
+                "fallback": "ReferenceError",
+                "fields": [
+                    {
+                        "title": "From",
+                        "value": fromDate,
+                        "short": true
+                    },
+                    {
+                        "title": "Days/Time ",
+                        "value": workingDays + " day",
+                        "short": true
+                    },
+                    {
+                        "title": "to",
+                        "value": toDate,
+                        "short": true
+                    },
+                    {
+                        "title": "Type",
+                        "value": type,
+                        "short": true
+                    }
+                    ,
+                    {
+                        "title": "State",
+                        "value": "Rejected",
+                        "short": true
+                    }
+                ],
+
+                "color": "#F35A00",
+                "thumb_url": ImageUrl,
+            }
+        ]
+    }
+    msg.respond(msg.body.response_url, messageBody)
+}
 function getEmoji(state, finalState, type, myAction, callback) {
     var approverActionEmoji = ":thinking_face:"
     var typeEmoji = ""
