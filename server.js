@@ -420,7 +420,7 @@ function managerApproval1(msg, value, approvalType, fromManager, comment, reject
   } else if (type == "WFH")
     typeText = " work from home"
   env.mRequests.getVacationInfo(managerEmail, vacationId, function (error, response, vacationBody) {
-    var attachment_url = JSON.parse(body).attachments[0].reference
+    var attachment_url = JSON.parse(vacationBody).attachments[0].reference
     var currentMilliseconds = new Date().getTime();
     if (currentMilliseconds > JSON.parse(vacationBody).fromDate)
       pastflag = 1
@@ -442,7 +442,7 @@ function managerApproval1(msg, value, approvalType, fromManager, comment, reject
           env.hrHelper.sendVacationPutRequest(vacationId, approvalId, managerEmail, approvalType)
 
           env.mRequests.getVacationInfo(managerEmail, vacationId, function (error, response, vacationBody1) {
-            attachment_url = JSON.parse(body).attachments[0].reference
+            attachment_url = JSON.parse(vacationBody).attachments[0].reference
             //if (JSON.parse(vacationBody1).vacationState == "Approved")
             var existReportFlag = JSON.parse(vacationBody1).needsSickReport
             env.messageGenerator.generateManagerApprovelsSection(JSON.parse(vacationBody1).managerApproval, managerEmail, existReportFlag, function (managerApprovalsSection1) {
