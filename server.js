@@ -544,7 +544,7 @@ env.slapp.action('manager_confirm_reject', 'check_state', (msg, value) => {
       var attachment_url = JSON.parse(body).attachments[0].reference
 
       // replaceMessage.replaceMessageOnCheckState(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays)
-      env.messageGenerator.generateManagerApprovelsSection(JSON.parse(body).managerApproval, managerEmail, function (managerApprovalsSection) {
+      env.messageGenerator.generateManagerApprovelsSection(JSON.parse(body).managerApproval, managerEmail, JSON.parse(body).needsSickReport, function (managerApprovalsSection) {
         vacationHelper.getSecondApproverStateAndFinalState(managerEmail, body, 1, function (myEmail, myAction, vacationState) {
           replaceMessage.replaceMessageOnCheckState(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, managerApprovalsSection, vacationState, myAction, JSON.parse(body).comments, attachment_url)
 
@@ -667,7 +667,7 @@ env.slapp.action('manager_confirm_reject', 'Undo', (msg, value) => {
   env.mRequests.getVacationInfo(managerEmail, vacationId, function (error, response, body) {
     var attachment_url = JSON.parse(body).attachments[0].reference
     console.log("generate attachment_url " + JSON.stringify(body))
-    env.messageGenerator.generateManagerApprovelsSection(JSON.parse(body).managerApproval, managerEmail, false, function (managerApprovalsSection) {
+    env.messageGenerator.generateManagerApprovelsSection(JSON.parse(body).managerApproval, managerEmail, JSON.parse(body).needsSickReport, function (managerApprovalsSection) {
 
       vacationHelper.getSecondApproverStateAndFinalState(managerEmail, body, 1, function (myEmail, myAction, vacationState) {
         replaceMessage.undoAction(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, managerApprovalsSection, vacationState, myAction, JSON.parse(body).comments, attachment_url)
@@ -703,7 +703,7 @@ env.slapp.action('manager_confirm_reject', 'check_state_undo', (msg, value) => {
     } else if (response.statusCode == 200) {
       var attachment_url = JSON.parse(body).attachments[0].reference
       // replaceMessage.replaceMessageOnCheckState(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays)
-      env.messageGenerator.generateManagerApprovelsSection(JSON.parse(body).managerApproval, managerEmail, function (managerApprovalsSection) {
+      env.messageGenerator.generateManagerApprovelsSection(JSON.parse(body).managerApproval, managerEmail, JSON.parse(body).needsSickReport, function (managerApprovalsSection) {
         vacationHelper.getSecondApproverStateAndFinalState(managerEmail, body, 1, function (myEmail, myAction, vacationState) {
           replaceMessage.replaceMessage(msg, userEmail, managerEmail, fromDate, toDate, type, myAction, vacationId, approvalId, ImageUrl, "", workingDays, managerApprovalsSection, vacationState, JSON.parse(body).comments, attachment_url)
 
@@ -732,7 +732,7 @@ env.slapp.action('manager_confirm_reject', 'reject_with_comment', (msg, value) =
     vacationHelper.getSecondApproverStateAndFinalState(managerEmail, body, 1, function (myEmail, myAction, vacationState) {
       var attachment_url = JSON.parse(body).attachments[0].reference
 
-      env.messageGenerator.generateManagerApprovelsSection(JSON.parse(body).managerApproval, managerEmail, function (managerApprovalsSection) {
+      env.messageGenerator.generateManagerApprovelsSection(JSON.parse(body).managerApproval, managerEmail, JSON.parse(body).needsSickReport, function (managerApprovalsSection) {
 
         replaceMessage.replaceWithComment(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, managerApprovalsSection, vacationState, myAction, JSON.parse(body).comments, attachment_url)
       })
