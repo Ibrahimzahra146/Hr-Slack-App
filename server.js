@@ -420,6 +420,7 @@ function managerApproval1(msg, value, approvalType, fromManager, comment, reject
   } else if (type == "WFH")
     typeText = " work from home"
   env.mRequests.getVacationInfo(managerEmail, vacationId, function (error, response, vacationBody) {
+    var attachment_url = JSON.parse(body).attachments[0].reference
     var currentMilliseconds = new Date().getTime();
     if (currentMilliseconds > JSON.parse(vacationBody).fromDate)
       pastflag = 1
@@ -441,6 +442,7 @@ function managerApproval1(msg, value, approvalType, fromManager, comment, reject
           env.hrHelper.sendVacationPutRequest(vacationId, approvalId, managerEmail, approvalType)
 
           env.mRequests.getVacationInfo(managerEmail, vacationId, function (error, response, vacationBody1) {
+            attachment_url = JSON.parse(body).attachments[0].reference
             //if (JSON.parse(vacationBody1).vacationState == "Approved")
             var existReportFlag = JSON.parse(vacationBody1).needsSickReport
             env.messageGenerator.generateManagerApprovelsSection(JSON.parse(vacationBody1).managerApproval, managerEmail, existReportFlag, function (managerApprovalsSection1) {
@@ -460,7 +462,7 @@ function managerApproval1(msg, value, approvalType, fromManager, comment, reject
                 } else
 
 
-                  replaceMessage.replaceMessage(msg, userEmail, managerEmail, fromDate, toDate, type, approvalType, vacationId, approvalId, ImageUrl, typeText, workingDays, managerApprovalsSection1, JSON.parse(vacationBody1).vacationState, JSON.parse(vacationBody1).comments)
+                  replaceMessage.replaceMessage(msg, userEmail, managerEmail, fromDate, toDate, type, approvalType, vacationId, approvalId, ImageUrl, typeText, workingDays, managerApprovalsSection1, JSON.parse(vacationBody1).vacationState, JSON.parse(vacationBody1).comments, attachment_url)
                 /* if (comment != "accept_with_report")
                    messageSender.sendMessagetoEmpOnAction(msg, managerEmail, fromDate, toDate, userEmail, type, bot, approvalType, body, typeText, responseBody, comment);
  */
@@ -514,15 +516,10 @@ env.slapp.action('confirm_reject_compensation', 'confirm', (msg, value) => {
 
 
 env.slapp.action('manager_confirm_reject', 'reject', (msg, value) => {
-  HrAction(msg, value, "Rejected", "")
-})
-
-
-env.slapp.action('manager_confirm_reject', 'dont_detuct', (msg, value) => {
-  HrAction(msg, value, "ApprovedWithoutDeduction", "")
-
+  managerApproval1(msg, value, "Rejected", "", "", 0, 0)
 
 })
+
 /**
  * 
  * Check state
