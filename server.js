@@ -453,7 +453,7 @@ function managerApproval1(msg, value, approvalType, fromManager, comment, reject
                 var slack_message = env.stringFile.slack_message(responseBody.userChannelId, responseBody.slackUserId, responseBody.teamId)
 
                 if ((JSON.parse(vacationBody1).vacationState == "Approved") || (JSON.parse(vacationBody1).vacationState == "Rejected") || JSON.parse(vacationBody1).vacationState == "ApprovedWithoutDeduction")
-                  messageSender.sendMessagetoEmpOnAction(msg, managerEmail, fromDate, toDate, userEmail, type, bot, approvalType, vacationBody1, typeText, responseBody, comment);
+                  env.hrHelper.sendFeedBackMessage(responseBody, managerEmail, fromDate, toDate, approvalType, comment)
 
 
                 if (approvalType == "Rejected" && rejectConfFlag == 1) {
