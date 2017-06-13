@@ -425,7 +425,7 @@ function managerApproval1(msg, value, approvalType, fromManager, comment, reject
       pastflag = 1
     //check if the vaction rejected in order to prevent manager to take an action
     if (JSON.parse(vacationBody).sickCovertedToPersonal == true) {
-      env.replaceMessage.replaceAlreadyRejectedVacation(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays)
+      replaceMessage.replaceAlreadyRejectedVacation(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays)
     }
     else {
 
@@ -455,7 +455,7 @@ function managerApproval1(msg, value, approvalType, fromManager, comment, reject
 
 
                 if (approvalType == "Rejected" && rejectConfFlag == 1) {
-                  env.replaceMessage.replaceAlreadyRejectedVacation(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays)
+                  replaceMessage.replaceAlreadyRejectedVacation(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays)
 
                 } else
 
