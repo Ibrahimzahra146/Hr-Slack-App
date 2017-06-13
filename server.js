@@ -421,7 +421,7 @@ function managerApproval1(msg, value, approvalType, fromManager, comment, reject
     typeText = " work from home"
   env.mRequests.getVacationInfo(managerEmail, vacationId, function (error, response, vacationBody) {
     var currentMilliseconds = new Date().getTime();
-    if (currentMilliseconds > JSON.parse(body).fromDate)
+    if (currentMilliseconds > JSON.parse(vacationBody).fromDate)
       pastflag = 1
     //check if the vaction rejected in order to prevent manager to take an action
     if (JSON.parse(vacationBody).sickCovertedToPersonal == true) {
