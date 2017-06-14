@@ -743,7 +743,7 @@ env.slapp.action('manager_confirm_reject', 'Send_comment', (msg, value) => {
   var arr = value.toString().split(";")
   var comment = arr[10]
 
-  HrAction(msg, value, "Rejected", comment)
+  managerApproval1(msg, value, "Rejected", "", comment, 0, 0)
 })
 env.slapp.action('cancel_request', 'cancel', (msg, value) => {
   var arr = value.toString().split(";")
