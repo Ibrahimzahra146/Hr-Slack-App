@@ -377,7 +377,7 @@ function getMembersList(Id, msg) {
 var app = env.slapp.attachToExpress(env.express())
 env.slapp.message('(.*)', ['direct_message'], (msg, text, match1) => {
   console.log("The messag:" + JSON.stringify(msg))
-  if (msg.body.event.user == "U3V5LRL76") {
+  if (msg.body.event.user == "U5T1HTURF") {
 
 
   } else {
@@ -543,15 +543,19 @@ env.slapp.action('manager_confirm_reject', 'check_state', (msg, value) => {
     if (response.statusCode == 404) {
       replaceMessage.replaceCanceledRequestOnAction(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays)
     } else if (response.statusCode == 200) {
-      var attachment_url = JSON.parse(body).attachments[0].reference
+      if (JSON.parse(body).sickCovertedToPersonal == true) {
+        replaceMessage.replaceAlreadyRejectedVacation(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays)
+      } else {
+        var attachment_url = JSON.parse(body).attachments[0].reference
 
-      // replaceMessage.replaceMessageOnCheckState(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays)
-      env.messageGenerator.generateManagerApprovelsSection(JSON.parse(body).managerApproval, managerEmail, JSON.parse(body).needsSickReport, function (managerApprovalsSection) {
-        vacationHelper.getSecondApproverStateAndFinalState(managerEmail, body, 1, function (myEmail, myAction, vacationState) {
-          replaceMessage.replaceMessageOnCheckState(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, managerApprovalsSection, vacationState, myAction, JSON.parse(body).comments, attachment_url)
+        // replaceMessage.replaceMessageOnCheckState(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays)
+        env.messageGenerator.generateManagerApprovelsSection(JSON.parse(body).managerApproval, managerEmail, JSON.parse(body).needsSickReport, function (managerApprovalsSection) {
+          vacationHelper.getSecondApproverStateAndFinalState(managerEmail, body, 1, function (myEmail, myAction, vacationState) {
+            replaceMessage.replaceMessageOnCheckState(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, managerApprovalsSection, vacationState, myAction, JSON.parse(body).comments, attachment_url)
 
+          })
         })
-      })
+      }
     }
   })
 })
@@ -667,19 +671,20 @@ env.slapp.action('manager_confirm_reject', 'Undo', (msg, value) => {
   var ImageUrl = arr[9]
 
   env.mRequests.getVacationInfo(managerEmail, vacationId, function (error, response, body) {
-    var attachment_url = JSON.parse(body).attachments[0].reference
-    console.log("generate attachment_url " + JSON.stringify(body))
-    env.messageGenerator.generateManagerApprovelsSection(JSON.parse(body).managerApproval, managerEmail, JSON.parse(body).needsSickReport, function (managerApprovalsSection) {
+    if (JSON.parse(body).sickCovertedToPersonal == true) {
+      replaceMessage.replaceAlreadyRejectedVacation(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays)
+    } else {
+      var attachment_url = JSON.parse(body).attachments[0].reference
+      console.log("generate attachment_url " + JSON.stringify(body))
+      env.messageGenerator.generateManagerApprovelsSection(JSON.parse(body).managerApproval, managerEmail, JSON.parse(body).needsSickReport, function (managerApprovalsSection) {
 
-      vacationHelper.getSecondApproverStateAndFinalState(managerEmail, body, 1, function (myEmail, myAction, vacationState) {
-        replaceMessage.undoAction(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, managerApprovalsSection, vacationState, myAction, JSON.parse(body).comments, attachment_url)
+        vacationHelper.getSecondApproverStateAndFinalState(managerEmail, body, 1, function (myEmail, myAction, vacationState) {
+          replaceMessage.undoAction(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, managerApprovalsSection, vacationState, myAction, JSON.parse(body).comments, attachment_url)
+        })
+
+
       })
-
-
-
-
-
-    })
+    }
   })
 
 })
@@ -703,14 +708,18 @@ env.slapp.action('manager_confirm_reject', 'check_state_undo', (msg, value) => {
     if (response.statusCode == 404) {
       replaceMessage.replaceCanceledRequestOnAction(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays)
     } else if (response.statusCode == 200) {
-      var attachment_url = JSON.parse(body).attachments[0].reference
-      // replaceMessage.replaceMessageOnCheckState(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays)
-      env.messageGenerator.generateManagerApprovelsSection(JSON.parse(body).managerApproval, managerEmail, JSON.parse(body).needsSickReport, function (managerApprovalsSection) {
-        vacationHelper.getSecondApproverStateAndFinalState(managerEmail, body, 1, function (myEmail, myAction, vacationState) {
-          replaceMessage.replaceMessage(msg, userEmail, managerEmail, fromDate, toDate, type, myAction, vacationId, approvalId, ImageUrl, "", workingDays, managerApprovalsSection, vacationState, JSON.parse(body).comments, attachment_url)
+      if (JSON.parse(body).sickCovertedToPersonal == true) {
+        replaceMessage.replaceAlreadyRejectedVacation(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays)
+      } else {
+        var attachment_url = JSON.parse(body).attachments[0].reference
+        // replaceMessage.replaceMessageOnCheckState(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays)
+        env.messageGenerator.generateManagerApprovelsSection(JSON.parse(body).managerApproval, managerEmail, JSON.parse(body).needsSickReport, function (managerApprovalsSection) {
+          vacationHelper.getSecondApproverStateAndFinalState(managerEmail, body, 1, function (myEmail, myAction, vacationState) {
+            replaceMessage.replaceMessage(msg, userEmail, managerEmail, fromDate, toDate, type, myAction, vacationId, approvalId, ImageUrl, "", workingDays, managerApprovalsSection, vacationState, JSON.parse(body).comments, attachment_url)
 
+          })
         })
-      })
+      }
     }
   })
 })
@@ -732,12 +741,16 @@ env.slapp.action('manager_confirm_reject', 'reject_with_comment', (msg, value) =
   var ImageUrl = arr[9]
   env.mRequests.getVacationInfo(managerEmail, vacationId, function (error, response, body) {
     vacationHelper.getSecondApproverStateAndFinalState(managerEmail, body, 1, function (myEmail, myAction, vacationState) {
-      var attachment_url = JSON.parse(body).attachments[0].reference
+      if (JSON.parse(body).sickCovertedToPersonal == true) {
+        replaceMessage.replaceAlreadyRejectedVacation(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays)
+      } else {
+        var attachment_url = JSON.parse(body).attachments[0].reference
 
-      env.messageGenerator.generateManagerApprovelsSection(JSON.parse(body).managerApproval, managerEmail, JSON.parse(body).needsSickReport, function (managerApprovalsSection) {
+        env.messageGenerator.generateManagerApprovelsSection(JSON.parse(body).managerApproval, managerEmail, JSON.parse(body).needsSickReport, function (managerApprovalsSection) {
 
-        replaceMessage.replaceWithComment(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, managerApprovalsSection, vacationState, myAction, JSON.parse(body).comments, attachment_url)
-      })
+          replaceMessage.replaceWithComment(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, managerApprovalsSection, vacationState, myAction, JSON.parse(body).comments, attachment_url)
+        })
+      }
     })
   })
 })
