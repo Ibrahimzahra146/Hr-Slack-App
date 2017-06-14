@@ -758,7 +758,23 @@ env.slapp.action('cancel_request', 'cancel', (msg, value) => {
     messageSender.sendMessageSpecEmployee(employeeEmail, "Hi, HR " + email + " has canceled a time off for you ( " + fromDate + "-" + toDate + " ).Sorry!")
   })
 })
+/**
+ * 
+ * 
+ * 
+ */
+slapp.action('manager_confirm_reject', 'Rejected_Conf', (msg, value) => {
+  var arr = value.toString().split(";")
+  var comment = arr[10]
+  managerApproval1(msg, value, "Rejected", 0, comment, 1, 0)
 
+
+})
+/**
+ * 
+ * 
+ * 
+ */
 
 app.get('/', function (req, res) {
 

@@ -488,7 +488,7 @@ module.exports.replaceMessageOnCheckState = function replaceMessageOnCheckState(
  * 
  * 
  */
-module.exports.replaceRejectedConfirmation = function replaceRejectedConfirmation(msg, userEmail, managerEmail, fromDate, toDate, type, approvalType, vacationId, approvalId, ImageUrl, typeText, workingDays, managerApprovalsSection, vacationState, comment) {
+module.exports.replaceRejectedConfirmation = function replaceRejectedConfirmation(msg, userEmail, managerEmail, fromDate, toDate, type, approvalType, vacationId, approvalId, ImageUrl, typeText, workingDays, managerApprovalsSection, vacationState, comment, managerComment) {
     console.log("Comment" + comment)
     var commentField = ""
     if (comment != null && comment != "") {
@@ -500,7 +500,7 @@ module.exports.replaceRejectedConfirmation = function replaceRejectedConfirmatio
 
             }
     }
-     env.replaceMessages.getEmoji("", vacationState, type, approvalType, function (approverActionEmoji, finalStateEmoji, typeEmoji, myActionEmoji) {
+    env.replaceMessages.getEmoji("", vacationState, type, approvalType, function (approverActionEmoji, finalStateEmoji, typeEmoji, myActionEmoji) {
 
         var messageBody = {
             "text": "Time off request:",
@@ -561,14 +561,14 @@ module.exports.replaceRejectedConfirmation = function replaceRejectedConfirmatio
                             "text": "Yes",
 
                             "type": "button",
-                            "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl
+                            "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl + ";" + managerComment
                         },
                         {
                             "name": "Undo",
                             "text": "No",
                             "type": "button",
                             "style": "danger",
-                            "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl
+                            "value": userEmail + ";" + vacationId + ";" + approvalId + ";" + managerEmail + ";employee" + ";" + fromDate + ";" + toDate + ";" + type + ";" + workingDays + ";" + ImageUrl + ";" + managerComment
                         },
                     ],
                     "color": "#F35A00",

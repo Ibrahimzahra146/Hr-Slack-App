@@ -160,24 +160,49 @@ module.exports.getTimeOffRules = function getTimeOffRules(email, callback) {
  */
 module.exports.getEmployeeProfile = function getEmployeeProfile(email, Id, callback) {
 
-        env.request({
-            url: "http://" + env.IP + "/api/v1/employee/" + Id,
-            json: true,
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Cookie': env.hrHelper.general_remember_me + ";" + env.hrHelper.general_session_id
-            },
-        }, function (error, response, body) {
-            callback(error, response, body)
-        })
-    
+    env.request({
+        url: "http://" + env.IP + "/api/v1/employee/" + Id,
+        json: true,
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Cookie': env.hrHelper.general_remember_me + ";" + env.hrHelper.general_session_id
+        },
+    }, function (error, response, body) {
+        callback(error, response, body)
+    })
+
 }
 /**
  * 
  * get Id from email
  */
 module.exports.getIdFromEmail = function getIdFromEmail(email, employeeEmail, callback) {
+    env.hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, sessionId) {
+        env.hrHelper.general_remember_me = remember_me_cookie
+        env.hrHelper.general_session_id = sessionId
+
+
+        env.request({
+            url: "http://" + env.IP + "/api/v1/employee/get-id", //URL to hitDs
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': env.hrHelper.general_remember_me
+            },
+            body: employeeEmail
+            //Set the body as a stringcc
+        }, function (error, response, body) {
+            callback(body)
+
+        })
+    });
+}
+/**
+ * 
+ * Add extraTimeOff
+ */
+module.exports.addCompenstaion = function addCompenstaion(email, employeeEmail, callback) {
     env.hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, sessionId) {
         env.hrHelper.general_remember_me = remember_me_cookie
         env.hrHelper.general_session_id = sessionId
