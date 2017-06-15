@@ -226,7 +226,7 @@ module.exports.addCompenstaion = function addCompenstaion(email, employeeEmail, 
             body: requestBody
             //Set the body as a stringcc
         }, function (error, response, body) {
-            callback(body)
+            callback(error, response, body)
 
         })
     });

@@ -504,7 +504,7 @@ env.slapp.action('confirm_reject_compensation', 'confirm', (msg, value) => {
   env.mRequests.getSlackRecord(userEmail, function (error, response, body) {
     var responseBody = JSON.parse(body);
     var slack_message = env.stringFile.slack_message(responseBody.userChannelId, responseBody.slackUserId, responseBody.teamId)
-    env.mRequests.addCompenstaion(hrEmail, userEmail, numberOfExtraTimeOff, unit, function () {
+    env.mRequests.addCompenstaion(hrEmail, userEmail, numberOfExtraTimeOff, unit, function (error, response, body) {
 
 
 
