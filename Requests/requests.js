@@ -227,8 +227,9 @@ module.exports.addCompenstaion = function addCompenstaion(email, employeeEmail, 
             body: requestBody
             //Set the body as a stringcc
         }, function (error, response, body) {
-            console.log("Body" + JSON.stringify(body))
             console.log("statuscode" + response.statusCode)
+            console.log("Body" + body)
+
             callback(error, response, body)
 
         })
