@@ -492,28 +492,38 @@ env.slapp.action('confirm_reject_compensation', 'confirm', (msg, value) => {
   var userEmail = arr[1];
   var numberOfExtraTimeOff = arr[2];
   var type = arr[3]
-
+  var unit = ""
+  if (type == "week" || type == "weeks")
+    unit = 0
+  if (type == "day" || type == "days")
+    unit = 1
+  if (type == "hour" || type == "hours")
+    unit = 2
 
   //hrHelper.sendVacationPutRequest(vacationId, approvalId, hrEmail, "Approved")
   env.mRequests.getSlackRecord(userEmail, function (error, response, body) {
     var responseBody = JSON.parse(body);
     var slack_message = env.stringFile.slack_message(responseBody.userChannelId, responseBody.slackUserId, responseBody.teamId)
+    env.mRequests.addCompenstaion(hrEmail, userEmail, numberOfExtraTimeOff, unit, function () {
 
 
-    env.bot.startConversation(slack_message, function (err, convo) {
 
-      if (!err) {
-        var text12 = {
-          "text": "Hi, you have granted " + numberOfExtraTimeOff + " extra " + type + " from the HR Admin.",
+      env.bot.startConversation(slack_message, function (err, convo) {
+
+        if (!err) {
+          var text12 = {
+            "text": "Hi, you have granted " + numberOfExtraTimeOff + " extra " + type + " from the HR Admin.",
+          }
+          var stringfy = JSON.stringify(text12);
+          var obj1 = JSON.parse(stringfy);
+          env.bot.reply(slack_message, obj1);
+
         }
-        var stringfy = JSON.stringify(text12);
-        var obj1 = JSON.parse(stringfy);
-        env.bot.reply(slack_message, obj1);
-
-      }
-    });
-    msg.respond(msg.body.response_url, "You have added " + numberOfExtraTimeOff + " extra " + type + " for " + userEmail + ".")
+      });
+      msg.respond(msg.body.response_url, "You have added " + numberOfExtraTimeOff + " extra " + type + " for " + userEmail + ".")
+    })
   });
+
 })
 
 

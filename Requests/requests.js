@@ -202,20 +202,28 @@ module.exports.getIdFromEmail = function getIdFromEmail(email, employeeEmail, ca
  * 
  * Add extraTimeOff
  */
-module.exports.addCompenstaion = function addCompenstaion(email, employeeEmail, callback) {
-    env.hrHelper.getNewSessionwithCookie(email, function (remember_me_cookie, sessionId) {
-        env.hrHelper.general_remember_me = remember_me_cookie
-        env.hrHelper.general_session_id = sessionId
-
-
+module.exports.addCompenstaion = function addCompenstaion(email, employeeEmail, value, unit, callback) {
+    console.log("addCompenstaion" + employeeEmail)
+    console.log("unit" + unit)
+    env.mRequests.getIdFromEmail(email, employeeEmail, function (id) {
+        console.log("addCompenstaion" + id)
+        var requestBody = {
+            "value": value,
+            "type": "BonusVacations",
+            "year": 2017,
+            "employee": {
+                "id": id
+            }
+        }
+        requestBody = JSON.stringify(requestBody)
         env.request({
-            url: "http://" + env.IP + "/api/v1/employee/get-id", //URL to hitDs
+            url: "http://" + env.IP + "/api/v1/compensation?unit=" + unit, //URL to hitDs
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Cookie': env.hrHelper.general_remember_me
             },
-            body: employeeEmail
+            body: requestBody
             //Set the body as a stringcc
         }, function (error, response, body) {
             callback(body)
