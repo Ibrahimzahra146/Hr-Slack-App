@@ -216,10 +216,11 @@ module.exports.addCompenstaion = function addCompenstaion(email, employeeEmail, 
             }
         }
         requestBody = JSON.stringify(requestBody)
+        console.log("requestBody" + requestBody)
         env.request({
             url: "http://" + env.IP + "/api/v1/compensation?unit=" + unit, //URL to hitDs
             method: 'POST',
-            headers: {
+            headers: { 
                 'Content-Type': 'application/json',
                 'Cookie': env.hrHelper.general_remember_me
             },
