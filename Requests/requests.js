@@ -215,18 +215,20 @@ module.exports.addCompenstaion = function addCompenstaion(email, employeeEmail, 
                 "id": id
             }
         }
-      //  requestBody = JSON.stringify(requestBody)
+        //  requestBody = JSON.stringify(requestBody)
         console.log("requestBody" + requestBody)
         env.request({
             url: "http://" + env.IP + "/api/v1/compensation?unit=" + unit, //URL to hitDs
             method: 'POST',
-            headers: { 
+            headers: {
                 'Content-Type': 'application/json',
-                'Cookie': env.hrHelper.general_remember_me
+                'Cookie': env.hrHelper.general_remember_me + ";" + env.hrHelper.general_session_id
             },
             body: requestBody
             //Set the body as a stringcc
         }, function (error, response, body) {
+            console.log("Body" + JSON.stringify(body))
+            console.log("statuscode" + response.statusCode)
             callback(error, response, body)
 
         })
