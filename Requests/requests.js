@@ -202,7 +202,7 @@ module.exports.getIdFromEmail = function getIdFromEmail(email, employeeEmail, ca
  * 
  * Add extraTimeOff
  */
-module.exports.addCompenstaion = function addCompenstaion(email, employeeEmail, value, unit, callback) {
+module.exports.addCompenstaion = function addCompenstaion(email, employeeEmail, value, unit, comment, callback) {
     console.log("addCompenstaion" + employeeEmail)
     console.log("unit" + unit)
     env.mRequests.getIdFromEmail(email, employeeEmail, function (id) {
@@ -211,6 +211,7 @@ module.exports.addCompenstaion = function addCompenstaion(email, employeeEmail, 
             "value": value,
             "type": "BonusVacations",
             "year": 2017,
+            "comments": comment,
             "employee": {
                 "id": id
             }

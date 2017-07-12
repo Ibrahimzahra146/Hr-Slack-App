@@ -483,7 +483,7 @@ function managerApproval1(msg, value, approvalType, fromManager, comment, reject
 function AddCompensationTimeOff(msg, value, comment) {
   var commentSection = ""
   if (comment != "") {
-    commentSection = "HR comment:" + comment
+    commentSection = "HR comment: " + comment + "."
   }
   var arr = value.toString().split(",")
   var hrEmail = arr[0];
@@ -502,7 +502,7 @@ function AddCompensationTimeOff(msg, value, comment) {
   env.mRequests.getSlackRecord(userEmail, function (error, response, body) {
     var responseBody = JSON.parse(body);
     var slack_message = env.stringFile.slack_message(responseBody.userChannelId, responseBody.slackUserId, responseBody.teamId)
-    env.mRequests.addCompenstaion(hrEmail, userEmail, numberOfExtraTimeOff, unit, function (error, response, body) {
+    env.mRequests.addCompenstaion(hrEmail, userEmail, numberOfExtraTimeOff, unit, comment, function (error, response, body) {
 
 
 
@@ -510,7 +510,7 @@ function AddCompensationTimeOff(msg, value, comment) {
 
         if (!err) {
           var text12 = {
-            "text": "Hi, you have granted " + numberOfExtraTimeOff + " extra " + type + " from the HR Admin.\n" + commentSection,
+            "text": "Hi, you have granted " + numberOfExtraTimeOff + " extra " + type + " from the HR Admin.\n " + commentSection,
           }
           var stringfy = JSON.stringify(text12);
           var obj1 = JSON.parse(stringfy);
