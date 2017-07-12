@@ -139,42 +139,8 @@ module.exports.sendCompensationConfirmationToHr = function sendCompensationConfi
     if (numberOfExtraTime > 1) {
         type = type + "s";
     }
-    var text12 = {
-        "text": "",
-        "attachments": [
-            {
-                "text": "Okay, you asked to add " + numberOfExtraTime + " extra " + type + " time off for " + "" + employeeEmail + ". Should I go ahead ?",
-                "callback_id": 'confirm_reject_compensation',
-                "color": "#3AA3E3",
-                "attachment_type": "default",
-                "actions": [
-                    {
-                        "name": 'confirm',
-                        "text": "Yes",
-                        "style": "primary",
-                        "type": "button",
-                        "value": email + "," + employeeEmail + "," + numberOfExtraTime + "," + type
-                    }
-                    ,
-                    {
-                        "name": 'Yeswithcomment',
-                        "text": "Yes with comment",
-                        "type": "button",
-                        "value": email + "," + employeeEmail + "," + numberOfExtraTime + "," + type
-                    },
-                    {
-                        "name": 'reject',
-                        "text": "No",
-                        "style": "danger",
-                        "type": "button",
-                        "value": email + "," + employeeEmail + "," + numberOfExtraTime + "," + type
-                    }
-
-                ]
-            }
-        ]
-    }
-    msg.say(text12)
+    var message = env.stringFile.Compensation_Confirmation_message(email, employeeEmail, numberOfExtraTime, type)
+    msg.say(message)
 }
 
 

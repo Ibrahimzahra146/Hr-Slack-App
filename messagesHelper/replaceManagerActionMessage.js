@@ -373,6 +373,7 @@ module.exports.replaceCanceledRequestOnAction = function replaceCanceledRequestO
  * Check state of not canceled request
  * 
  */
+
 module.exports.replaceMessageOnCheckState = function replaceMessageOnCheckState(msg, userEmail, managerEmail, fromDate, toDate, type, vacationId, approvalId, ImageUrl, workingDays, managerApprovalsSection, vacationState, myAction, comment, attachment_url) {
     console.log("replaceMessageOnCheckState")
     var commentField = ""
