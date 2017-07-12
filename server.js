@@ -545,7 +545,21 @@ env.slapp.action('confirm_reject_compensation', 'CompenstationComment', (msg, va
 
 
 })
+env.slapp.action('confirm_reject_compensation', 'CompensationBack', (msg, value) => {
+  var arr = value.toString().split(",")
+  var hrEmail = arr[0];
+  var userEmail = arr[1];
+  var numberOfExtraTimeOff = arr[2];
+  var type = arr[3]
+  var message = env.stringFile.Compensation_Confirmation_message(hrEmail, userEmail, numberOfExtraTime, type)
+  msg.respond(msg.body.response_url, message)
 
+  //Yeswithcomment
+  //AddCompensationTimeOff(msg, value, "")
+
+
+})
+//CompensationBack
 
 
 
