@@ -58,3 +58,52 @@ module.exports.Compensation_Confirmation_message = function Compensation_Confirm
     }
     return message
 }
+/**
+ * Compensation comment
+ */
+module.exports.Compensation_Coment = function Compensation_Coment(email, employeeEmail, numberOfExtraTime, type) {
+    var message = {
+        "text": "",
+        "attachments": [
+            {
+                "text": "Okay, you asked to add " + numberOfExtraTime + " extra " + type + " time off for " + "" + employeeEmail + ". Should I go ahead ?",
+                "callback_id": 'confirm_reject_compensation',
+                "color": "#3AA3E3",
+                "attachment_type": "default",
+                "actions": [
+                    {
+                        "name": 'CompenstationComment',
+                        "text": "Over time",
+                        "style": "primary",
+                        "type": "button",
+                        "value": email + "," + employeeEmail + "," + numberOfExtraTime + "," + type + ",Over time"
+                    }
+                    ,
+                    {
+                        "name": 'CompenstationComment',
+                        "text": "Weekend",
+                        "type": "button",
+                        "value": email + "," + employeeEmail + "," + numberOfExtraTime + "," + type + ",Weekend"
+                    },
+                    {
+                        "name": 'CompenstationComment',
+                        "text": "Manager request",
+                        "style": "danger",
+                        "type": "button",
+                        "value": email + "," + employeeEmail + "," + numberOfExtraTime + "," + type + ",Manager request"
+                    }
+                    ,
+                    {
+                        "name": 'CompensationBack',
+                        "text": "Manager request",
+                        "style": "danger",
+                        "type": "button",
+                        "value": email + "," + employeeEmail + "," + numberOfExtraTime + "," + type + ",Manager request"
+                    }
+
+                ]
+            }
+        ]
+    }
+    return message
+}

@@ -524,10 +524,29 @@ env.slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
 })
 
 env.slapp.action('confirm_reject_compensation', 'confirm', (msg, value) => {
-  //Yeswithcomment
+  //
   AddCompensationTimeOff(msg, value, "")
 
 })
+env.slapp.action('confirm_reject_compensation', 'Yeswithcomment', (msg, value) => {
+  var arr = value.toString().split(",")
+  var hrEmail = arr[0];
+  var userEmail = arr[1];
+  var numberOfExtraTimeOff = arr[2];
+  var type = arr[3]
+  var unit = ""
+  var message = env.stringFile.Compensation_Coment(hrEmail, userEmail, numberOfExtraTimeOff, type)
+  msg.respond(msg.body.response_url, message)
+
+})
+env.slapp.action('confirm_reject_compensation', 'CompenstationComment', (msg, value) => {
+  //Yeswithcomment
+  AddCompensationTimeOff(msg, value, "")
+
+
+})
+
+
 
 
 env.slapp.action('manager_confirm_reject', 'reject', (msg, value) => {
