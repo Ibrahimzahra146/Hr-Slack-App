@@ -480,13 +480,7 @@ function managerApproval1(msg, value, approvalType, fromManager, comment, reject
     }
   })
 }
-
-
-env.slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
-  managerApproval1(msg, value, "Approved", "", "", 0, 0)
-})
-
-env.slapp.action('confirm_reject_compensation', 'confirm', (msg, value) => {
+function AddCompensationTimeOff(value, commemt) {
   var arr = value.toString().split(",")
   var hrEmail = arr[0];
   var userEmail = arr[1];
@@ -523,6 +517,15 @@ env.slapp.action('confirm_reject_compensation', 'confirm', (msg, value) => {
       msg.respond(msg.body.response_url, "You have added " + numberOfExtraTimeOff + " extra " + type + " for " + userEmail + ".")
     })
   });
+}
+
+env.slapp.action('manager_confirm_reject', 'confirm', (msg, value) => {
+  managerApproval1(msg, value, "Approved", "", "", 0, 0)
+})
+
+env.slapp.action('confirm_reject_compensation', 'confirm', (msg, value) => {
+  //Yeswithcomment
+  AddCompensationTimeOff(value, "")
 
 })
 
