@@ -532,6 +532,11 @@ env.slapp.action('confirm_reject_compensation', 'confirm', (msg, value) => {
   AddCompensationTimeOff(msg, value, "")
 
 })
+env.slapp.action('confirm_reject_compensation', 'reject', (msg, value) => {
+  //
+  msg.respond(msg.body.response_url, "Ok operation aborted.")
+
+})
 env.slapp.action('confirm_reject_compensation', 'Yeswithcomment', (msg, value) => {
   var arr = value.toString().split(",")
   var hrEmail = arr[0];
