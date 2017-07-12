@@ -480,7 +480,11 @@ function managerApproval1(msg, value, approvalType, fromManager, comment, reject
     }
   })
 }
-function AddCompensationTimeOff(msg, value, commemt) {
+function AddCompensationTimeOff(msg, value, comment) {
+  var commentSection = ""
+  if (comment != "") {
+    commentSection = "HR comment:" + comment
+  }
   var arr = value.toString().split(",")
   var hrEmail = arr[0];
   var userEmail = arr[1];
@@ -506,7 +510,7 @@ function AddCompensationTimeOff(msg, value, commemt) {
 
         if (!err) {
           var text12 = {
-            "text": "Hi, you have granted " + numberOfExtraTimeOff + " extra " + type + " from the HR Admin.",
+            "text": "Hi, you have granted " + numberOfExtraTimeOff + " extra " + type + " from the HR Admin.\n" + commentSection,
           }
           var stringfy = JSON.stringify(text12);
           var obj1 = JSON.parse(stringfy);
@@ -541,7 +545,9 @@ env.slapp.action('confirm_reject_compensation', 'Yeswithcomment', (msg, value) =
 })
 env.slapp.action('confirm_reject_compensation', 'CompenstationComment', (msg, value) => {
   //Yeswithcomment
-  AddCompensationTimeOff(msg, value, "")
+  var arr = value.toString().split(",")
+  var commemt = arr[4];
+  AddCompensationTimeOff(msg, value, commemt)
 
 
 })
