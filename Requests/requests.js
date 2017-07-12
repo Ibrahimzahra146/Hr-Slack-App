@@ -230,6 +230,7 @@ module.exports.addCompenstaion = function addCompenstaion(email, employeeEmail, 
         }, function (error, response, body) {
             console.log("statuscode" + response.statusCode)
             console.log("Body" + body)
+            console.log(JSON.stringify(body))
 
             callback(error, response, body)
 
