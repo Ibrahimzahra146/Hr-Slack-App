@@ -154,6 +154,14 @@ module.exports.sendCompensationConfirmationToHr = function sendCompensationConfi
                         "style": "primary",
                         "type": "button",
                         "value": email + "," + employeeEmail + "," + numberOfExtraTime + "," + type
+                    }
+                    ,
+                    {
+                        "name": 'Yes with comment',
+                        "text": "No",
+                        "style": "primary",
+                        "type": "button",
+                        "value": email + "," + employeeEmail + "," + numberOfExtraTime + "," + type
                     },
                     {
                         "name": 'reject',
@@ -162,6 +170,7 @@ module.exports.sendCompensationConfirmationToHr = function sendCompensationConfi
                         "type": "button",
                         "value": email + "," + employeeEmail + "," + numberOfExtraTime + "," + type
                     }
+
                 ]
             }
         ]
