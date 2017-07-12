@@ -159,7 +159,6 @@ module.exports.sendCompensationConfirmationToHr = function sendCompensationConfi
                     {
                         "name": 'Yeswithcomment',
                         "text": "Yes with comment",
-                        "style": "primary",
                         "type": "button",
                         "value": email + "," + employeeEmail + "," + numberOfExtraTime + "," + type
                     },
