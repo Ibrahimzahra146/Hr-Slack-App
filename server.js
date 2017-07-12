@@ -551,7 +551,7 @@ env.slapp.action('confirm_reject_compensation', 'CompensationBack', (msg, value)
   var userEmail = arr[1];
   var numberOfExtraTimeOff = arr[2];
   var type = arr[3]
-  var message = env.stringFile.Compensation_Confirmation_message(hrEmail, userEmail, numberOfExtraTime, type)
+  var message = env.stringFile.Compensation_Confirmation_message(hrEmail, userEmail, numberOfExtraTimeOff, type)
   msg.respond(msg.body.response_url, message)
 
   //Yeswithcomment
