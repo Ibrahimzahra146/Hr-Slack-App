@@ -74,7 +74,7 @@ module.exports.Compensation_Coment = function Compensation_Coment(email, employe
                     {
                         "name": 'CompenstationComment',
                         "text": "Over time",
-                        "style": "primary",
+                       
                         "type": "button",
                         "value": email + "," + employeeEmail + "," + numberOfExtraTime + "," + type + ",Over time"
                     }
@@ -88,14 +88,14 @@ module.exports.Compensation_Coment = function Compensation_Coment(email, employe
                     {
                         "name": 'CompenstationComment',
                         "text": "Manager request",
-                        "style": "danger",
+                       
                         "type": "button",
                         "value": email + "," + employeeEmail + "," + numberOfExtraTime + "," + type + ",Manager request"
                     }
                     ,
                     {
                         "name": 'CompensationBack',
-                        "text": "Manager request",
+                        "text": "Back",
                         "style": "danger",
                         "type": "button",
                         "value": email + "," + employeeEmail + "," + numberOfExtraTime + "," + type + ",Manager request"
