@@ -97,6 +97,7 @@ var pg = require('pg');
 var APIAI_ACCESS_TOKEN = process.env.APIAI_ACCESS_KEY;
 
 var SLACK_BOT_TOKEN = process.env.SLACK_BOT_ACCESS_KEY;
+var SLACK_MANAGER_BOT_TOKEN = process.env.SLACK_MANAGER_BOT_TOKEN;
 
 
 exports.count = count;
@@ -121,4 +122,10 @@ var bot = controller.spawn({
 
 }).startRTM();
 exports.bot = bot
+var managerBot = controller1.spawn({
+    token: SLACK_MANAGER_BOT_TOKEN
+
+}).startRTM();
+exports.managerBot = managerBot
+
 

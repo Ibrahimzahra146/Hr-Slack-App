@@ -20,4 +20,8 @@ config:
   friendly_name: IP for HR token
   type: secret
   global: true
+- name: SLACK_MANAGER_BOT_TOKEN
+  friendly_name: SLACK manager bot access token
+  type: secret
+  global: true
 

@@ -503,12 +503,26 @@ function AddCompensationTimeOff(msg, value, comment) {
     var responseBody = JSON.parse(body);
     var slack_message = env.stringFile.slack_message(responseBody.userChannelId, responseBody.slackUserId, responseBody.teamId)
     env.mRequests.addCompenstaion(hrEmail, userEmail, numberOfExtraTimeOff, unit, comment, function (error, response, body) {
-      //console.log("manager " + body.managerInfo.managerChannelId)
-      console.log("manager " + JSON.parse(body).managerInfo.managerChannelId)
-      // var manager_slack_message = env.stringFile.slack_message(responseBody.userChannelId, responseBody.slackUserId, responseBody.teamId)
+
+      var managerChannelId = JSON.parse(body).managerInfo.managerChannelId
+      var managerSlackId = JSON.parse(body).managerInfo.slackUserId
+      var teamId = JSON.parse(body).managerInfo.teamId
+      var manager_slack_message = env.stringFile.slack_message(managerChannelId, managerSlackId, responseBody.teamId)
 
 
       env.bot.startConversation(slack_message, function (err, convo) {
+
+        if (!err) {
+          var text12 = {
+            "text": "Hi, you have granted " + numberOfExtraTimeOff + " extra " + type + " from the HR Admin.\n " + commentSection,
+          }
+          var stringfy = JSON.stringify(text12);
+          var obj1 = JSON.parse(stringfy);
+          env.bot.reply(slack_message, obj1);
+
+        }
+      });
+      env..startConversation(slack_message, function (err, convo) {
 
         if (!err) {
           var text12 = {
