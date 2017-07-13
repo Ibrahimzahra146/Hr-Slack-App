@@ -503,7 +503,7 @@ function AddCompensationTimeOff(msg, value, comment) {
     var responseBody = JSON.parse(body);
     var slack_message = env.stringFile.slack_message(responseBody.userChannelId, responseBody.slackUserId, responseBody.teamId)
     env.mRequests.addCompenstaion(hrEmail, userEmail, numberOfExtraTimeOff, unit, comment, function (error, response, body) {
-      console.log("manager " + body.managerInfo.managerChannelId)
+      //console.log("manager " + body.managerInfo.managerChannelId)
       console.log("manager " + JSON.parse(body).managerInfo.managerChannelId)
       // var manager_slack_message = env.stringFile.slack_message(responseBody.userChannelId, responseBody.slackUserId, responseBody.teamId)
 
