@@ -522,15 +522,15 @@ function AddCompensationTimeOff(msg, value, comment) {
 
         }
       });
-      env..startConversation(slack_message, function (err, convo) {
+      env.managerBot.startConversation(manager_slack_message, function (err, convo) {
 
         if (!err) {
           var text12 = {
-            "text": "Hi, you have granted " + numberOfExtraTimeOff + " extra " + type + " from the HR Admin.\n " + commentSection,
+            "text": "Hi, " + userEmail + " have granted " + numberOfExtraTimeOff + " extra " + type + " from the HR Admin.\n " + commentSection,
           }
           var stringfy = JSON.stringify(text12);
           var obj1 = JSON.parse(stringfy);
-          env.bot.reply(slack_message, obj1);
+          env.bot.reply(manager_slack_message, obj1);
 
         }
       });
