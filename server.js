@@ -530,7 +530,7 @@ function AddCompensationTimeOff(msg, value, comment) {
           }
           var stringfy = JSON.stringify(text12);
           var obj1 = JSON.parse(stringfy);
-          env.bot.reply(manager_slack_message, obj1);
+          env.managerBot.reply(manager_slack_message, obj1);
 
         }
       });
